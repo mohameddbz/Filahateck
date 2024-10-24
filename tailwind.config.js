@@ -14,6 +14,26 @@ module.exports = {
       '5xl': '3rem',
       '6xl': '4rem',
     },
+    screens: {
+
+      sm: '640px',
+
+      md: '768px',
+
+      lg: '1024px',
+
+      xl: '1280px',
+
+    },
+    keyframes: {
+      fadeIn: {
+        '0%': { opacity: 0 },
+        '100%': { opacity: 1 },
+      },
+    },
+    animation: {
+      fadeIn: 'fadeIn 2s ease-in-out', // 2s duration, ease-in-out effect
+    },
     extend: {},
   },
   plugins: [],
