@@ -8,25 +8,7 @@ import { MdClose } from "react-icons/md";
 const Header = () => {
     const [showMenu, setShowMenu]=useState(false)
   return (
-    // <header className="bg-green-600 p-4">
-    //   <div className="flex justify-between items-center">
-    //     <div className="text-white text-xl font-bold">
-    //       <img src={logo} alt="logo image" className="h-10 w-10" />
-    //     </div>
-    //     <nav className="space-x-16 flex items-center">
-    //       <a href="/" className="text-white text-xl">Accueil</a>
-    //       <a href="/offers" className="text-white text-xl">Offres</a>
-    //       <a href="/about" className="text-white text-xl">À propos</a>
-    //       <a 
-    //         href="/login" 
-    //         className="text-white text-xl transform transition-all duration-300 active:translate-x-2 active:scale-95 active:text-green-500"
-    //       >
-    //         Se connecter
-    //       </a>
-    //     </nav>
-    //   </div>
-    // </header>
-    <div className='w-full h-20 sticky top-0 z-50 bg-green-600 mx-auto flex justify-between items-center font-titleFont border-b-[1px] border-b-gray-600'>
+    <div className='w-full h-[60px] sticky top-0 z-50 bg-green-600 mx-auto flex justify-between items-center font-titleFont border-b-[1px] border-b-gray-600'>
        <div>
         <img className='h-[50px] w-[100px]' src={logo} alt='logo'/>
        </div>
