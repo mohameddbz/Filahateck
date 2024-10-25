@@ -19,7 +19,7 @@ const LoginForm = () => {
         <InputEmail />
         <InputPassword text={isArabic ? 'كلمة المرور' : 'Mot de passe'}/>
         <div className="text-right text-green-700 mb-4">
-          <a href="/forgot-password">
+          <a href="/ForgotPassword">
             {isArabic ? 'نسيت كلمة المرور' : 'Mot de passe oublié'}
           </a>
         </div>

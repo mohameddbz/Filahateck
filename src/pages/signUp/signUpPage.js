@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './../../components/layout/Header';
-import SignupImage from './../../images/signup.png'
+import SignupImage from './../../images/signUp.jpg'
 import SignUpForm from '../../components/form/signupFrorm';
 
 const SignUpPage = () => {
