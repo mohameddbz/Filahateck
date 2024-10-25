@@ -23,7 +23,9 @@ const LoginForm = () => {
             {isArabic ? 'نسيت كلمة المرور' : 'Mot de passe oublié'}
           </a>
         </div>
-        <ButtonConfirm text={isArabic ? 'تسجيل الدخول' : 'Se connecter'} />
+        <Link to="/compte/OffresPage">
+          <ButtonConfirm text={isArabic ? 'تسجيل الدخول' : 'Se connecter'} />
+        </Link>
       </form>
       <div className="mt-4 text-center">
         <p className="text-sm">
