@@ -4,6 +4,7 @@ import Offre from '../../components/OffersComponents/offre';
 import ButtonLang from '../../components/common/Button/ButtonLang';
 import {offersData} from '../../utils/Offers/offre'
 import ButtonConfirm from '../../components/common/Button/ButtonConfirm';
+import { Link } from 'react-router-dom';
 
 const OffresPage = () => {
 
@@ -36,7 +37,9 @@ const OffresPage = () => {
         ))}
       </div>
       <div className='w-28 h-8 ml-[70%] mb-[10%]'>
-        <ButtonConfirm text={"Submit"}/>
+        <Link to="/user/stock-management">
+          <ButtonConfirm text={"Submit"}/>
+        </Link> 
       </div>
     </div>
   );
