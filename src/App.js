@@ -9,6 +9,8 @@ import MainLayout from "./pages/main/MainLayout"
 import MarketplacePage from "./pages/main/marketPlacePage";
 import ProductSubmissionPage from "./pages/main/ProductSubmissionPage";
 import StockManagementPage from "./pages/main/StockManagementPage";
+import HomePage from "./pages/homePage/HomePage";
+import MessagingPage from "./pages/main/MessagingPage";
 
 
 function App() {
@@ -19,6 +21,7 @@ function App() {
           {/* Define Routes */}
           <Routes>
             <Route path="/" element={<LoginPage />} />
+            <Route path="/homePage"  element={<HomePage/>} />
             <Route path="/signUp" element={<SignUpPage />} />
             <Route path="/ResetPassword" element={<ResetPassPage />} />
             <Route path="/ForgotPassword" element={<ForgotPassPage />} />
@@ -28,6 +31,7 @@ function App() {
             <Route path="/user/marketplace" element={<MarketplacePage />} />
             <Route path="/user/product-submission" element={<ProductSubmissionPage />} />
             <Route path="/user/stock-management" element={<StockManagementPage />} />
+            <Route path="/user/Messaging-page" element={<MessagingPage/>} /> 
           </Routes>
         </div>
       </Router>

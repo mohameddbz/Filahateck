@@ -16,3 +16,46 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+/* HOME PAGE  */
+
+
+/* Cache la barre de défilement dans différents navigateurs */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE et Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+
+.non-selectable {
+  user-select: none; /* Empêche la sélection de texte */
+  pointer-events: none; /* Désactive tous les événements de pointeur */
+}
+
+
+.shadow-bottom-right {
+  box-shadow: 6px 4px 10px rgba(0, 0, 0, 0.466); /* Ombre vers le bas et la droite */
+}
+
+.text-shadow {
+  text-shadow: 5px 2px 4px rgb(0, 0, 0); /* Ajustez les valeurs comme souhaité */
+}
+
+
+
+
+/* SUPRRIMER LA SCROLL BAR  */
+.no-scrollbar {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; 
+}
