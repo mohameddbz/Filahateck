@@ -36,9 +36,10 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        'my-image': "url('./images/BackroundHomePage.png')",
+        'my-image': "url('./assets/Home/BackroundHomePage.png')",
       },
       colors: {
+        SidebarColor:'#ECECEC',
         darkBlue: '#2995D9',   
         whiteBlue: '#2BA8D9',  
         myGreen: '#6E8C03',  
@@ -46,9 +47,9 @@ module.exports = {
         backgroundComment : '#FFE597',
         myOrange : {
           DEFAULT: '#D97904',       
-          '50': 'rgba(217, 121, 4, 0.5)',  // opacité 50%
-          '30': 'rgba(217, 121, 4, 0.3)',  // opacité 30%
-          '10': 'rgba(217, 121, 4, 0.1)',  // opacité 10%
+          '50': 'rgba(217, 121, 4, 0.5)',  
+          '30': 'rgba(217, 121, 4, 0.3)', 
+          '10': 'rgba(217, 121, 4, 0.1)', 
         }
       },
     },

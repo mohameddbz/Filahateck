@@ -1,14 +1,16 @@
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import { LanguageProvider } from './context/LanguageContext'; // Import the LanguageProvider
 import App from './App';
+import './index.css';
 
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <LanguageProvider> {/* Wrap your App with LanguageProvider */}
+        <App />
+      </LanguageProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
-
-
