@@ -22,7 +22,7 @@ const MapSection = () => {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const response = await fetch('http://localhost:5000/sentinel-image', {
+        const response = await fetch('http://localhost:9000/sentinel-image', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

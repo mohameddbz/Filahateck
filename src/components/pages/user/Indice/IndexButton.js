@@ -17,28 +17,31 @@ const IndexButtons = () => {
     });
   };
 
-  const NDDI = () => {
-    handleButtonClick('Indice NDDI', 'Vous pouvez surveiller ci-dessous les variations de la densité de végétation, qui permettent destimer la santé des cultures et la présence éventuelle de stress hydrique. Le NDDI (Normalized Difference Drought Index) vous aide à détecter les signes de sécheresse ou de stress des plantes en fonction de humidité du sol et des feuilles.', '','','','','','')
+  const NDVI = () => {
+    handleButtonClick('Indice NDVI', 'Vous pouvez surveiller ci-dessous les variations de la densité de végétation, qui permettent destimer la santé des cultures et la présence éventuelle de stress hydrique. Le NDDI (Normalized Difference Drought Index) vous aide à détecter les signes de sécheresse ou de stress des plantes en fonction de humidité du sol et des feuilles.', '','','','','','')
   }
 
   const CCI = () => {
     handleButtonClick('Indice CCI', 'Vous pouvez analyser ci-dessous les indices de couleur des cultures, qui mesurent la vigueur de la végétation et indiquent la santé des plantes. Le CCI (Chlorophyll Content Index) permet de suivre la teneur en chlorophylle, un indicateur clé de la photosynthèse et de la productivité des cultures, afin optimiser les interventions agricoles.', '','','','','','')
   }
+  const NDRE = () => {
+    handleButtonClick('Indice NDRE', 'Vous pouvez analyser ci-dessous les indices de couleur des cultures, qui mesurent la vigueur de la végétation et indiquent la santé des plantes. Le CCI (Chlorophyll Content Index) permet de suivre la teneur en chlorophylle, un indicateur clé de la photosynthèse et de la productivité des cultures, afin optimiser les interventions agricoles.', '','','','','','')
+  }
 
   return (
     <div className="flex flex-col items-center space-y-4 mt-4">
-      <button onClick={NDDI} 
+      <button onClick={NDVI} 
               className='bg-SidebarColor justify-center items-center w-36 rounded-3xl flex p-4 gap-4 h-24 shadow hover:bg-gray-300'>
-        <p className='text-xl ' >NDDI </p>
-        <img src={imageNDDI} alt="NDDI" />
+        <p className='text-xl ' >NDVI </p>
+        <img src={imageNDDI} alt="NDVI" />
       </button>
       <button onClick={CCI}  className='bg-SidebarColor justify-center items-center w-36 rounded-3xl flex p-4 gap-4 h-24 shadow hover:bg-gray-300'>
         <p className='text-xl ' >CCI </p>
         <img src={imageCCI} alt="CCI" />
       </button>
-      <button onClick={CCI}  className='bg-SidebarColor justify-center items-center w-36 rounded-3xl flex p-4 gap-4 h-24 shadow hover:bg-gray-300'>
-        <p className='text-xl ' >CCI </p>
-        <img src={imageCCI} alt="CCI" />
+      <button onClick={NDRE}  className='bg-SidebarColor justify-center items-center w-36 rounded-3xl flex p-4 gap-4 h-24 shadow hover:bg-gray-300'>
+        <p className='text-xl ' >NDRE </p>
+        <img src={imageCCI} alt="NDRE" />
       </button>
   </div>
   );

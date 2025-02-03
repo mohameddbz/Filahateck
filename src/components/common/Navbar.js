@@ -13,13 +13,13 @@ const Navbar = () => {
   return (
     <div className='w-full h-[60px] sticky top-0 z-50 bg-myGreen mx-auto flex justify-between items-center font-titleFont border-b-[1px] border-b-gray-600'>
       <div>
-        <img className='h-[50px] w-[100px]' src={logo} alt='logo' />
+        <img className='h-[50px] w-[100px] rounded-full' src={logo} alt='logo' />
       </div>
       <div>
         <ul className='hidden md:inline-flex items-center gap-6 lg:gap-20 pr-20'>
           {navLinksdata.map((navLink) => (
             <li
-              className='text-base font-normal text-white text-xl tracking-wide cursor-pointer hover:text-black duration-300'
+              className='font-normal text-white text-xl tracking-wide cursor-pointer hover:text-black duration-300'
               key={navLink._id}
             >
               <Link to={navLink.link}>
