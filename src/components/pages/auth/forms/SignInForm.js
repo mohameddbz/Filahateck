@@ -27,9 +27,10 @@ const SignInForm = () => {
     };
     try {
       const response = await makeRequest('/auth/login', 'POST', data);
-      console.log(response)
+      console.log(response.data.token)
       if (response) {
-        localStorage.setItem('Token', response.token);
+        console.log(response.data.token)
+        localStorage.setItem('Token', response.data.token);
         navigate('/OffresPage'); 
       }
     } catch (error) {

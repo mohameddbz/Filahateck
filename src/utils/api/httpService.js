@@ -8,16 +8,16 @@ import api from './api';
  * @param {object} [params] - Query parameters
  * @returns {Promise} - Resolves with the API response
  */
-export const makeRequest = async (endpoint, method = 'GET', data = {}, params = {}) => {
+export const makeRequest = async (endpoint, method = 'GET', data = {}, config = {}) => {
   try {
     const response = await api({
       url: endpoint,
       method,
       data,
-      params,
+      ...config, // Merge headers and other configurations
     });
     return response.data;
   } catch (error) {
-    throw error; // Errors are already formatted in api.js
+    throw error;
   }
 };
