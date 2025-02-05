@@ -54,6 +54,8 @@ const registerUser = async (req, res) => {
 
 // Login user
 const loginUser = async (req, res) => {
+   console.log("------------------ REQUETE REACH THE SERVER -----------")
+   
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return errorResponse(res, 400, 'Validation failed', errors.array());
@@ -70,6 +72,8 @@ const loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return errorResponse(res, 401, 'Invalid password');
+        }else{
+          console.log("VALIDE PASSWORD")
         }
 
         const token = jwt.sign(
@@ -77,6 +81,8 @@ const loginUser = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
+
+        console.log("the token is ", token);
 
         const userInfo = {
             userId: user.email,
@@ -86,7 +92,9 @@ const loginUser = async (req, res) => {
             wilaya: user.wilaya,
         };
 
-        return successResponse(res, 200, 'Login successful', { token, user: userInfo });
+        console.log("the user send is ", userInfo);
+
+        return successResponse(res, 200, 'Login successful', {token : token, user: userInfo });
     } catch (error) {
         console.error(error);
         return errorResponse(res, 500, 'Error logging in', error.message);
