@@ -54,7 +54,6 @@ const registerUser = async (req, res) => {
 
 // Login user
 const loginUser = async (req, res) => {
-   console.log("------------------ REQUETE REACH THE SERVER -----------")
    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -77,9 +76,9 @@ const loginUser = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userId: user.email, role: user.role_id },
+            { user_id: user.id, email: user.email, role: user.role_id },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '4h' }
         );
 
         console.log("the token is ", token);

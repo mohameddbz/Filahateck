@@ -3,7 +3,7 @@ const { sequelize } = require('./../../config/config');
 const Publication = require('./../Publication/Publication');
 
 const ImagePublication = sequelize.define(
-    'ImagePublication',
+    'ImagePublications',
     {
         imagePath: {
             type: DataTypes.STRING,
@@ -18,7 +18,28 @@ const ImagePublication = sequelize.define(
 );
 
 // Relation avec Publication
-ImagePublication.belongsTo(Publication, { foreignKey: 'publicationId', allowNull: false });
-Publication.hasMany(ImagePublication, { foreignKey: 'publicationId', onDelete: 'CASCADE' });
+ImagePublication.belongsTo(Publication, { foreignKey: 'publicationId' , allowNull: false });
+Publication.hasMany(ImagePublication, { foreignKey: 'publicationId', as : 'images', onDelete: 'CASCADE' });
+
+
+ImagePublication.insertImage = async (publicationId, imagePath) => {
+    try {
+        const image = await ImagePublication.create({ publicationId, imagePath });
+        return image;
+    } catch (error) {
+        console.error("Erreur lors de l'ajout de l'image:", error);
+        throw error;
+    }
+};
+
+ImagePublication.getImagesByPublicationId = async (publicationId) => {
+    try {
+        const images = await ImagePublication.findAll({ where: { publicationId } });
+        return images;
+    } catch (error) {
+        console.error("Erreur lors de la récupération des images:", error);
+        throw error;
+    }
+};
 
 module.exports = ImagePublication;

@@ -14,7 +14,8 @@ const authMiddleware = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET); // Use the same secret used to sign the token
         req.user = {
             token: token,
-            email: decoded.userId,
+            user_id : decoded.user_id,
+            email: decoded.email,
             role_id: decoded.role,  
           };
         next(); // Proceed to the next middleware or route handler

@@ -9,8 +9,5 @@ const authMiddleware = require('../../middlewares/authMiddleware');
 const publication_router = express.Router();
 
  publication_router.post('/add',authMiddleware,upload.array('images', 10),publicationController.createPublication);
- publication_router.get('/all', (req, res) => {
-    console.log("rena f serveur ");
-    res.status(200).json({ message: 'Liste des publications' });    
- });
+ publication_router.get('/all', publicationController.getAllPublications);
 module.exports = publication_router;

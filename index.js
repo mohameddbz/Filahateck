@@ -34,6 +34,7 @@ app.use(express.urlencoded({ extended: true })); // Supports form data
 // });
 
 // Routes
+app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', userAuth); // user-related routes
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
