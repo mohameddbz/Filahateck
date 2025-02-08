@@ -1,14 +1,16 @@
-import React from 'react';
+import React , {useContext} from 'react';
+import { TextContext } from './../../../../context/TextContext';
 
-const Recommendations = () => (
+const Recommendations = () => {
+  const { textData } = useContext(TextContext);
+  return(
   <div className="text-sm w-1/2">
     <h3 className="font-semibold text-myOrange">Recommendations</h3>
     <p className="mt-2">
-      Utilisez des systèmes d'irrigation économes en eau, comme le goutte-à-goutte ou les
-      asperseurs basse pression, pour réduire la consommation d'eau tout en maximisant l'apport
-      aux cultures.
+     {textData.recommendationText}
     </p>
   </div>
 );
+}
 
 export default Recommendations;

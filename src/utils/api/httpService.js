@@ -27,6 +27,6 @@ export const makeRequest = async (endpoint, method = 'GET', data = {}, params = 
     });
     return response;
   } catch (error) {
-    throw error; // Errors are already formatted in api.js
+    throw error;
   }
 };
