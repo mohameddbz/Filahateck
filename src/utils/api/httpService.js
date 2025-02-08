@@ -10,13 +10,22 @@ import api from './api';
  */
 export const makeRequest = async (endpoint, method = 'GET', data = {}, params = {}) => {
   try {
+
+    const token = localStorage.getItem('Token'); 
+    if (token) {
+      params.token = token;
+    }
+
     const response = await api({
       url: endpoint,
       method,
       data,
       params,
+      headers: {
+        Authorization: token ? `Bearer ${token}` : '', 
+      },
     });
-    return response.data;
+    return response;
   } catch (error) {
     throw error; // Errors are already formatted in api.js
   }

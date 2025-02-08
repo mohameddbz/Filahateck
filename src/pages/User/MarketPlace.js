@@ -1,14 +1,41 @@
 // src/pages/MarketplacePage.js
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import SearchBar from './../../components/pages/user/MarketPlace/SearchBar';
 import ProductGallery from '../../components/pages/user/MarketPlace/ProductGallery';
 import { products } from "./../../data/user/productList";
 import FilterButton from '../../components/common/FiltreButton';
 import translations from './../../utils/constant/marketPlace';
 import { LanguageContext } from './../../context/LanguageContext';
+import { makeRequest } from './../../utils/api/httpService';
 
 const Marketplace = () => {
+
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [publications, setPublications] = useState([]);
+  useEffect( () => {
+    async function fetchData() {
+      try {
+        const response = await makeRequest('/publications/all', 'GET');
+        if (response.status !== 200) {
+          setErrorMessage('Erreur lors de chargement des publications');
+          setShowError(true);
+        }else{
+          setPublications(response.data);
+        }
+
+      } catch (error) {
+        setErrorMessage('Erreur lors de chargement des publications');
+        setShowError(true);
+        console.error('Erreur lors de recupuration des données ', error);
+      }
+    }
+    fetchData();
+  
+  },[]);
+
+
   const [selectedFilter, setSelectedFilter] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const { isArabic } = useContext(LanguageContext);
@@ -22,8 +49,8 @@ const Marketplace = () => {
     console.log(`Selected filter: ${filter}`);
   };
 
-  const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProducts = publications.filter((product) =>
+    product.nomProduit.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleSearch = (query) => {
@@ -39,6 +66,7 @@ const Marketplace = () => {
         </div>
       </div>
       <ProductGallery products={filteredProducts} />
+      {showError &&  <div className="flex mx-auto text-red-500">Erreur est servenue , veuillez refresher la page svp !</div> }
     </div>  
   );
 };

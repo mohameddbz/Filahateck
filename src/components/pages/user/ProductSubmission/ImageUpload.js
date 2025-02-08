@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
-const ImageUpload = () => {
-  const [image, setImage] = useState(null);
+const ImageUpload = ({onImagesChange}) => {
+  const [images, setImages] = useState([]);
 
   const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl);
-    }
+    const files = Array.from(event.target.files); 
+    const imageUrls = files.map(file => URL.createObjectURL(file));
+    setImages(prevImages => [...prevImages, ...imageUrls]); 
+
+
+    onImagesChange(files); 
   };
 
   return (
@@ -20,13 +21,18 @@ const ImageUpload = () => {
         type="file" 
         id="imageUploadInput" 
         accept="image/*" 
+        multiple 
         onChange={handleImageChange} 
         style={{ display: 'none' }} 
       />
-      {image ? (
-        <img src={image} alt="Uploaded" className="h-full rounded object-cover" />
+      {images.length > 0 ? (
+        <div className="grid grid-cols-3 gap-2 p-2">
+          {images.map((image, index) => (
+            <img key={index} src={image} alt={`Uploaded ${index}`} className="h-20 w-20 rounded object-cover" />
+          ))}
+        </div>
       ) : (
-        <p>Ajoutez une photo</p>
+        <p>Ajoutez des photos</p>
       )}
     </div>
   );

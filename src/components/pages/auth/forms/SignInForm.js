@@ -27,10 +27,10 @@ const SignInForm = () => {
     };
     try {
       const response = await makeRequest('/auth/login', 'POST', data);
-      console.log(response)
+      // 
       if (response) {
-        localStorage.setItem('Token', response.token);
-        navigate('/OffresPage'); 
+        localStorage.setItem('Token', response.data.token);
+        navigate('/user/marketplace'); 
       }
     } catch (error) {
       setLoading(false);

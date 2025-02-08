@@ -21,7 +21,7 @@ const ProductSubmission = () => {
         <div className="mb-6 pl-6 space-y-1" style={{ direction: isArabic ? 'rtl' : 'ltr' }}>
           <p className="text-xl font-semibold mt-8">{texts.viewPublishedTitle}</p>
         </div>
-        <ProductGallery products={products} />
+        {/* <ProductGallery products={products} /> */}
       </div>
   );
 };

@@ -1,10 +1,12 @@
 import React from 'react';
 
-const FormInput = ({ label }) => (
+const FormInput = ({ name, label, value, handleChange }) => (
   <div>
-    {/* <label className="block text-gray-700 mb-1">{label}</label> */}
     <input
       type="text"
+      name={name}
+      value={value}
+      onChange={handleChange}
       className="w-full border border-green-500 p-2 rounded"
       placeholder={label}
     />

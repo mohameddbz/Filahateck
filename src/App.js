@@ -15,6 +15,7 @@ import StockManagement from "./pages/User/StockManagement";
 import Messaging from "./pages/User/Messaagerie";
 import Indice from "./pages/User/indice";
 import OffresPage from "./pages/Home/Offer";
+import ProductDetails from "./pages/User/ProductDetails";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           }>
             <Route path="/user/ami" element={<Ami/>}/>
             <Route path="/user/marketplace" element={<Marketplace/>}/>
+            <Route path="/user/product-details/:id" element={<ProductDetails/>}/>
             <Route path="/user/product-submission" element={<ProductSubmission/>}/>
             <Route path="/user/stock-management" element={<StockManagement />} />
             <Route path="/user/Messaging-page" element={<Messaging/>} />
