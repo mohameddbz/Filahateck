@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
-const {sequelize} = require('../../config/config'); // Assuming you have a sequelize setup
-const User = require('./../User/User');
+const {sequelize} = require('../../config/config'); 
 
 const Role = sequelize.define('Role', {
     roleName: {
@@ -10,7 +9,7 @@ const Role = sequelize.define('Role', {
     },
 }, {
     tableName: 'roles',
-    timestamps: false,  // No need for createdAt/updatedAt fields
+    timestamps: false,  
 });
 
 

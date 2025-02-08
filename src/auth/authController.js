@@ -10,11 +10,12 @@ const registerUser = async (req, res) => {
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
+    console.log(errors);
     const formattedErrors = errors.array().map(err => ({
       field: err.param,
       message: err.msg,
     }));
-    return errorResponse(res, 400, 'Paasword Week', formattedErrors);
+    return errorResponse(res, 400, errors, formattedErrors);
   }
 
   const { email, userName, password, phone_number, profile_picture, wilaya, role_id } = req.body;
@@ -33,7 +34,7 @@ const registerUser = async (req, res) => {
     const newUser = await User.create({
       email,
       userName,
-      password: hashedPassword,
+      password: password,
       phone_number,
       profile_picture,
       wilaya,
@@ -54,43 +55,54 @@ const registerUser = async (req, res) => {
 
 // Login user
 const loginUser = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return errorResponse(res, 400, 'Validation failed', errors.array());
-    }
-    const { email, password } = req.body;
-    try {
-        // Find user by email
-        const user = await User.findOne({ where: { email } });
-        if (!user) {
-            return errorResponse(res, 404, 'User not found');
-        }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      return errorResponse(res, 400, 'Validation failed', errors.array());
+  }
 
-        // Compare password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return errorResponse(res, 401, 'Invalid password');
-        }
+  const { email, password } = req.body;
 
-        const token = jwt.sign(
-            { userId: user.email, role: user.role_id },
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
+  try {
+      // Check if JWT secret is set
+      if (!process.env.JWT_SECRET) {
+          throw new Error('JWT secret not configured');
+      }
 
-        const userInfo = {
-            userId: user.email,
-            userName: user.userName,
-            role: user.role_id,
-            phone_number: user.phone_number,
-            wilaya: user.wilaya,
-        };
+      // Find user by email
+      const user = await User.findOne({ where: { email } });
+      if (!user) {
+          return errorResponse(res, 404, 'User not found');
+      }
 
-        return successResponse(res, 200, 'Login successful', { token, user: userInfo });
-    } catch (error) {
-        console.error(error);
-        return errorResponse(res, 500, 'Error logging in', error.message);
-    }
+      // Compare passwords
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (password !== user.password) {
+          return errorResponse(res, 401, 'Invalid password');
+      }
+
+      // Generate JWT token
+      const token = jwt.sign(
+          { userId: user.id, role: user.role_id }, 
+          process.env.JWT_SECRET, 
+          { expiresIn: '1h' }
+      );
+
+      // Selectively expose user data
+      const userInfo = {
+          id: user.id,
+          userName: user.userName,
+          email: user.email,
+          phone_number: user.phone_number,
+          wilaya: user.wilaya,
+          role: user.role_id,
+      };
+
+      return successResponse(res, 200, 'Login successful', { token, user: userInfo });
+
+  } catch (error) {
+      console.error('Error during login:', error);
+      return errorResponse(res, 500, 'Internal server error', error.message);
+  }
 };
 
 module.exports = { registerUser, loginUser };
