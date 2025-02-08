@@ -76,9 +76,9 @@ const requestBody = {
       {
         "dataFilter": {
           "timeRange": {
-            "from": "2024-09-21T00:00:00Z",
-            "to": "2024-10-21T23:59:59Z"
-          }
+            "from": "2025-01-04T00:00:00Z",
+            "to": "2025-02-04T23:59:59Z"
+          }          
         },
         "type": "sentinel-2-l2a"
       }
@@ -141,43 +141,7 @@ const fetchImage = async () => {
   }
 };
 
-const fetchCatalogData = async () => {
-  const api = 'https://services.sentinel-hub.com/api/v1/catalog/search';
-  const accessToken = await getAccessToken();
 
-  const request = {
-    "bbox": [
-      2.932537,
-      36.461184,
-      2.935888,
-      36.463558
-    ],
-    "datetime": "2024-01-01T00:00:00Z/2024-01-31T23:59:59Z",
-    "query": {
-      "eo:cloud_cover": { "lt": 10 }
-    },
-    "collections": ["sentinel-2-l1c"],
-    "limit": "10"
-  };
-
-  try {
-    const response = await axios.post(api, request, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    console.log('Catalog Data:', response.data);
-  } catch (error) {
-    console.error('Error fetching Catalog data:', error.message);
-  }
-};
-
-// Basic welcome route
-app.get('/', (req, res) => {
-  fetchCatalogData();
-  res.send("Welcome to the Sentinel Hub API Server");
-});
 
 // Route to handle fetching the image from Sentinel Hub
 app.get('/sentinel-image', async (req, res) => {
