@@ -27,11 +27,9 @@ const SignInForm = () => {
     };
     try {
       const response = await makeRequest('/auth/login', 'POST', data);
-      // 
-      console.log(response);
       if (response) {
         localStorage.setItem('Token', response.data.data.token);
-        navigate('/user/marketplace'); 
+        navigate('/OffresPage'); 
       }
     } catch (error) {
       setLoading(false);
@@ -57,7 +55,7 @@ const SignInForm = () => {
             {text.forgotPassword}
           </a>
         </div>
-        <ButtonConfirm text={loading ? 'Loading...' : text.signIn} />
+        <ButtonConfirm text={loading ? 'Loading...' : text.signIn} onClick={handleSubmit}/>
       </form>
       <div className="mt-4 text-center">
         <p className="text-sm">

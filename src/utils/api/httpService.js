@@ -25,6 +25,7 @@ export const makeRequest = async (endpoint, method = 'GET', data = {}, params = 
         Authorization: token ? `Bearer ${token}` : '', 
       },
     });
+    console.log(response)
     return response;
   } catch (error) {
     throw error;

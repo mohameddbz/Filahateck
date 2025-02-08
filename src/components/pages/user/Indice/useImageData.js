@@ -21,8 +21,8 @@ export const useImageData = () => {
         }
       );
 
-      if (data && data.imageUrl) {
-        setImageData(data.imageUrl);
+      if (data.data && data.data.imageUrl) {
+        setImageData(data.data.imageUrl);
       } else {
         setError('No valid image URL found.');
       }

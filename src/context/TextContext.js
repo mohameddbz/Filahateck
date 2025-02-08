@@ -10,19 +10,19 @@ export const TextProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
 
-  // Fetch indices data
+
   const fetchIndices = async () => {
     try {
       if (!userId) throw new Error('User ID non trouvé.');
 
       const token = localStorage.getItem('Token');
       if (!token) throw new Error('Token non trouvé, veuillez vous connecter.');
-
-      const data = await makeRequest(`/indice/${userId}/indices`, 'GET', {}, {
+      //TODO
+      const data = await makeRequest(`/indice/${1}/indices`, 'GET', {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setIndicesData(data);
+      setIndicesData(data.data);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -39,7 +39,7 @@ export const TextProvider = ({ children }) => {
       const data = await makeRequest('/users/get', 'GET', {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setUserId(data.data.userId);
+      setUserId(data.data.data.user_id);
     } catch (error) {
       setError(error.message);
     }

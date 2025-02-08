@@ -5,7 +5,7 @@ import Legend from './../../components/pages/user/Indice/legend';
 import IndexButtons from './../../components/pages/user/Indice/IndexButton';
 import Recommendations from './../../components/pages/user/Indice/recomendation';
 import { TextProvider } from './../../context/TextContext';
-import RequestForm from './../../components/pages/user/Indice/RequestForm'; // Import the form component
+import RequestForm from './../../components/pages/user/Indice/RequestForm';
 import { makeRequest } from './../../utils/api/httpService';
 
 const Indice = () => {
@@ -13,44 +13,76 @@ const Indice = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [showForm, setShowForm] = useState(false); // Toggle form visibility
+  const [showForm, setShowForm] = useState(false);
 
-  const fetchIndices = async () => {
+  const fetchUserId = async () => {
     try {
-      if (!userId) throw new Error('User ID non trouvé.');
       const token = localStorage.getItem('Token');
       if (!token) throw new Error('Token non trouvé.');
 
-      const data = await makeRequest(`/indice/${userId}/indices`, 'GET', {}, {
+      const response = await makeRequest('/users/get', 'GET', {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      setIndicesData(data);
+      
+      if (!response.data?.data?.user_id) {
+        throw new Error('ID utilisateur non trouvé dans la réponse.');
+      }
+      
+      return response.data.data.user_id;
     } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
+      throw new Error(`Erreur lors de la récupération de l'ID utilisateur: ${error.message}`);
     }
   };
 
-  useEffect(() => {
-    const fetchUserId = async () => {
+  const fetchIndices = async (userId) => {
+    try {
       const token = localStorage.getItem('Token');
       if (!token) throw new Error('Token non trouvé.');
-      const data = await makeRequest('/users/get', 'GET', {}, {
+
+      const response = await makeRequest(`/indice/${1}/indices`, 'GET', {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setUserId(data.data.userId);
-    };
-    fetchUserId();
-  }, []);
 
+      if (!response.data) {
+        throw new Error('Aucune donnée d\'indices reçue.');
+      }
+
+      return response.data;
+    } catch (error) {
+      throw new Error(`Erreur lors de la récupération des indices: ${error.message}`);
+    }
+  };
+
+  // Initialize data with sequential fetching
   useEffect(() => {
-    if (userId) fetchIndices();
-  }, [userId]);
+    const initializeData = async () => {
+      try {
+        setLoading(true);
+        // First fetch userId
+        const fetchedUserId = await fetchUserId();
+        setUserId(fetchedUserId);
 
-  if (loading) return <div className="text-center mt-10">Chargement en cours...</div>;
-  if (error) return <div className="text-center mt-10 text-red-500">Erreur: {error}</div>;
+        // Then fetch indices using the userId
+        const fetchedIndices = await fetchIndices(fetchedUserId);
+        setIndicesData(fetchedIndices);
+      } catch (error) {
+        setError(error.message);
+        console.error('Error initializing data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeData();
+  }, []); // Empty dependency array for initial load only
+
+  if (loading) {
+    return <div className="text-center mt-10">Chargement en cours...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-10 text-red-500">Erreur: {error}</div>;
+  }
 
   return (
     <TextProvider>
@@ -62,7 +94,7 @@ const Indice = () => {
         >
           {showForm ? 'Cacher le formulaire' : 'Afficher le formulaire'}
         </button>
-
+        
         {showForm && (
           <RequestForm indicesData={indicesData} userId={userId} />
         )}
