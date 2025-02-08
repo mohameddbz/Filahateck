@@ -73,7 +73,34 @@ const getAllPublications = async (req, res) => {
         return res.status(500).json({ message: 'Erreur interne du serveur' });
       }
   };
+
+  const getPublicationById = async (req, res) => {
+    const { id } = req.params; 
+   console.log('id',id);
+    try {
+      const publication = await Publication.findOne({
+        where: { id },
+        include: [
+          {
+            model: ImagePublication,
+            as: 'images',
+            attributes: ['id', 'imagePath'],
+       },
+        ],
+      });
+  
+      if (!publication) {
+        return res.status(404).json({ message: 'Publication non trouvée' });
+      }
+      console.log("hada wsh reni nb3etlo ")
+      console.log(publication);
+      return res.status(200).json(publication);
+    } catch (error) {
+      console.error('Erreur lors de la récupération de la publication:', error);
+      return res.status(500).json({ message: 'Erreur interne du serveur' });
+    }
+  };
     
 
 
-module.exports = { createPublication ,getAllPublications };
+module.exports = { createPublication ,getAllPublications,getPublicationById };

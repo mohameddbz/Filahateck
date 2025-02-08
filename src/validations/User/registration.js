@@ -21,14 +21,7 @@ const validateUser = [
       
       body('password')
       .trim()
-      .isLength({ min: 8 })
-      .withMessage(({ path }) => `${path} must be at least 8 characters`)
-      .custom((value) => {
-        if (!strongPassword(value)) {
-          throw new Error('Password must contain at least one uppercase letter, one lowercase letter, and one number');
-        }
-        return true;
-      }),
+      .isLength({ min: 8 })      ,
       
       body('phone_number')
       .optional()

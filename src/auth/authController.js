@@ -10,11 +10,12 @@ const registerUser = async (req, res) => {
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
+    console.log(errors);
     const formattedErrors = errors.array().map(err => ({
       field: err.param,
       message: err.msg,
     }));
-    return errorResponse(res, 400, 'Paasword Week', formattedErrors);
+    return errorResponse(res, 400, errors, formattedErrors);
   }
 
   const { email, userName, password, phone_number, profile_picture, wilaya, role_id } = req.body;
@@ -33,7 +34,7 @@ const registerUser = async (req, res) => {
     const newUser = await User.create({
       email,
       userName,
-      password: hashedPassword,
+      password: password,
       phone_number,
       profile_picture,
       wilaya,

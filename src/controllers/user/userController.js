@@ -70,10 +70,34 @@ const updateUser = async (req, res) => {
     }
   };
 
+  // Function to get userId from token
+  const getUserInfo = (req, res) => {
+    try {
+      const { userId, role } = req.user;
+      if (!userId) {
+        return res.status(400).json({ status: "error", message: "User information not found" });
+      }
+  
+      return res.status(200).json({
+        status: "success",
+        data: {
+          userId,
+          role,
+        },
+      });
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+      return res.status(500).json({ status: "error", message: "Server error" });
+    }
+  };
+  
+
+
   module.exports = {
     createUser,
     getAllUsers,
     getUserById,
     updateUser,
     deleteUser,
+    getUserInfo
   };
