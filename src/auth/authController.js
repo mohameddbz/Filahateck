@@ -70,7 +70,7 @@ const loginUser = async (req, res) => {
 
         // Compare password
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
+        if (isMatch) {
             return errorResponse(res, 401, 'Invalid password');
         }else{
           console.log("VALIDE PASSWORD")
@@ -81,8 +81,6 @@ const loginUser = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '4h' }
         );
-
-        console.log("the token is ", token);
 
         const userInfo = {
             userId: user.email,

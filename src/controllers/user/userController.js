@@ -73,16 +73,17 @@ const updateUser = async (req, res) => {
   // Function to get userId from token
   const getUserInfo = (req, res) => {
     try {
-      const { userId, role } = req.user;
-      if (!userId) {
+      const { user_id, role_id } = req.user;
+      console.log(user_id)
+      if (!user_id) {
         return res.status(400).json({ status: "error", message: "User information not found" });
       }
   
       return res.status(200).json({
         status: "success",
         data: {
-          userId,
-          role,
+          user_id,
+          role_id,
         },
       });
     } catch (error) {
