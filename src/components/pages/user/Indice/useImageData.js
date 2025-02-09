@@ -11,7 +11,6 @@ export const useImageData = () => {
       setLoading(true);
       const token = localStorage.getItem('Token');
       if (!token) throw new Error('Token non trouvé, veuillez vous connecter.');
-
       const data = await makeRequest(
         `/request/image?userId=${userId}&parcelleId=${parcelleId}&indiceId=${indiceId}`,
         'GET',

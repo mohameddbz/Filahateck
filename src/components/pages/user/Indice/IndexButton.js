@@ -15,7 +15,7 @@ const IndexButtons = ({ userId,indices }) => {
     if (index) {
       const { indiceName, description, legende, recomndation } = index;
 
-      fetchImageData(1, 1, indiceId)
+      fetchImageData(userId, 1, indiceId)
         .then(() => {
           setMapVisible(true);
           setErrorMessage('');

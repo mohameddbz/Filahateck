@@ -39,7 +39,7 @@ const Indice = () => {
       const token = localStorage.getItem('Token');
       if (!token) throw new Error('Token non trouvé.');
 
-      const response = await makeRequest(`/indice/${1}/indices`, 'GET', {}, {
+      const response = await makeRequest(`/indice/${userId}/indices`, 'GET', {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -61,9 +61,9 @@ const Indice = () => {
         // First fetch userId
         const fetchedUserId = await fetchUserId();
         setUserId(fetchedUserId);
-
-        // Then fetch indices using the userId
+        console.log(userId)
         const fetchedIndices = await fetchIndices(fetchedUserId);
+        console.log(fetchedIndices)
         setIndicesData(fetchedIndices);
       } catch (error) {
         setError(error.message);

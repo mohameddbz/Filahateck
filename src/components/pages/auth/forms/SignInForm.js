@@ -5,7 +5,7 @@ import InputPassword from '../common/InputPassword';
 import ButtonConfirm from './../common/ButtonConfirm';
 import { Link, useNavigate } from 'react-router-dom';
 import translations from './../../../../utils/constant/SignIn'; 
-import {makeRequest} from './../../../../utils/api/httpService'
+import { makeRequest } from './../../../../utils/api/httpService';
 
 const SignInForm = () => {
   const { isArabic } = useContext(LanguageContext);
@@ -14,22 +14,34 @@ const SignInForm = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrorMessage('');
 
-    const data = {
-      email,
-      password,
-    };
+    const data = { email, password };
     try {
       const response = await makeRequest('/auth/login', 'POST', data);
+      console.log(response.data.data.user)
       if (response) {
-        localStorage.setItem('Token', response.data.data.token);
-        navigate('/OffresPage'); 
+        const { token } = response.data.data;
+        const { roleName } = response.data.data.user;
+        localStorage.setItem('Token', token);
+        switch (roleName) {
+          case 'Admin':
+            navigate('/admin/UserManagement');
+            break;
+          case 'Manager':
+            navigate('/manager/Dashboard');
+            break;
+          case 'User':
+            navigate('/user/marketplace');
+            break;
+          default:
+            setErrorMessage('Unauthorized access.');
+        }
       }
     } catch (error) {
       setLoading(false);
@@ -55,7 +67,7 @@ const SignInForm = () => {
             {text.forgotPassword}
           </a>
         </div>
-        <ButtonConfirm text={loading ? 'Loading...' : text.signIn} onClick={handleSubmit}/>
+        <ButtonConfirm text={loading ? 'Loading...' : text.signIn} onClick={handleSubmit} />
       </form>
       <div className="mt-4 text-center">
         <p className="text-sm">

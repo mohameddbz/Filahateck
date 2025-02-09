@@ -41,6 +41,7 @@ const OffresPage = () => {
 
       const data = await makeRequest('/users/get', 'GET', {}, { headers: { Authorization: `Bearer ${token}` } });
       setUserId(data.data.data.user_id);
+      console.log(data.data.data.user_id)
       return data.data.data.user_id; // Return the userId for chaining
     } catch (error) {
       setError(error.message);

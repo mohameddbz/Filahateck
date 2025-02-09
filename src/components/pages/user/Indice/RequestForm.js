@@ -51,7 +51,7 @@ const RequestForm = ({ indicesData, userId }) => {
       alert('Requête soumise avec succès!');
       console.log('Response:', response.data);
     } catch (error) {
-      alert(`Erreur lors de la soumission: ${error.response?.data?.message || error.message}`);
+      alert(`Erreur Verifier votre connexion: ${error.response?.data?.message || error.message}`);
     }
   };
 

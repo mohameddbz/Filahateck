@@ -6,9 +6,11 @@ import RessetPassword from './pages/auth/ResetPassword';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import AuthLayout from './components/layouts/auth/Layout';
 import SidebarLayout from './components/layouts/user/Layout';
+import SidebarLayoutAdmin from './components/layouts/admin/Layouts';
 import HomeLayout from './components/layouts/Home/Layout';
 import HomePage from "./pages/Home/HomePage";
 import Ami from "./pages/User/Ami";
+import UserManagement from "./pages/admin/admin";
 import Marketplace from "./pages/User/MarketPlace";
 import ProductSubmission from "./pages/User/ProductSubmission";
 import StockManagement from "./pages/User/StockManagement";
@@ -49,6 +51,17 @@ function App() {
             <Route path="/user/stock-management" element={<StockManagement />} />
             <Route path="/user/Messaging-page" element={<Messaging/>} />
             <Route path="/user/indice" element={<Indice/>} /> 
+          </Route>
+
+          <Route path="/admin" element={
+            <SidebarLayoutAdmin/> 
+          }>
+            <Route path="/admin/UserManagement" element={<UserManagement/>}/>
+            <Route path="/admin/product-details/:id" element={<ProductDetails/>}/>
+            <Route path="/admin/product-submission" element={<ProductSubmission/>}/>
+            <Route path="/admin/stock-management" element={<StockManagement />} />
+            <Route path="/admin/Messaging-page" element={<Messaging/>} />
+            <Route path="/admin/indice" element={<Indice/>} /> 
           </Route>
       </Routes>
   );
