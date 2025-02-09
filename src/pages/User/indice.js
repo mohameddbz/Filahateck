@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Header from './../../components/pages/user/Indice/header';
-import MapSection from './../../components/pages/user/Indice/map';
 import Legend from './../../components/pages/user/Indice/legend';
 import IndexButtons from './../../components/pages/user/Indice/IndexButton';
 import Recommendations from './../../components/pages/user/Indice/recomendation';

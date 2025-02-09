@@ -1,7 +1,7 @@
 export  const sidebarItems = [
-    { label: "Market place", path: "/admin/marketplace" },
-    { label: "Gestion de stocks", path: "/admin/stock-management" },
-    { label: "Publication", path: "/admin/product-submission" },
+    { label: "Users management", path: "/admin/UserManagement" },
+    { label: "Abonnement Users", path: "/admin/AbonnementManagement" },
+    { label: "Fonctionalities", path: "/admin/fonctionalities" },
     { label: "Paramètres", path: "/user/Paramètres" },
     { label: "Se déconnecter", path: "/user/marketplace", color: "text-red-600" }
   ];

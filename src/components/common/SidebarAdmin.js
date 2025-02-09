@@ -1,10 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import profileImage from "./../../assets/user/profile.webp";
 import { sidebarItems } from "./../../data/admin/Sidebar";
 import { NavLink } from 'react-router-dom';
+import { makeRequest } from './../../utils/api/httpService'; // Assuming this is your custom API service
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [userInfo, setUserInfo] = useState({ userName: '', role: '' });
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await makeRequest('/users/get', 'GET');
+        if (response.data.data) {
+          const res = await makeRequest(`/users/${response.data.data.user_id}`, 'GET');
+          setUserInfo({
+            userName: res.data.data.userName || 'Default Name',
+            role: response.data.data.role_id || 'Agriculteur',
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch user info:', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   return (
     <div className={`${isOpen ? 'w-60' : 'w-16'} bg-SidebarColor p-4 flex flex-col md:w-[21%] fixed h-full overflow-y-auto`}>
@@ -17,8 +38,8 @@ const Sidebar = () => {
       {isOpen && (
         <div className="text-center mb-8 mt-4">
           <img src={profileImage} alt="Profile" className="w-20 h-20 rounded-full mx-auto" />
-          <h3 className="mt-3 text-xl font-semibold">Omar MAJDI</h3>
-          <p className="text-lg text-SidebarColor">Agriculteur</p>
+          <h3 className="mt-3 text-xl font-semibold">{userInfo.userName}</h3>
+          <p className="text-lg text-black">{userInfo.role}</p>
         </div>
       )}
       <nav className="ml-6 mr-6 text-center">

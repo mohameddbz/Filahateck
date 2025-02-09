@@ -10,7 +10,9 @@ import SidebarLayoutAdmin from './components/layouts/admin/Layouts';
 import HomeLayout from './components/layouts/Home/Layout';
 import HomePage from "./pages/Home/HomePage";
 import Ami from "./pages/User/Ami";
-import UserManagement from "./pages/admin/admin";
+import UserManagement from "./pages/admin/users/userManagement";
+import AbonnementManagement from "./pages/admin/abonement/abonementManagement";
+import FonctionalityManagement from "./pages/admin/abonement/fonctionalities";
 import Marketplace from "./pages/User/MarketPlace";
 import ProductSubmission from "./pages/User/ProductSubmission";
 import StockManagement from "./pages/User/StockManagement";
@@ -57,8 +59,8 @@ function App() {
             <SidebarLayoutAdmin/> 
           }>
             <Route path="/admin/UserManagement" element={<UserManagement/>}/>
-            <Route path="/admin/product-details/:id" element={<ProductDetails/>}/>
-            <Route path="/admin/product-submission" element={<ProductSubmission/>}/>
+            <Route path="/admin/AbonnementManagement" element={<AbonnementManagement/>}/>
+            <Route path="/admin/fonctionalities" element={<FonctionalityManagement/>}/>
             <Route path="/admin/stock-management" element={<StockManagement />} />
             <Route path="/admin/Messaging-page" element={<Messaging/>} />
             <Route path="/admin/indice" element={<Indice/>} /> 
