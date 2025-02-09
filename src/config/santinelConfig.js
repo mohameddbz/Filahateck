@@ -14,7 +14,7 @@ const getAccessToken = async () => {
     const response = await axios.post(tokenUrl, params, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     });
-
+    
     return response.data.access_token;
   } catch (error) {
     console.error('Error fetching Sentinel access token:', error.message);

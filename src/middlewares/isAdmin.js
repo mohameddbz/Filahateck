@@ -5,7 +5,7 @@ const isAdmin = async (req, res, next) => {
   try {
     const { role_id } = req.user;
     const role = await Role.findByPk(role_id);
-    if (role && role.roleName === 'Admin') {
+    if (role_id && role_id === 'Admin') {
       return next(); // Proceed to the next middleware or route handler
     }
     return res.status(403).json({

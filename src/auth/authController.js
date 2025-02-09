@@ -2,8 +2,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const User = require('../models/User/User');
+const Role = require('../models/Role/Role');
 const { successResponse } = require('../utils/response');
 const { errorResponse } = require('../utils/error');
+const { sequelize } = require('../config/config'); // Import your Sequelize instance
 
 // Register user
 const registerUser = async (req, res) => {
@@ -55,48 +57,63 @@ const registerUser = async (req, res) => {
 
 // Login user
 const loginUser = async (req, res) => {
-   
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return errorResponse(res, 400, 'Validation failed', errors.array());
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return errorResponse(res, 400, 'Validation failed', errors.array());
+  }
+
+  const email = req.body.email?.trim().toLowerCase();
+  const password = req.body.password?.trim();
+
+  if (!email || !password) {
+    return errorResponse(res, 400, 'Email or password missing');
+  }
+
+  try {
+    const user = await User.findOne({
+      where: { email },
+      include: {
+        model: Role,
+        attributes: ['roleName'],
+      },
+    });
+
+    if (!user) {
+      return errorResponse(res, 404, 'User not found');
     }
-    const { email, password } = req.body;
-    try {
-        // Find user by email
-        const user = await User.findOne({ where: { email } });
-        if (!user) {
-            return errorResponse(res, 404, 'User not found');
-        }
 
-        // Compare password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (isMatch) {
-            return errorResponse(res, 401, 'Invalid password');
-        }else{
-          console.log("VALIDE PASSWORD")
-        }
+    console.log("User found:", user.toJSON());
 
-        const token = jwt.sign(
-            { user_id: user.id, email: user.email, role: user.role_id },
-            process.env.JWT_SECRET,
-            { expiresIn: '4h' }
-        );
-
-        const userInfo = {
-            userId: user.email,
-            userName: user.userName,
-            role: user.role_id,
-            phone_number: user.phone_number,
-            wilaya: user.wilaya,
-        };
-
-        console.log("the user send is ", userInfo);
-
-        return successResponse(res, 200, 'Login successful', {token : token, user: userInfo });
-    } catch (error) {
-        console.error(error);
-        return errorResponse(res, 500, 'Error logging in', error.message);
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (isMatch) {
+      return errorResponse(res, 401, 'Invalid password');
     }
+
+    const token = jwt.sign(
+      { user_id: user.id, email: user.email, role: user.Role.roleName },
+      process.env.JWT_SECRET,
+      { expiresIn: '4h' }
+    );
+
+    const userInfo = {
+      userId: user.id,
+      email: user.email,
+      userName: user.userName,
+      roleName: user.Role.roleName,
+      phone_number: user.phone_number,
+      wilaya: user.wilaya,
+    };
+
+    return successResponse(res, 200, 'Login successful', { token, user: userInfo });
+
+  } catch (error) {
+    console.error('Error during login:', error);
+    return errorResponse(res, 500, 'Error logging in', error.message);
+  }
 };
+
+
+
+
 
 module.exports = { registerUser, loginUser };
