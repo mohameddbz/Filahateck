@@ -56,8 +56,8 @@ const getAllDetailedEntries = async () => {
       if (!acc[abonnementId]) {
         acc[abonnementId] = {
           id: abonnementId,
-          name: row.abonnement_name,
-          client: row.client_name,
+          nameAbonnement: row.abonnement_name,
+          nameClient: row.client_name,
           prices: row.prices,
           createdAt: row.abonnement_created_at,
           updatedAt: row.abonnement_updated_at,
