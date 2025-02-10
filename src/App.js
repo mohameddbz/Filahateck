@@ -12,7 +12,9 @@ import HomePage from "./pages/Home/HomePage";
 import Ami from "./pages/User/Ami";
 import UserManagement from "./pages/admin/users/userManagement";
 import AbonnementManagement from "./pages/admin/abonement/abonementManagement";
+import Abonnement from "./pages/admin/abonement/abonement";
 import FonctionalityManagement from "./pages/admin/abonement/fonctionalities";
+import Indices from "./pages/admin/indice/indice";
 import Marketplace from "./pages/User/MarketPlace";
 import ProductSubmission from "./pages/User/ProductSubmission";
 import StockManagement from "./pages/User/StockManagement";
@@ -61,9 +63,8 @@ function App() {
             <Route path="/admin/UserManagement" element={<UserManagement/>}/>
             <Route path="/admin/AbonnementManagement" element={<AbonnementManagement/>}/>
             <Route path="/admin/fonctionalities" element={<FonctionalityManagement/>}/>
-            <Route path="/admin/stock-management" element={<StockManagement />} />
-            <Route path="/admin/Messaging-page" element={<Messaging/>} />
-            <Route path="/admin/indice" element={<Indice/>} /> 
+            <Route path="/admin/indices" element={<Indices/>} /> 
+            <Route path="/admin/Abonnement" element={<Abonnement/>} /> 
           </Route>
       </Routes>
   );
