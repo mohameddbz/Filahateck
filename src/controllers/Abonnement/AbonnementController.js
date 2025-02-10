@@ -50,10 +50,20 @@ const deleteAbonnement = async (req, res) => {
   }
 };
 
+const getAbonnementDetails = async (req, res) => {
+  try {
+    const data = await AbonnementService.getAllDetailedEntries();
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createAbonnement,
   getAllAbonnements,
   getAbonnementById,
   updateAbonnement,
   deleteAbonnement,
+  getAbonnementDetails
 };
