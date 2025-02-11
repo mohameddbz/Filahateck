@@ -3,7 +3,7 @@ import { TextContext } from './../../../../context/TextContext';
 import { useImageData } from './useImageData'; // Import custom hook
 import MapSection from './map';
 
-const IndexButtons = ({ userId,indices }) => {
+const IndexButtons = ({parcellId, userId,indices }) => {
   const { updateText } = useContext(TextContext);
   const { imageData, loading, error, fetchImageData } = useImageData();
   const [mapVisible, setMapVisible] = useState(false); // Controls map visibility
@@ -15,7 +15,7 @@ const IndexButtons = ({ userId,indices }) => {
     if (index) {
       const { indiceName, description, legende, recomndation } = index;
 
-      fetchImageData(userId, 1, indiceId)
+      fetchImageData(userId, parcellId, indiceId)
         .then(() => {
           setMapVisible(true);
           setErrorMessage('');

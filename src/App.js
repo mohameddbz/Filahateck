@@ -10,6 +10,7 @@ import SidebarLayoutAdmin from './components/layouts/admin/Layouts';
 import HomeLayout from './components/layouts/Home/Layout';
 import HomePage from "./pages/Home/HomePage";
 import Ami from "./pages/User/Ami";
+import FermeMap from "./pages/User/FermeMap ";
 import UserManagement from "./pages/admin/users/userManagement";
 import AbonnementManagement from "./pages/admin/abonement/abonementManagement";
 import Abonnement from "./pages/admin/abonement/abonement";
@@ -48,13 +49,14 @@ function App() {
           <Route path="/user" element={
             <SidebarLayout/> 
           }>
+            <Route path="/user/ferme-map" element={<FermeMap/>} />
             <Route path="/user/ami" element={<Ami/>}/>
             <Route path="/user/marketplace" element={<Marketplace/>}/>
             <Route path="/user/product-details/:id" element={<ProductDetails/>}/>
             <Route path="/user/product-submission" element={<ProductSubmission/>}/>
             <Route path="/user/stock-management" element={<StockManagement />} />
             <Route path="/user/Messaging-page" element={<Messaging/>} />
-            <Route path="/user/indice" element={<Indice/>} /> 
+            <Route path="/user/ferme-map/:parcelId" element={<Indice/>} /> 
           </Route>
 
           <Route path="/admin" element={

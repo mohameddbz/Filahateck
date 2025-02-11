@@ -10,15 +10,14 @@ export const TextProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
 
-
   const fetchIndices = async () => {
     try {
       if (!userId) throw new Error('User ID non trouvé.');
 
       const token = localStorage.getItem('Token');
       if (!token) throw new Error('Token non trouvé, veuillez vous connecter.');
-      //TODO
-      const data = await makeRequest(`/indice/${1}/indices`, 'GET', {}, {
+
+      const data = await makeRequest(`/indice/${userId}/indices`, 'GET', {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -57,16 +56,21 @@ export const TextProvider = ({ children }) => {
   // Handle the initial text data setup when the indices are available
   useEffect(() => {
     if (indicesData.length > 0) {
-      const firstIndex = indicesData[0];
-      setTextData({
-        title: firstIndex.indiceName,
-        description: firstIndex.description,
-        legendText1: `${firstIndex.legende[0]?.intervalDeb} à ${firstIndex.legende[0]?.intervalFin} : ${firstIndex.legende[0]?.descriptionLeg}`,
-        legendText2: `${firstIndex.legende[1]?.intervalDeb || ''} à ${firstIndex.legende[1]?.intervalFin || ''} : ${firstIndex.legende[1]?.descriptionLeg || ''}`,
-        legendText3: `${firstIndex.legende[2]?.intervalDeb || ''} à ${firstIndex.legende[2]?.intervalFin || ''} : ${firstIndex.legende[2]?.descriptionLeg || ''}`,
-        legendText4: `${firstIndex.legende[3]?.intervalDeb || ''} à ${firstIndex.legende[3]?.intervalFin || ''} : ${firstIndex.legende[3]?.descriptionLeg || ''}`,
-        recommendationText: firstIndex.recomndation,
-      });
+      // Trouver l'indice NDVI par défaut, sinon prendre le premier disponible
+      const ndviIndex = indicesData.find((indice) => indice.indiceName === 'NDVI') || indicesData[0];
+
+      if (ndviIndex) {
+        console.log("sdsd")
+        setTextData({
+          title: ndviIndex.indiceName,
+          description: ndviIndex.description,
+          legendText1: `${ndviIndex.legende[0]?.intervalDeb || ''} à ${ndviIndex.legende[0]?.intervalFin || ''} : ${ndviIndex.legende[0]?.descriptionLeg || ''}`,
+          legendText2: `${ndviIndex.legende[1]?.intervalDeb || ''} à ${ndviIndex.legende[1]?.intervalFin || ''} : ${ndviIndex.legende[1]?.descriptionLeg || ''}`,
+          legendText3: `${ndviIndex.legende[2]?.intervalDeb || ''} à ${ndviIndex.legende[2]?.intervalFin || ''} : ${ndviIndex.legende[2]?.descriptionLeg || ''}`,
+          legendText4: `${ndviIndex.legende[3]?.intervalDeb || ''} à ${ndviIndex.legende[3]?.intervalFin || ''} : ${ndviIndex.legende[3]?.descriptionLeg || ''}`,
+          recommendationText: ndviIndex.recomndation,
+        });
+      }
     }
   }, [indicesData]);
 

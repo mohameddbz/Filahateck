@@ -6,8 +6,10 @@ import Recommendations from './../../components/pages/user/Indice/recomendation'
 import { TextProvider } from './../../context/TextContext';
 import RequestForm from './../../components/pages/user/Indice/RequestForm';
 import { makeRequest } from './../../utils/api/httpService';
+import { useParams } from 'react-router-dom';
 
 const Indice = () => {
+  const { parcelId } = useParams();
   const [indicesData, setIndicesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,12 +24,11 @@ const Indice = () => {
       const response = await makeRequest('/users/get', 'GET', {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      const fetchedUserId = response.data?.data?.user_id;
+      if (!fetchedUserId) throw new Error('ID utilisateur non trouvé.');
       
-      if (!response.data?.data?.user_id) {
-        throw new Error('ID utilisateur non trouvé dans la réponse.');
-      }
-      
-      return response.data.data.user_id;
+      return fetchedUserId;
     } catch (error) {
       throw new Error(`Erreur lors de la récupération de l'ID utilisateur: ${error.message}`);
     }
@@ -42,9 +43,7 @@ const Indice = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (!response.data) {
-        throw new Error('Aucune donnée d\'indices reçue.');
-      }
+      if (!response.data) throw new Error('Aucune donnée d\'indices reçue.');
 
       return response.data;
     } catch (error) {
@@ -52,17 +51,17 @@ const Indice = () => {
     }
   };
 
-  // Initialize data with sequential fetching
   useEffect(() => {
     const initializeData = async () => {
       try {
         setLoading(true);
-        // First fetch userId
+
+        // Fetch userId first
         const fetchedUserId = await fetchUserId();
         setUserId(fetchedUserId);
-        console.log(userId)
-        const fetchedIndices = await fetchIndices(fetchedUserId);
-        console.log(fetchedIndices)
+
+        // Fetch indices only if userId is valid
+        const fetchedIndices = await fetchIndices(2);
         setIndicesData(fetchedIndices);
       } catch (error) {
         setError(error.message);
@@ -73,7 +72,7 @@ const Indice = () => {
     };
 
     initializeData();
-  }, []); // Empty dependency array for initial load only
+  }, []); // Initial fetch on component load
 
   if (loading) {
     return <div className="text-center mt-10">Chargement en cours...</div>;
@@ -93,14 +92,14 @@ const Indice = () => {
         >
           {showForm ? 'Cacher le formulaire' : 'Afficher le formulaire'}
         </button>
-        
+
         {showForm && (
           <RequestForm indicesData={indicesData} userId={userId} />
         )}
 
         <div className="flex flex-col gap-12 mt-8">
           <div className="flex gap-10 w-full pr-4">
-            <IndexButtons userId={userId} indices={indicesData} />
+            <IndexButtons parcellId={parcelId} userId={userId} indices={indicesData} />
           </div>
           <div className="flex gap-10 w-full pr-4">
             <Legend />
