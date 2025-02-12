@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeRequest } from './../../../../utils/api/httpService'; 
 import { getApiUrl } from './../../../../utils/api/getRoute';
 
-const RequestForm = ({ indicesData, userId }) => {
+const RequestForm = ({ indicesData, userId}) => {
   const [formData, setFormData] = useState({
     indice: '',
     startDate: '',
@@ -51,7 +51,7 @@ const RequestForm = ({ indicesData, userId }) => {
       alert('Requête soumise avec succès!');
       console.log('Response:', response.data);
     } catch (error) {
-      alert(`Erreur Verifier votre connexion: ${error.response?.data?.message || error.message}`);
+      alert(`${error || error}`);
     }
   };
 

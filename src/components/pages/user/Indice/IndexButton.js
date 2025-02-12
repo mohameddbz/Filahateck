@@ -1,13 +1,43 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { TextContext } from './../../../../context/TextContext';
 import { useImageData } from './useImageData'; // Import custom hook
 import MapSection from './map';
+import { makeRequest } from './../../../../utils/api/httpService'; 
 
-const IndexButtons = ({parcellId, userId,indices }) => {
+const IndexButtons = ({ parcellId, userId, indices }) => {
   const { updateText } = useContext(TextContext);
   const { imageData, loading, error, fetchImageData } = useImageData();
-  const [mapVisible, setMapVisible] = useState(false); // Controls map visibility
+  const [mapVisible, setMapVisible] = useState(false);
+  const [image, setImage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  // API request on component mount
+  useEffect(() => {
+    const fetchInitialImage = async (userId, parcelleId, indiceId) => {
+      try {
+          const response = await makeRequest(
+            '/request/image',
+            'GET',
+            {},
+            { userId, parcelleId, indiceId }
+          );
+      
+          if (response.data?.imageUrl) {
+            console.log('Image successfully fetched.');
+            setImage(response.data.imageUrl);
+            return response.data.imageUrl;
+          } else {
+            throw new Error('No image data returned from the request.');
+          }
+        } catch (error) {
+          alert(`Erreur lors de la récupération de l'image: ${error.message}`);
+          console.error('Error fetching image:', error);
+          window.history.back(); // Go to the previous page
+        }
+    };
+
+    fetchInitialImage(userId, parcellId, 1);
+  }, [parcellId, userId, updateText]);
 
   const handleButtonClick = (indiceId) => {
     const index = indices.find((item) => item.indiceId === indiceId);
@@ -46,9 +76,11 @@ const IndexButtons = ({parcellId, userId,indices }) => {
         {mapVisible ? (
           <MapSection imageData={imageData} loading={loading} error={error} />
         ) : (
-          <p className="text-red-600">
-            {errorMessage || 'Veuillez cliquer sur un bouton pour afficher la carte.'}
-          </p>
+          <img
+            src={image}
+            alt="Fetched Satellite Image"
+            className="w-full h-full object-cover rounded-lg"
+          />
         )}
       </div>
 
@@ -64,6 +96,10 @@ const IndexButtons = ({parcellId, userId,indices }) => {
           </button>
         ))}
       </div>
+
+      {errorMessage && (
+        <p className="text-red-500 mt-4">{errorMessage}</p>
+      )}
     </div>
   );
 };

@@ -4,7 +4,6 @@ import Legend from './../../components/pages/user/Indice/legend';
 import IndexButtons from './../../components/pages/user/Indice/IndexButton';
 import Recommendations from './../../components/pages/user/Indice/recomendation';
 import { TextProvider } from './../../context/TextContext';
-import RequestForm from './../../components/pages/user/Indice/RequestForm';
 import { makeRequest } from './../../utils/api/httpService';
 import { useParams } from 'react-router-dom';
 
@@ -14,7 +13,6 @@ const Indice = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [showForm, setShowForm] = useState(false);
 
   const fetchUserId = async () => {
     try {
@@ -86,17 +84,6 @@ const Indice = () => {
     <TextProvider>
       <div className="min-h-screen bg-white p-8">
         <Header />
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 m-4"
-        >
-          {showForm ? 'Cacher le formulaire' : 'Afficher le formulaire'}
-        </button>
-
-        {showForm && (
-          <RequestForm indicesData={indicesData} userId={userId} />
-        )}
-
         <div className="flex flex-col gap-12 mt-8">
           <div className="flex gap-10 w-full pr-4">
             <IndexButtons parcellId={parcelId} userId={userId} indices={indicesData} />
