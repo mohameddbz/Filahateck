@@ -14,28 +14,32 @@ const Parcelle = sequelize.define('Parcelle', {
     unique: true,
   },
   bEN: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.FLOAT, // Changed from INTEGER to FLOAT (coordinates need decimals)
     allowNull: true,
   },
   bES: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.FLOAT,
     allowNull: true,
   },
   bWN: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.FLOAT,
     allowNull: true,
   },
   bWS: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.FLOAT,
     allowNull: true,
   },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Users', // Make sure the table name is in plural as 'Users'
+      model: 'Users', // Make sure this matches the actual table name
       key: 'id',
     },
+  },
+  geom: {
+    type: DataTypes.GEOMETRY('POLYGON'), // Spatial data type for polygons
+    allowNull: false,
   },
 }, {
   tableName: 'parcelle',
@@ -43,7 +47,7 @@ const Parcelle = sequelize.define('Parcelle', {
 });
 
 // Define the relationship between Parcelle and User
-Parcelle.belongsTo(User, { foreignKey: 'userId' }); // Each parcelle belongs to a user
-User.hasMany(Parcelle, { foreignKey: 'userId' }); // A user can have many parcels
+Parcelle.belongsTo(User, { foreignKey: 'userId', as: 'owner' }); 
+User.hasMany(Parcelle, { foreignKey: 'userId' });
 
 module.exports = Parcelle;

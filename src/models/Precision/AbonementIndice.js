@@ -19,6 +19,10 @@ const AbonnementIndice = sequelize.define('AbonnementIndice', {
         key: 'id',
       },
     },
+    nombre_de_requete: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   }, {
     tableName: 'abonnement_indice', // Name of the junction table
     timestamps: false, // Optional: disable timestamps if not needed
