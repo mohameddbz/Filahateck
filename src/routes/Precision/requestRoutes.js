@@ -11,6 +11,8 @@ router.get('/', requestController.getAllRequests);
 
 router.get('/image', requestController.getImage);
 
+router.get('/images', requestController.getAllImages);
+
 // Get a single Request by ID
 router.get('/:id', requestController.getRequestById);
 

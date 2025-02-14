@@ -56,10 +56,25 @@ const deleteLegende = async (req, res) => {
   }
 };
 
+const getLegendesByIndiceId = async (req, res) => {
+  try {
+    const { indiceId } = req.params;
+    console.log("===",indiceId)
+
+    const legendes = await legendeService.getLegendesByIndiceId(indiceId);
+
+    res.status(200).json(legendes);
+  } catch (error) {
+    console.error("Erreur dans le contrôleur Legende:", error.message);
+    res.status(400).json({ error: error.message });
+  }
+}
+
 module.exports = {
   createLegende,
   getAllLegendes,
   getLegendeById,
   updateLegende,
-  deleteLegende
+  deleteLegende,
+  getLegendesByIndiceId
 };

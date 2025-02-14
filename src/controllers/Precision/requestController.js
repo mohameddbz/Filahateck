@@ -81,6 +81,26 @@ const getImage = async (req, res) => {
 };
 
 
+const getAllImages = async (req, res) => {
+  try {
+    const { userId, parcelleId, indiceId } = req.query;
+
+    // Validate input parameters
+    if (!userId || !parcelleId || !indiceId) {
+      return res.status(400).json({ error: 'Missing required parameters' });
+    }
+
+    // Fetch images
+    const images = await requestService.getAllImageData(userId, parcelleId, indiceId);
+
+    // Return response
+    res.status(200).json({ success: true, images });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error', details: error.message });
+  }
+};
+
+
 module.exports = { getAllRequests };
 
 
@@ -90,5 +110,6 @@ module.exports = {
   getRequestById,
   updateRequest,
   deleteRequest,
-  getImage
+  getImage,
+  getAllImages
 };

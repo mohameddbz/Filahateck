@@ -62,10 +62,32 @@ const deleteLeg = async (id) => {
   }
 };
 
+const getLegendesByIndiceId = async (indiceId) => {
+  try {
+    if (!indiceId) {
+      throw new Error('indiceId est requis.');
+    }
+
+    const legendes = await Legend.findAll({
+      where: { indiceId },
+    });
+
+    if (legendes.length === 0) {
+      throw new Error('Aucune légende trouvée pour cet indice.');
+    }
+
+    return legendes;
+  } catch (error) {
+    throw new Error(`Erreur lors de la récupération des légendes: ${error.message}`);
+  }
+}
+
+
 module.exports = {
   createLegendd,
   getAllLegend,
   getById,
   updateLeg,
-  deleteLeg
+  deleteLeg,
+  getLegendesByIndiceId
 };

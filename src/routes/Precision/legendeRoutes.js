@@ -10,6 +10,8 @@ router.post('/',authMiddleware, legendeController.createLegende);
 // Get all Legendes
 router.get('/',authMiddleware, legendeController.getAllLegendes);
 
+router.get('/legendes/:indiceId', legendeController.getLegendesByIndiceId);
+
 // Get a single Legende by ID
 router.get('/:id',authMiddleware, legendeController.getLegendeById);
 
