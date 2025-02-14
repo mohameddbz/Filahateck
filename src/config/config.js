@@ -6,7 +6,7 @@ dotenv.config();
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'mysql',
-    logging: console.log, 
+     logging: false, 
 });
 
 sequelize.authenticate()

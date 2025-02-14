@@ -5,7 +5,7 @@ const Role = require('../../models/Role/Role');
 const bcrypt = require('bcryptjs');
 
 const createUser = async (data) => {
-  const { email, userName, password, phone_number, profile_picture, wilaya, role_id } = data;
+  const { email, userName, password, phone_number, profile_picture, wilaya, role_id,sellerRole_id } = data;
 
   const existingUser = await User.findOne({ where: { email } });
   if (existingUser) throw new Error('Email already in use');

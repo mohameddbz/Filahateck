@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const User = require('../models/User/User');
 const Role = require('../models/Role/Role');
+const { createUserSellerRole } = require('./../services/user/userSellerRoleService');
 const { successResponse } = require('../utils/response');
 const { errorResponse } = require('../utils/error');
 const { sequelize } = require('../config/config'); // Import your Sequelize instance
@@ -20,7 +21,7 @@ const registerUser = async (req, res) => {
     return errorResponse(res, 400, errors, formattedErrors);
   }
 
-  const { email, userName, password, phone_number, profile_picture, wilaya, role_id } = req.body;
+  const { email, userName, password, phone_number, profile_picture, wilaya, role_id ,sellerRole_id } = req.body;
 
   try {
     const existingUser = await User.findOne({ where: { email } });
@@ -42,6 +43,13 @@ const registerUser = async (req, res) => {
       wilaya,
       role_id,
     });
+   console.log("New user created:", newUser.id);
+   console.log('Seller Role:',sellerRole_id);
+
+    if(newUser && sellerRole_id){
+      console.log("Creating user seller role");
+      await createUserSellerRole(newUser.id,sellerRole_id);
+    }
 
     return successResponse(res, 201, 'User created successfully', {
       id: newUser.id,

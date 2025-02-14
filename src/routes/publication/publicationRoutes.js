@@ -10,5 +10,7 @@ const publication_router = express.Router();
 
  publication_router.post('/add',authMiddleware,upload.array('images', 10),publicationController.createPublication);
  publication_router.get('/all', publicationController.getAllPublications);
- publication_router.get('/:id', publicationController.getPublicationById);
+ publication_router.get('/one/:id', publicationController.getPublicationById);
+ publication_router.get('/my-publications', authMiddleware, publicationController.getPublicationsOfUser);
+ publication_router.put('/update/:id', authMiddleware, upload.array('images', 10), publicationController.updatePublication);
 module.exports = publication_router;

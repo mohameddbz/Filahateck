@@ -58,4 +58,16 @@ Publication.insertPublication = async function (publicationData) {
     }
 };
 
+Publication.updatePublication= async function ( publicationId,publicationData ) {
+
+    try {
+        const publication = await Publication.update(publicationData, {
+            where: { id: publicationId },
+        });
+        return publication;
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour de la publication:', error);
+        throw error;
+    }
+};
 module.exports = Publication;

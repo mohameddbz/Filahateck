@@ -1,14 +1,17 @@
 const express = require("express");
 const cors = require("cors");
-const path = require('path');
-const bodyParser = require("body-parser");
 const { sequelize } = require("./src/config/config.js");
 const dotenv = require("dotenv");
 const userAuth = require('./src/auth/authRoutes.js');
 const userRoutes = require('./src/routes/user/userRoutes.js');
 const roleRoutes = require('./src/routes/role/roleRoutes.js');
+const sellerRoutes = require('./src/routes/role/sellerRoleRoutes.js');
+const userSellerRoleRoutes = require('./src/routes/user/userSellerRoleRoutes.js');
 const publicationRoutes = require('./src/routes/publication/publicationRoutes.js');
 const abonnementRoutes = require('./src/routes/Abonnement/AbonnementRoutes.js');
+const sellerAbonnementUserRoutes = require('./src/routes/Abonnement/SellerAbonnementUserRoutes.js');
+const sellerAbonnementRoutes = require('./src/routes/Abonnement/SellerAbonnementRoutes.js');
+const SellerAbonnementFonctionnalitiesRoutes = require('./src/routes/Abonnement/SellerAbonnementFonctionnalitiesRoutes.js');
 const abonnementUserRouter = require('./src/routes/Abonnement/AbonnementUserRouter.js');
 const abonnementFonctionnalityRoutes = require('./src/routes/Abonnement/AbonnementFonctionnalityRoutes.js');
 const fonctionnalityRoutes = require('./src/routes/Abonnement/FonctionnalityRoutes.js');
@@ -51,9 +54,14 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', userAuth); // user-related routes
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
+app.use('/api/sellerRoles', sellerRoutes);
+app.use('/api/userSellerRole', userSellerRoleRoutes);
 app.use('/api/publications', publicationRoutes);
 app.use('/api/abonnement', abonnementRoutes);
+app.use('/api/sellerAbonnement', sellerAbonnementRoutes);
 app.use('/api/abonnementUser', abonnementUserRouter);
+app.use('/api/sellerAbonnementUser', sellerAbonnementUserRoutes);
+app.use('/api/sellerAbonnementFonctionality',SellerAbonnementFonctionnalitiesRoutes)
 app.use('/api/abonnementFonctionnality', abonnementFonctionnalityRoutes);
 app.use('/api/fonctionnality', fonctionnalityRoutes);
 app.use('/api/parcelle', parcelleRoutes);

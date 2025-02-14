@@ -43,6 +43,8 @@ const validateUser = [
     body('role_id')
       .isInt({ min: 1 })
       .withMessage(({ path }) => `${path} is required and must be a valid role ID`),
+    
+    
   ];
   
 

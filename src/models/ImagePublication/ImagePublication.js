@@ -32,6 +32,16 @@ ImagePublication.insertImage = async (publicationId, imagePath) => {
     }
 };
 
+ImagePublication.deleteImagesByPublicationId = async (publicationId) => {
+    try {
+        await ImagePublication.destroy({ where: { publicationId } });
+    } catch (error) {
+        console.error("Erreur lors de la suppression des images:", error);
+        throw error;
+    }
+}
+
+
 ImagePublication.getImagesByPublicationId = async (publicationId) => {
     try {
         const images = await ImagePublication.findAll({ where: { publicationId } });
@@ -41,5 +51,20 @@ ImagePublication.getImagesByPublicationId = async (publicationId) => {
         throw error;
     }
 };
+
+ImagePublication.deleteImagesNotInList = async function (publicationId, imageList) {
+    try {
+      // Supprimer les images qui ne sont pas dans la liste
+      await ImagePublication.destroy({
+        where: {
+          publicationId: publicationId, // Filtrer par ID de publication
+          imagePath: { [Op.notIn]: imageList }, // Supprimer les images qui ne sont pas dans la liste
+        },
+      });
+    } catch (error) {
+      console.error('Erreur lors de la suppression des images:', error);
+      throw error;
+    }
+  };
 
 module.exports = ImagePublication;
