@@ -7,16 +7,20 @@ const FonctionalityManagement = () => {
   const [showAbonnementForm, setShowAbonnementForm] = useState(false);
   const [fonctionalities, setFonctionalities] = useState([]);
   const [abonnements, setAbonnements] = useState([]);
+  const [sellerAbonnements, setSellerAbonnements] = useState([]);
+  const [selectedAbonnementType, setSelectedAbonnementType] = useState('agriculteur'); // Par défaut, agriculteur
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [fonctionalityRes, abonnementRes] = await Promise.all([
+        const [fonctionalityRes, abonnementRes, sellerAbonnementRes] = await Promise.all([
           makeRequest('/fonctionnality', 'GET'),
           makeRequest('/abonnement', 'GET'),
+          makeRequest('/sellerabonnement', 'GET'),
         ]);
         setFonctionalities(fonctionalityRes.data || []);
         setAbonnements(abonnementRes.data || []);
+        setSellerAbonnements(sellerAbonnementRes.data || []);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -40,21 +44,28 @@ const FonctionalityManagement = () => {
       const payload = {
         fonctionnalityId: data.fonctionalityId,
         abonnementId: data.abonnementId,
+        sellerabonnementid : data.abonnementId,
+        abonnementType: selectedAbonnementType, // Ajouter le type d'abonnement
       };
-      console.log(payload)
-      const response = await makeRequest('/abonnementFonctionnality', 'POST', payload);
-      console.log(response)
+
+      // Choisir la route en fonction du type d'abonnement
+      const route = selectedAbonnementType === 'agriculteur' 
+        ? '/abonnementFonctionnality' 
+        : '/sellerAbonnementFonctionality';
+     
+      const response = await makeRequest(route, 'POST', payload);
+      console.log(response);
       setShowAbonnementForm(false);
       console.log(
-        `Assigned abonnement ${data.abonnementId} to functionality ${data.fonctionalityId}`
+        `Assigned ${selectedAbonnementType} abonnement ${data.abonnementId} to functionality ${data.fonctionalityId}`
       );
     } catch (error) {
-        if (error.response && error.response.status === 500) {
-            alert('Oops! Something went wrong. Please try again later.');
-          } else {
-            console.error('Error:', error);
-            alert(' Fonctionality deja assigned.');
-          }
+      if (error.response && error.response.status === 500) {
+        alert('Oops! Something went wrong. Please try again later.');
+      } else {
+        console.error('Error:', error.message);
+        alert('Fonctionality déjà assignée.');
+      }
     }
   };
 
@@ -170,6 +181,22 @@ const FonctionalityManagement = () => {
 
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2">
+              Select Abonnement Type
+            </label>
+            <select
+              name="abonnementType"
+              className="w-full border rounded-lg p-2"
+              value={selectedAbonnementType}
+              onChange={(e) => setSelectedAbonnementType(e.target.value)}
+              required
+            >
+              <option value="agriculteur">Abonnement Agriculteur</option>
+              <option value="vendeur">Abonnement Vendeur</option>
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">
               Select Abonnement
             </label>
             <select
@@ -178,11 +205,17 @@ const FonctionalityManagement = () => {
               required
             >
               <option value="">Select...</option>
-              {abonnements.map((abo) => (
-                <option key={abo.id} value={abo.id}>
-                  {abo.nameAbonnement}
-                </option>
-              ))}
+              {selectedAbonnementType === 'agriculteur'
+                ? abonnements.map((abo) => (
+                    <option key={abo.id} value={abo.id}>
+                      {abo.nameAbonnement}
+                    </option>
+                  ))
+                : sellerAbonnements.map((sellerAbo) => (
+                    <option key={sellerAbo.id} value={sellerAbo.id}>
+                      {sellerAbo.nameAbonnement}
+                    </option>
+                  ))}
             </select>
           </div>
 

@@ -5,6 +5,8 @@ const translations = {
       confirmPassword: 'تأكيد كلمة المرور',
       alreadyHaveAccount: 'لدي حساب؟',
       signIn: 'تسجيل الدخول',
+      passwordMismatch: 'كلمة المرور غير متطابقة', 
+
     },
     french: {
       createAccount: 'Créer un compte',
@@ -12,6 +14,8 @@ const translations = {
       confirmPassword: 'Confirmer mot de passe',
       alreadyHaveAccount: "J'ai déjà un compte ?",
       signIn: 'Se connecter',
+      passwordMismatch: 'Les mots de passe ne correspondent pas', 
+
     },
   };
   

@@ -3,7 +3,6 @@ import { LanguageContext } from './../../../../context/LanguageContext';
 
 const Offre = ({ text, titre, functionalities, price, isChecked, onCheckboxChange }) => {
     const { isArabic } = useContext(LanguageContext);
-
     // Set the text direction based on language
     const textDirection = isArabic ? { direction: 'rtl' } : { direction: 'ltr' };
 
@@ -16,7 +15,7 @@ const Offre = ({ text, titre, functionalities, price, isChecked, onCheckboxChang
                 <div className="flex-1 ml-4 p-2" style={textDirection}>
                     <h2 className="text-myOrange-50 font-bold text-xl">{titre}</h2>
                     <ul className="list-disc ml-6 mt-2 text-base">
-                        {functionalities.map((func, index) => (
+                        {functionalities && functionalities.map((func, index) => (
                             <li key={func.id || index}>{func.name}</li>
                         ))}
                     </ul>

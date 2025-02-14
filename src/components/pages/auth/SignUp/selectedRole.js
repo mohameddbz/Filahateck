@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { IoMdPerson } from "react-icons/io";
 import { LanguageContext } from '../../../../context/LanguageContext'; // Import the language context
 
-const SelectorRole = ({ value, onChange, options }) => {
+const SelectorRole = ({ value, onChange, options ,name="role" }) => {
   const { isArabic } = useContext(LanguageContext); // Get the current language state
 
   return (
@@ -14,7 +14,7 @@ const SelectorRole = ({ value, onChange, options }) => {
         <div className='relative' dir={isArabic ? "rtl" : "ltr"}>
             <IoMdPerson className="absolute left-2 top-4 text-myGreen"  size={24} />
             <select
-              name="role"
+              name={name}
               value={value}
               onChange={onChange}
               className="w-full border border-myGreen rounded p-1 pl-10 bg-white h-[60px]"

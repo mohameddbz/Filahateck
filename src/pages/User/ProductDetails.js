@@ -18,7 +18,7 @@ const ProductDetails = () => {
     console.log("the id is --> ",id);
       async function fetchData() {
         try {
-          const response = await makeRequest(`/publications/${id}`, 'GET');
+          const response = await makeRequest(`/publications/one/${id}`, 'GET');
           if (response.status !== 200) {
             // setErrorMessage('Erreur lors de chargement des publications');
             setIsLoading(false);
@@ -36,7 +36,6 @@ const ProductDetails = () => {
         }
       }
       fetchData();
-    
     },[]);
     if(isLoading){
       return <Loading/>;

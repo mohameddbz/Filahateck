@@ -5,6 +5,7 @@ import SignIn from './pages/auth/SignIn';
 import RessetPassword from './pages/auth/ResetPassword';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import AuthLayout from './components/layouts/auth/Layout';
+import SidebarSellerLayout from './components/layouts/Seller/Layout';
 import SidebarLayout from './components/layouts/user/Layout';
 import SidebarLayoutAdmin from './components/layouts/admin/Layouts';
 import HomeLayout from './components/layouts/Home/Layout';
@@ -14,6 +15,8 @@ import FermeMap from "./pages/User/FermeMap ";
 import UserManagement from "./pages/admin/users/userManagement";
 import AbonnementManagement from "./pages/admin/abonement/abonementManagement";
 import Abonnement from "./pages/admin/abonement/abonement";
+import SellerAbonnement from "./pages/admin/abonement/SellerAbonnement";
+import SellerAbonnementManagement from "./pages/admin/abonement/SellerAbonnementManagement";
 import FonctionalityManagement from "./pages/admin/abonement/fonctionalities";
 import Indices from "./pages/admin/indice/indice";
 import Marketplace from "./pages/User/MarketPlace";
@@ -23,6 +26,8 @@ import Messaging from "./pages/User/Messaagerie";
 import Indice from "./pages/User/indice";
 import OffresPage from "./pages/Home/Offer";
 import ProductDetails from "./pages/User/ProductDetails";
+import MyProductDetail from "./pages/User/MyProductDetail";
+import OffresSeller from "./pages/Seller/Offre";
 
 function App() {
   return (
@@ -53,10 +58,20 @@ function App() {
             <Route path="/user/ami" element={<Ami/>}/>
             <Route path="/user/marketplace" element={<Marketplace/>}/>
             <Route path="/user/product-details/:id" element={<ProductDetails/>}/>
+            <Route path="/user/my-product-details/:id" element={<MyProductDetail/>}/>
             <Route path="/user/product-submission" element={<ProductSubmission/>}/>
             <Route path="/user/stock-management" element={<StockManagement />} />
             <Route path="/user/Messaging-page" element={<Messaging/>} />
             <Route path="/user/ferme-map/:parcelId" element={<Indice/>} /> 
+          </Route>
+          <Route path="/seller" element={
+            <SidebarSellerLayout/> 
+          }>
+            <Route path="/seller/marketplace" element={<Marketplace/>}/>
+            <Route path="/seller/offre" element={<OffresSeller/>}/>
+            {/* <Route path="/user/product-details/:id" element={<ProductDetails/>}/>
+            <Route path="/user/my-product-details/:id" element={<MyProductDetail/>}/>
+            <Route path="/user/product-submission" element={<ProductSubmission/>}/>  */}
           </Route>
 
           <Route path="/admin" element={
@@ -67,6 +82,8 @@ function App() {
             <Route path="/admin/fonctionalities" element={<FonctionalityManagement/>}/>
             <Route path="/admin/indices" element={<Indices/>} /> 
             <Route path="/admin/Abonnement" element={<Abonnement/>} /> 
+            <Route path="/admin/SellerAbonnement" element={<SellerAbonnement/>} />
+            <Route path="/admin/SellerAbonnementManager" element={<SellerAbonnementManagement/>} />
           </Route>
       </Routes>
   );

@@ -24,10 +24,10 @@ const SignInForm = () => {
     const data = { email, password };
     try {
       const response = await makeRequest('/auth/login', 'POST', data);
-      console.log(response.data.data.user)
       if (response) {
         const { token } = response.data.data;
         const { roleName } = response.data.data.user;
+        const { userId } = response.data.data.user;
         localStorage.setItem('Token', token);
         switch (roleName) {
           case 'Admin':
@@ -39,6 +39,22 @@ const SignInForm = () => {
           case 'User':
             navigate('/user/marketplace');
             break;
+          case 'Seller':
+            console.log("seller rew yedkhol " , userId)
+            try {
+              const response = await makeRequest(`/userSellerRole/${userId}`, 'GET');
+             console.log(response.status);
+             
+             if(response.status === 200){
+               localStorage.setItem('sellerRole', response.data.data.sellerRole.roleName);
+               navigate('/seller/marketplace');
+             }
+            } catch (error) {
+              console.log(error)
+            }
+
+            break ; 
+             
           default:
             setErrorMessage('Unauthorized access.');
         }

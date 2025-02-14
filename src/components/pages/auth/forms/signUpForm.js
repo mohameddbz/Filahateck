@@ -1,4 +1,4 @@
-import React, {useState, useContext } from 'react';
+import React, {useState, useContext , useEffect} from 'react';
 import { LanguageContext } from './../../../../context/LanguageContext';
 import { Link } from 'react-router-dom';
 import InputEmail from '../common/InputEmail';
@@ -10,6 +10,7 @@ import ButtonConfirm from './../common/ButtonConfirm';
 import SelectorRole from './../SignUp/selectedRole';
 import translations from './../../../../utils/constant/SignUp'; 
 import {makeRequest} from './../../../../utils/api/httpService'
+import { use } from 'react';
 
 const SignUpForm = () => {
   const { isArabic } = useContext(LanguageContext);
@@ -23,11 +24,32 @@ const SignUpForm = () => {
     confirmPassword: '',
     role: '',
     phone_number:'',
-    wilaya:''
+    wilaya:'',
+    sellerRole : ''
   });
 
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [sellerRoles, setSellerRoles] = useState([]);
+  useEffect(() => {
+   const fetchRoles = async () => {
+    try {
+      const response = await makeRequest('/sellerRoles', 'GET');
+    
+      
+      const transformedOptions = response.data.data.map((role) => ({
+        value: role.id, // Utilisez l'ID comme valeur
+        label: role.roleName, // Utilisez le label en anglais
+        labelArabic: role.roleName, // Utilisez le label en arabe
+      }));
+      setSellerRoles(transformedOptions);
+    } catch (error) {
+      setErrorMessage(error);
+    }
+   }
+  fetchRoles();
+
+  }, []);
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -38,12 +60,13 @@ const SignUpForm = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+     
+    console.log("rew ydir el submit")
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage(text.passwordMismatch);
       return;
     }
-
+ 
     try {
       const data = {
         email: formData.email,
@@ -52,7 +75,8 @@ const SignUpForm = () => {
         phone_number: formData.phone_number,
         profile_picture: 'profile.jpg',
         wilaya: formData.wilaya,
-        role_id: 1,
+        role_id: formData.role,
+        sellerRole_id : formData.role === '6' ? formData.sellerRole : ''
       };
 
       const response = await makeRequest('/auth/register', 'POST', data);
@@ -60,7 +84,7 @@ const SignUpForm = () => {
       setSuccessMessage(response.message);
       setErrorMessage('');
     } catch (error) {
-      setErrorMessage(error);
+      setErrorMessage(error.message);
     }
   };
 
@@ -90,10 +114,22 @@ const SignUpForm = () => {
           value={formData.role}
           onChange={handleInputChange}
           options={[
-            { value: 'Agricol', label: 'Farmer', labelArabic: 'الفلاح' },
+            { value: '2', label: 'Farmer', labelArabic: 'الفلاح' },
             { value: 'Investor', label: 'Investor', labelArabic: 'ممول' },
+            { value: '6', label: 'Vendeur', labelArabic: 'بائع' }
           ]}
         />
+        {
+          formData.role === '6' && (
+            <SelectorRole
+              value={formData.sellerRole}
+              onChange={handleInputChange}
+              options={sellerRoles}
+              name='sellerRole'
+            />
+          )
+        }
+       
         <ButtonConfirm text={text.createAccount} />
       </form>
         {/* Error Message */}
