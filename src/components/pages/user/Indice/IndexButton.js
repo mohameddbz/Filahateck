@@ -1,12 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { TextContext } from './../../../../context/TextContext';
-import { useImageData } from './useImageData'; // Import custom hook
+import { useImageData } from './useImageData';
+import { useImagesData } from './useImageData';
 import MapSection from './map';
 import { makeRequest } from './../../../../utils/api/httpService'; 
 
 const IndexButtons = ({ parcellId, userId, indices }) => {
   const { updateText } = useContext(TextContext);
   const { imageData, loading, error, fetchImageData } = useImageData();
+  const { imagesData, loadings, errors, fetchImagesData } = useImagesData();
   const [mapVisible, setMapVisible] = useState(false);
   const [image, setImage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -23,9 +25,9 @@ const IndexButtons = ({ parcellId, userId, indices }) => {
           );
       
           if (response.data?.imageUrl) {
-            console.log('Image successfully fetched.');
-            setImage(response.data.imageUrl);
-            return response.data.imageUrl;
+            console.log('Image successfully fetched.',response);
+            setImage(response.data);
+            return response.data;
           } else {
             throw new Error('No image data returned from the request.');
           }
@@ -55,6 +57,14 @@ const IndexButtons = ({ parcellId, userId, indices }) => {
           setErrorMessage('Erreur lors du chargement de la carte.');
         });
 
+        fetchImagesData(userId, parcellId, indiceId)
+        .then(() => {
+          setErrorMessage('');
+        })
+        .catch(() => {
+          setErrorMessage('Erreur lors du chargement de la carte.');
+        });
+
       updateText({
         title: indiceName,
         description,
@@ -67,6 +77,7 @@ const IndexButtons = ({ parcellId, userId, indices }) => {
     } else {
       setErrorMessage('Index non trouvé.');
     }
+    console.log(imagesData)
   };
 
   return (
@@ -74,15 +85,39 @@ const IndexButtons = ({ parcellId, userId, indices }) => {
       {/* Map Section on the Left */}
       <div className="flex-1">
         {mapVisible ? (
-          <MapSection imageData={imageData} loading={loading} error={error} />
+          <div>
+            <MapSection imageData={imageData} loading={loading} error={error} />
+            <div className="bg-gray-100 p-3 rounded-lg shadow-md text-center mb-4">
+              <p className="text-lg font-semibold text-gray-700">Période de l'image</p>
+              <p className="text-sm text-gray-600">
+                <span className="font-bold">Début:</span> {image.dateDebut}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-bold">Fin:</span> {image.dateFin}
+              </p>
+            </div> 
+          </div>
         ) : (
-          <img
-            src={image}
-            alt="Fetched Satellite Image"
-            className="w-full h-full object-cover rounded-lg"
-          />
+          <div>
+            <img
+              src={image.imageUrl}
+              alt="Fetched Satellite Image"
+              className="w-full h-full object-cover rounded-lg shadow-lg"
+            />
+            <div className="bg-gray-100 p-3 rounded-lg shadow-md text-center mb-4">
+              <p className="text-lg font-semibold text-gray-700">Période de l'image</p>
+              <p className="text-sm text-gray-600">
+                <span className="font-bold">Début:</span> {image.dateDebut}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-bold">Fin:</span> {image.dateFin}
+              </p>
+            </div>
+          </div>
         )}
       </div>
+
+
 
       {/* Buttons Section on the Right */}
       <div className="flex flex-col space-y-4">

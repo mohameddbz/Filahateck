@@ -6,8 +6,15 @@ import Recommendations from './../../components/pages/user/Indice/recomendation'
 import { TextProvider } from './../../context/TextContext';
 import { makeRequest } from './../../utils/api/httpService';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const Indice = () => {
+  const navigate = useNavigate();
+
+  const handleNavigation = (indexId) => {
+    navigate(`/user/historique/${indexId}/${parcelId}`);
+  };
   const { parcelId } = useParams();
   const [indicesData, setIndicesData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -94,6 +101,24 @@ const Indice = () => {
           </div>
         </div>
       </div>
+      <div className="text-center mt-8">
+        {indicesData.length > 0 ? (
+          <div className="flex flex-wrap justify-center gap-4">
+            {indicesData.map((index, i) => (
+              <button 
+                key={i} 
+                onClick={() => handleNavigation(index.indiceId)}
+                className="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600"
+              >
+                {indicesData[i].indiceName}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <p>Aucun indice disponible.</p>
+        )}
+      </div>
+
     </TextProvider>
   );
 };
