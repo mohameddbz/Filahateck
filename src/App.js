@@ -23,6 +23,7 @@ import Marketplace from "./pages/User/MarketPlace";
 import ProductSubmission from "./pages/User/ProductSubmission";
 import StockManagement from "./pages/User/StockManagement";
 import Messaging from "./pages/User/Messaagerie";
+import Historique from "./pages/User/historique";
 import Indice from "./pages/User/indice";
 import OffresPage from "./pages/Home/Offer";
 import ProductDetails from "./pages/User/ProductDetails";
@@ -63,6 +64,7 @@ function App() {
             <Route path="/user/stock-management" element={<StockManagement />} />
             <Route path="/user/Messaging-page" element={<Messaging/>} />
             <Route path="/user/ferme-map/:parcelId" element={<Indice/>} /> 
+            <Route path="/user/historique/:indexId/:parcelId" element={<Historique/>} /> 
           </Route>
           <Route path="/seller" element={
             <SidebarSellerLayout/> 

@@ -58,9 +58,7 @@ export const TextProvider = ({ children }) => {
     if (indicesData.length > 0) {
       // Trouver l'indice NDVI par défaut, sinon prendre le premier disponible
       const ndviIndex = indicesData.find((indice) => indice.indiceName === 'NDVI') || indicesData[0];
-
       if (ndviIndex) {
-        console.log("sdsd")
         setTextData({
           title: ndviIndex.indiceName,
           description: ndviIndex.description,
