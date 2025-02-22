@@ -12,16 +12,20 @@ import HomeLayout from './components/layouts/Home/Layout';
 import HomePage from "./pages/Home/HomePage";
 import Ami from "./pages/User/Ami";
 import FermeMap from "./pages/User/FermeMap ";
+import CurrentAbonnement from "./pages/User/Abonement";
 import UserManagement from "./pages/admin/users/userManagement";
 import AbonnementManagement from "./pages/admin/abonement/abonementManagement";
 import Abonnement from "./pages/admin/abonement/abonement";
+import Parcelle from "./pages/admin/indice/Parcelle";
 import SellerAbonnement from "./pages/admin/abonement/SellerAbonnement";
 import SellerAbonnementManagement from "./pages/admin/abonement/SellerAbonnementManagement";
 import FonctionalityManagement from "./pages/admin/abonement/fonctionalities";
 import Indices from "./pages/admin/indice/indice";
+import Legends from "./pages/admin/indice/legends";
 import Marketplace from "./pages/User/MarketPlace";
 import ProductSubmission from "./pages/User/ProductSubmission";
 import StockManagement from "./pages/User/StockManagement";
+import UserProfile from "./pages/User/profile";
 import Messaging from "./pages/User/Messaagerie";
 import Historique from "./pages/User/historique";
 import Indice from "./pages/User/indice";
@@ -57,6 +61,8 @@ function App() {
           }>
             <Route path="/user/ferme-map" element={<FermeMap/>} />
             <Route path="/user/ami" element={<Ami/>}/>
+            <Route path="/user/profile" element={<UserProfile/>}/>
+            <Route path="/user/Abonnement" element={<CurrentAbonnement/>}/>
             <Route path="/user/marketplace" element={<Marketplace/>}/>
             <Route path="/user/product-details/:id" element={<ProductDetails/>}/>
             <Route path="/user/my-product-details/:id" element={<MyProductDetail/>}/>
@@ -83,7 +89,9 @@ function App() {
             <Route path="/admin/AbonnementManagement" element={<AbonnementManagement/>}/>
             <Route path="/admin/fonctionalities" element={<FonctionalityManagement/>}/>
             <Route path="/admin/indices" element={<Indices/>} /> 
+            <Route path="/admin/legend" element={<Legends/>} /> 
             <Route path="/admin/Abonnement" element={<Abonnement/>} /> 
+            <Route path="/admin/Parcelle" element={<Parcelle/>} /> 
             <Route path="/admin/SellerAbonnement" element={<SellerAbonnement/>} />
             <Route path="/admin/SellerAbonnementManager" element={<SellerAbonnementManagement/>} />
           </Route>

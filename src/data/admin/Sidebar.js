@@ -5,6 +5,8 @@ export  const sidebarItems = [
     { label: "Abonnement Users", path: "/admin/AbonnementManagement" },
     { label: "Fonctionalities", path: "/admin/fonctionalities" },
     { label: "Indices", path: "/admin/indices" },
+    { label: "Legends", path: "/admin/legend" },
+    { label: "Parcelle", path: "/admin/Parcelle" },
     { label: "Abonnement", path: "/admin/Abonnement" },
     { label: "Seller Abonnement",path: "/admin/SellerAbonnement"},
     { label: "Seller Abonnement Manager", path: "/admin/SellerAbonnementManager" },
