@@ -9,9 +9,12 @@ const router = express.Router();
 router.post('/',authMiddleware, isAdmin, validateUser, userController.createUser);
 router.get('/', authMiddleware, userController.getAllUsers);
 router.get('/get', authMiddleware, userController.getUserInfo);
+router.get('/profile', authMiddleware, userController.getUserProfile);
 router.get('/:id', authMiddleware,userController.getUserById);
 router.put('/:id', authMiddleware, isAdmin,validateUser, userController.updateUser);
 router.delete('/:id',authMiddleware,  isAdmin, userController.deleteUser);
+
+
 
 
 module.exports = router;
