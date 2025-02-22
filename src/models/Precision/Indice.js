@@ -12,7 +12,7 @@ const Indice = sequelize.define('Indice', {
     allowNull: false,
   },
   recomndation: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   description: {
