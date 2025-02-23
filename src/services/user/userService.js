@@ -57,10 +57,18 @@ const updateUser = async (id, data) => {
   const user = await User.findByPk(id);
   if (!user) return null;
 
-  const updatedData = { ...data };
+  const allowedFields = ['userName', 'wilaya', 'phone_number'];
+  const updatedData = {};
+
+  allowedFields.forEach((field) => {
+    if (data[field] !== undefined) {
+      updatedData[field] = data[field];
+    }
+  });
 
   return await user.update(updatedData);
 };
+
 
 const deleteUser = async (id) => {
   const user = await User.findByPk(id);
