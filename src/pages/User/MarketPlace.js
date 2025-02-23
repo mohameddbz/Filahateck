@@ -14,15 +14,18 @@ const Marketplace = () => {
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [publications, setPublications] = useState([]);
+  const  [isLoading , setIsLoading] =useState(true)
   useEffect( () => {
     async function fetchData() {
       try {
         const response = await makeRequest('/publications/all', 'GET');
         if (response.status !== 200) {
           setErrorMessage('Erreur lors de chargement des publications');
+          setIsLoading(false)
           setShowError(true);
         }else{
           setPublications(response.data);
+          setIsLoading(false)
         }
 
       } catch (error) {
@@ -65,7 +68,7 @@ const Marketplace = () => {
           <FilterButton text={texts.filterButton} options={filterOptions} onSelect={handleFilterSelect} />
         </div>
       </div>
-      <ProductGallery products={filteredProducts} />
+      {!isLoading  &&  <ProductGallery products={filteredProducts} />}  
       {showError &&  <div className="flex mx-auto text-red-500">Erreur est servenue , veuillez refresher la page svp !</div> }
     </div>  
   );

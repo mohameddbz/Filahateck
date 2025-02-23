@@ -29,6 +29,7 @@ import OffresPage from "./pages/Home/Offer";
 import ProductDetails from "./pages/User/ProductDetails";
 import MyProductDetail from "./pages/User/MyProductDetail";
 import OffresSeller from "./pages/Seller/Offre";
+import ProductSubmissionSeller from "./pages/Seller/ProductSubmission";
 
 function App() {
   return (
@@ -71,9 +72,9 @@ function App() {
           }>
             <Route path="/seller/marketplace" element={<Marketplace/>}/>
             <Route path="/seller/offre" element={<OffresSeller/>}/>
-            {/* <Route path="/user/product-details/:id" element={<ProductDetails/>}/>
-            <Route path="/user/my-product-details/:id" element={<MyProductDetail/>}/>
-            <Route path="/user/product-submission" element={<ProductSubmission/>}/>  */}
+            <Route path="/seller/product-details/:id" element={<ProductDetails/>}/>
+            <Route path="/seller/my-product-details/:id" element={<MyProductDetail/>}/>
+            <Route path="/seller/product-submission" element={<ProductSubmissionSeller/>}/> 
           </Route>
 
           <Route path="/admin" element={

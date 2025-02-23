@@ -9,7 +9,10 @@ const api = axios.create({
 // Interceptor to handle errors globally
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  (error) => { // Vérifie si le code d'erreur est dans la plage 4xx
+    if (error.response && error.response.status >= 400 && error.response.status < 500) {
+      return error.response; // Retourne la réponse même si c'est une erreur 4xx
+    }  
     const message = error.response?.data?.message || 'Server error';
     return Promise.reject(message);
   }

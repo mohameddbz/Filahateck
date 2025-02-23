@@ -7,10 +7,15 @@ import { makeRequest } from './../../../../utils/api/httpService';
 import Success from './../../../common/Success'; 
 import Error from './../../../common/Error';
 
-const ProductForm = () => {
+const ProductForm = ({isAgreculteur,hasAbonnement,abonnement}) => {
   const { isArabic } = useContext(LanguageContext);
   const lang = isArabic ? 'arabic' : 'french';
   const texts = translations[lang];
+
+  console.log('abonnement',abonnement);
+console.log('hasAbonnement',hasAbonnement);
+
+  const endpoint = isAgreculteur ? "/publications/add" : "/publications/add";
 
   // État du formulaire
   const [formData, setFormData] = useState({
@@ -55,12 +60,25 @@ const ProductForm = () => {
       data.append(`images`, image);
     });
 
+    if(!isAgreculteur){
+      if(hasAbonnement) {
+         console.log('abonnement',abonnement);
+        data.append('sellerAbonnementUserId',abonnement.id);
+      }
+    }
+
     try {
-      const response = await makeRequest('/publications/add', 'POST', data);
+      const response = await makeRequest(endpoint, 'POST', data);
+      console.log("la reponse de serveur est la suivante --->",response.status);
       if (response && response.status === 200) {
         // Afficher le composant Success
         setSuccessMessage('Publication créée avec succès');
         setShowSuccess(true);
+      }
+      else if (response.status === 401) {
+        console.log("wsh reni nkteb est ----->",response.data.message);
+        setErrorMessage(response.data.message);
+        setShowError(true);
       }
       console.log('Produit ajouté:', response);
     } catch (error) {

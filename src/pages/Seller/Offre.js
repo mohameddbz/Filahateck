@@ -102,8 +102,8 @@ const OffresSeller = () => {
 
     try {
       const payload = {
-        sellerabonnementid: selectedOffer.id, // Utiliser sellerabonnementid au lieu de abn_id
-        userid: userId, // Utiliser userid au lieu de user_id
+        sellerAbonnementId: selectedOffer.id, // Utiliser sellerabonnementid au lieu de abn_id
+        userId: userId, // Utiliser userid au lieu de user_id
         dateDebut: new Date().toISOString().split('T')[0], // Utiliser dateDebut au lieu de date_abonnement
         dateFin: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0], // Ajouter une date de fin
         etat: "désactivé", // Utiliser "actif" au lieu de "désactivé"
@@ -111,7 +111,7 @@ const OffresSeller = () => {
 
       const result = await makeRequest('/sellerAbonnementUser', 'POST', payload); // Utiliser la route correcte
       console.log('Offre soumise avec succès:', result);
-      navigate('/user/marketplace');
+      navigate('/seller/marketplace');
     } catch (error) {
       console.error('Erreur lors de la soumission de l\'offre:', error);
       setError(error.message);

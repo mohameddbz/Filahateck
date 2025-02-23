@@ -45,16 +45,17 @@ const ProductSubmission = () => {
   return (
       <div className="flex-grow p-6 mt-4" >
         <div className="mb-6 pl-6 space-y-1" style={{ direction: isArabic ? 'rtl' : 'ltr' }}>
-          <p className="text-xl font-semibold mt-8">{texts.addProductTitle}</p>
-          <p>{texts.addProductInstruction}</p>
+          {/* <p className="text-xl font-semibold mt-8">{texts.addProductTitle}</p> */}
+          <p className="text-2xl text-center font-bold mt-8">{texts.comingSoon}</p>
+          {/* <p>{texts.addProductInstruction}</p> */}
         </div>
-        <ProductForm />
+        {/* <ProductForm />
         <div className="mb-6 pl-6 space-y-1" style={{ direction: isArabic ? 'rtl' : 'ltr' }}>
           <p className="text-xl font-semibold mt-8">{texts.viewPublishedTitle}</p>
         </div>
         { isLoading && <Loading /> }
         { !isLoading &&  <ProductUserGallery products={publication} /> }
-        { error && <Error message="Erreur lors de recupuration des publications" onClose={() => setError(false)} /> }
+        { error && <Error message="Erreur lors de recupuration des publications" onClose={() => setError(false)} /> } */}
       </div>
   );
 };
