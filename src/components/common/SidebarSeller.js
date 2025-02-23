@@ -28,8 +28,8 @@ const Sidebar = () => {
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  `block w-full py-2 px-4 rounded hover:bg-SidebarColor ${
-                    isActive ? 'bg-red-500 text-white' : 'bg-white'
+                  `block w-full py-1 px-2  font-semibold hover:text-white shadow-lg drop-shadow-md rounded-lg hover:bg-myOrange ${
+                    isActive ? 'bg-myOrange text-white' : 'bg-white'
                   }`
                 }
               >

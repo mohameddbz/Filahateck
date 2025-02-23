@@ -42,9 +42,11 @@ module.exports = {
         SidebarColor:'#ECECEC',
         darkBlue: '#2995D9',   
         whiteBlue: '#2BA8D9',  
+        myGrayy : '#D9D9D9',
         myGreen: '#6E8C03',  
         myYellow:'#F2B705',
         backgroundComment : '#FFE597',
+        myRed : '#FF0000',
         myOrange : {
           DEFAULT: '#D97904',       
           '50': 'rgba(217, 121, 4, 0.5)',  
