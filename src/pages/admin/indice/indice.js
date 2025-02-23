@@ -40,6 +40,7 @@ const IndiceManagement = () => {
       const payload = {
         IndiceId: data.indiceId,
         AbonnementId: data.recommendationId,
+        nombre_de_requete: 6
       };
       const response = await makeRequest('/abonnementIndice', 'POST', payload);
       setShowRecommendationForm(false);
@@ -123,7 +124,7 @@ const IndiceManagement = () => {
           onClick={() => setShowRecommendationForm(true)}
           className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition mt-4"
         >
-          Assign Recommendation to Indice
+          Assign Indice to Abonnement
         </button>
       )}
 

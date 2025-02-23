@@ -1,14 +1,63 @@
-import React, { useState } from 'react';
-import { makeRequest } from './../../../../utils/api/httpService'; 
+import React, { useState, useEffect } from 'react';
+import { makeRequest } from './../../../../utils/api/httpService';
 import { getApiUrl } from './../../../../utils/api/getRoute';
 
-const RequestForm = ({ indicesData, userId}) => {
+const RequestForm = ({ indicesData }) => {
   const [formData, setFormData] = useState({
     indice: '',
     startDate: '',
     endDate: '',
-    parcelleId: '1',
+    parcelleId: '',
   });
+
+  const [parcelles, setParcelles] = useState([]);
+  const [userId, setUserId] = useState(null);
+
+  // Fonction pour récupérer l'ID de l'utilisateur
+  const fetchUserId = async () => {
+    try {
+      const token = localStorage.getItem('Token');
+      if (!token) throw new Error('Token non trouvé.');
+
+      const response = await makeRequest('/users/get', 'GET', {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      return response.data?.data?.user_id || null;
+    } catch (error) {
+      console.error('Erreur User ID:', error);
+      return null;
+    }
+  };
+
+  // Fonction pour récupérer les parcelles en utilisant l'ID utilisateur
+  const fetchParcelles = async (userId) => {
+    if (!userId) return; // Éviter d'exécuter la requête si userId est null
+    try {
+      const response = await makeRequest(`/parcelle/user/${userId}`, 'GET', null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('Token')}`,
+        },
+      });
+
+      console.log("Réponse des parcelles:", response);
+      setParcelles(response.data || []); // Gérer le cas où response.data est undefined
+    } catch (error) {
+      console.error('Erreur lors de la récupération des parcelles:', error);
+    }
+  };
+
+  useEffect(() => {
+    const initializeData = async () => {
+      const fetchedUserId = await fetchUserId();
+      if (fetchedUserId) {
+        setUserId(fetchedUserId); // ✅ Correct assignment
+        await fetchParcelles(fetchedUserId);
+      }
+    };
+
+    initializeData();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,9 +66,14 @@ const RequestForm = ({ indicesData, userId}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!userId) {
+      alert("L'utilisateur n'est pas identifié.");
+      return;
+    }
+
     const { indice, startDate, endDate, parcelleId } = formData;
 
-    if (!indice || !startDate || !endDate) {
+    if (!indice || !startDate || !endDate || !parcelleId) {
       alert('Veuillez remplir tous les champs.');
       return;
     }
@@ -35,6 +89,8 @@ const RequestForm = ({ indicesData, userId}) => {
       parcelle_id: parseInt(parcelleId, 10),
     };
 
+    console.log("Payload envoyé:", payload);
+
     const apiUrl = getApiUrl(indice);
 
     if (!apiUrl) {
@@ -49,9 +105,10 @@ const RequestForm = ({ indicesData, userId}) => {
         },
       });
       alert('Requête soumise avec succès!');
-      console.log('Response:', response.data);
+      console.log('Réponse:', response.data);
     } catch (error) {
-      alert(`${error || error}`);
+      console.error("Erreur lors de l'envoi de la requête:", error);
+      alert(`Erreur: ${error}`);
     }
   };
 
@@ -89,14 +146,23 @@ const RequestForm = ({ indicesData, userId}) => {
           className="p-2 border rounded-md"
         />
 
-        <input
-          type="number"
+        <select
           name="parcelleId"
           value={formData.parcelleId}
           onChange={handleChange}
           className="p-2 border rounded-md"
-          placeholder="Parcelle ID"
-        />
+        >
+          <option value="">Choisir une parcelle</option>
+          {parcelles.length > 0 ? (
+            parcelles.map((parcelle) => (
+              <option key={parcelle.id} value={parcelle.id}>
+                {parcelle.identifiantU}
+              </option>
+            ))
+          ) : (
+            <option disabled>Aucune parcelle disponible</option>
+          )}
+        </select>
 
         <button type="submit" className="bg-green-600 text-white p-2 rounded-md hover:bg-green-700">
           Soumettre

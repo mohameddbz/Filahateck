@@ -1,11 +1,11 @@
 export  const sidebarItems = [
+    { label: "Precision", path: "/user/ferme-map" },  
     { label: "Market place", path: "/user/marketplace" },
-    { label: "Gestion de stocks", path: "/user/stock-management" },
     { label: "Publication", path: "/user/product-submission" },
-    { label: "Affichage d'infos", path: "/user/Paramètres" },
+    { label: "Gestion de stocks", path: "/user/stock-management" },
     { label: "Amis", path: "/user/ami" },
     { label: "Messages", path: "/user/Messaging-page" },
-    { label: "Historique", path: "/user/Paramètres" },
-    { label: "Paramètres", path: "/user/Paramètres" },
+    { label: "Abonement", path: "/user/Abonnement" },
+    { label: "Profile", path: "/user/profile" },
     { label: "Se déconnecter", path: "/user/marketplace", color: "text-red-600" }
   ];
