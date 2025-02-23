@@ -43,11 +43,8 @@ const registerUser = async (req, res) => {
       wilaya,
       role_id,
     });
-   console.log("New user created:", newUser.id);
-   console.log('Seller Role:',sellerRole_id);
 
     if(newUser && sellerRole_id){
-      console.log("Creating user seller role");
       await createUserSellerRole(newUser.id,sellerRole_id);
     }
 

@@ -78,10 +78,32 @@ const deleteSellerAbonnementUser = async (req, res) => {
   }
 };
 
+const getCurrentSellerAbonnementUser = async (req, res) => {
+  const { user_id } = req.user;  
+  try {
+    const sellerAbonnementUser = await SellerAbonnementUserService.getCurrentSellerAbonnementUser(user_id);
+    if (!sellerAbonnementUser) {
+      return res.status(200).json({
+        hasActiveSubscription: false,
+        message: "Aucun abonnement actif trouvé."
+      });
+    }
+
+    return res.status(200).json({
+      hasActiveSubscription: true,
+      data: sellerAbonnementUser
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};  
+
 module.exports = {
   createSellerAbonnementUser,
   getAllSellerAbonnementUsers,
   getSellerAbonnementUserById,
   updateSellerAbonnementUser,
   deleteSellerAbonnementUser,
-};
+  getCurrentSellerAbonnementUser
+};                         

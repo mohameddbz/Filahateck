@@ -1,7 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('./../../config/config');
 const User = require('./../User/User');
-
+const SellerAbonnementUser = require('./../Abonement/SellerAbonnementUser');
+const SellerAbonnement = require('./../Abonement/SellerAbonnement');
 const Publication = sequelize.define(
     'Publication',
     {
@@ -35,6 +36,16 @@ const Publication = sequelize.define(
             allowNull: false,
             defaultValue: 'DISPO',
         },
+        sellerAbonnementUserId: {
+            type: DataTypes.INTEGER,
+            allowNull: false, // Pour s'assurer qu'une publication est toujours liée à un abonnement
+            references: {
+                model: SellerAbonnementUser, // Référence à la table SellerAbonnementUser
+                key: 'id',
+            },
+            onDelete: 'CASCADE',  // Si l'abonnement est supprimé, les publications liées seront aussi supprimées
+            onUpdate: 'CASCADE', 
+        },
     },
     {
         timestamps: true,
@@ -47,16 +58,60 @@ const Publication = sequelize.define(
 Publication.belongsTo(User, { foreignKey: 'user_id', allowNull: false });
 User.hasMany(Publication, { foreignKey: 'user_id' });
 
+Publication.belongsTo(SellerAbonnementUser, { foreignKey: 'sellerAbonnementUserId', allowNull: false });
+SellerAbonnementUser.hasMany(Publication, { foreignKey: 'sellerAbonnementUserId' });
 
-Publication.insertPublication = async function (publicationData) {
+// Publication.insertPublication = async function (publicationData) {
+//     try {
+//         const publication = await Publication.create(publicationData);
+//         return publication;
+//     } catch (error) {
+//         console.error('Erreur lors de l\'insertion de la publication:', error);
+//         throw error;  
+//     }
+// };
+
+Publication.insertPublication = async function (publicationData, userId) {
+
+    const transaction = await sequelize.transaction(); // 🛑 Démarrer une transaction
+  
     try {
-        const publication = await Publication.create(publicationData);
-        return publication;
+      // 🔹 Récupérer l'abonnement actif du vendeur
+      const sellerAbonnementUser = await SellerAbonnementUser.findOne({
+        where: { id : publicationData.sellerAbonnementUserId ,userId  , etat :"actif"},
+        include: [{ model: SellerAbonnement }], // Inclure les infos de l’abonnement
+        transaction
+      });
+  
+      if (!sellerAbonnementUser) {
+        return { message: "Aucun abonnement actif trouvé pour cet utilisateur.", status: 404 };
+      }
+  
+      // 🔹 Vérifier la limite de publications
+      if (sellerAbonnementUser.nbPost >= sellerAbonnementUser.SellerAbonnement.nbPost) {
+       return {message:"Vous avez attient la limite de nombre de publication",status:401}
+
+      }else {
+            // 🔹 Créer la publication
+            const publication = await Publication.create(publicationData, { transaction });
+            // 🔹 Incrémenter le nombre de publications dans SellerAbonnementUser
+            await sellerAbonnementUser.update(
+            { nbPost: sellerAbonnementUser.nbPost + 1 },
+            { transaction }
+            );
+
+            // ✅ Valider la transaction
+            await transaction.commit();
+            return {  message:"Publication créee avec succes" , status:201 ,publication:publication} ;
+      }
+  
+      
     } catch (error) {
-        console.error('Erreur lors de l\'insertion de la publication:', error);
-        throw error;  
+      await transaction.rollback();
+      console.error("Erreur lors de la création de la publication :", error);
+      return { message: "Erreur serveur lors de la création de la publication", status: 500 };
     }
-};
+  };
 
 Publication.updatePublication= async function ( publicationId,publicationData ) {
 

@@ -7,9 +7,10 @@ const ImagePublication = require('./../../models/ImagePublication/ImagePublicati
 const { deleteImagesByIds } = require('./../../services/Publication/ImagePublication'); 
 
 const createPublication = async (req, res) => {
+  // il faut verifier les données envoyer du backend , il faut aussi incrementer le nombre de post 
     try {
      const user_id = req.user.user_id ; 
-        const { productName, quantity, price, location, phone } = req.body;
+        const { productName, quantity, price, location, phone ,sellerAbonnementUserId } = req.body;
         const publicationData = {
          nomProduit : productName,
          quantité :quantity,
@@ -17,35 +18,48 @@ const createPublication = async (req, res) => {
          addresse : location,
          phoneNumber : phone,
          user_id,  
+         sellerAbonnementUserId
      };
-       const response = await Publication.insertPublication(publicationData); 
-       if (response) {
-         const publicationId = response.dataValues.id;
-         const files = req.files;
-         const filePaths = [];
-         if (files && files.length > 0) {
-             
-             for (let i = 0; i < files.length; i++) {
-                 const file = files[i];
-                 const uniqueId = uuidv4(); 
-                 const fileName = `${uniqueId}-${Date.now()}-${file.originalname}`;
-                 const filePath = path.join(__dirname, '../../../uploads/publications', fileName);
-                 fs.writeFileSync(filePath, file.buffer); // Sauvegarde dans le dossier 'uploads/'
-                 const responseImageInsertion  = await  ImagePublication.insertImage(publicationId, fileName);
-                 filePaths.push(filePath);
-             }
-         }
- 
-         res.status(200).json({
-             message: 'Publication créée avec succès',
-             data: req.body,
-             files: filePaths 
-         });
-       }else{
-         // erreur dans l'insertion donc on doit pas inserer les photos dans le backend et meme dans la table imagePub
-         console.error('Erreur lors de la création de la publication:', error);
-         res.status(404).json({ message: 'Erreur lors de l insertion de la publication ' });
+       const response = await Publication.insertPublication(publicationData,user_id); 
+
+       if(response.status === 401 ){
+        console.log("rena ndekhlo win lezem ----->")
+            res.status(401).json({
+              message:response.message 
+              // message : "yew m3ndekch abonnement sobhan lah ! "
+            })
+       }else if (response.status === 201 ) {
+        console.log("rew ydkhol dekhel if te3 status correct ----->",response.publication)
+        const publicationId = response.publication.id;
+
+        const files = req.files;
+        const filePaths = [];
+        if (files && files.length > 0) {
+          console.log("rew yedkhol dekhel sema kyn files ---------->",files)
+            for (let i = 0 ; i < files.length; i++) {
+                const file = files[i];
+                const uniqueId = uuidv4(); 
+                const fileName = `${uniqueId}-${Date.now()}-${file.originalname}`;
+                const filePath = path.join(__dirname, '../../../uploads/publications', fileName);
+                fs.writeFileSync(filePath, file.buffer); // Sauvegarde dans le dossier 'uploads/'
+                const responseImageInsertion  = await  ImagePublication.insertImage(publicationId, fileName);
+                filePaths.push(filePath);
+            }
+        }
+
+        res.status(200).json({
+            message: 'Publication créée avec succès',
+            data: req.body,
+            files: filePaths 
+        });
        }
+      //  if (response) {
+         
+      //  }else{
+      //    // erreur dans l'insertion donc on doit pas inserer les photos dans le backend et meme dans la table imagePub
+      //    console.error('Erreur lors de la création de la publication:', error);
+      //    res.status(404).json({ message: 'Erreur lors de l insertion de la publication ' });
+      //  }
       
        
     } catch (error) {
@@ -77,7 +91,7 @@ const getAllPublications = async (req, res) => {
 
   const getPublicationById = async (req, res) => {
     const { id } = req.params; 
-   console.log('id',id);
+  //  console.log('id',id);
     try {
       const publication = await Publication.findOne({
         where: { id },
@@ -93,7 +107,7 @@ const getAllPublications = async (req, res) => {
       if (!publication) {
         return res.status(404).json({ message: 'Publication non trouvée' });
       }
-      console.log(publication);
+      // console.log(publication);
       return res.status(200).json(publication);
     } catch (error) {
       console.error('Erreur lors de la récupération de la publication:', error);
@@ -116,8 +130,6 @@ const getAllPublications = async (req, res) => {
             },
           ],
         });
-        console.log('publications',publications)
-       console.log(publications)
         return res.status(200).json(publications);
       } catch (error) {
         console.error('Erreur lors de la récupération des publications:', error);
@@ -129,12 +141,12 @@ const getAllPublications = async (req, res) => {
 
 
    const updatePublication = async (req, res) => {
-    console.log('Début de la mise à jour de la publication');
+    // console.log('Début de la mise à jour de la publication');
     try {
       const publicationId = req.params.id; // Récupérer l'ID de la publication à mettre à jour
       const user_id = req.user.user_id; // Récupérer l'ID de l'utilisateur connecté
       const { productName, quantity, price, location, phone, deletedImageIds } = req.body; // Récupérer les données du formulaire
-     console.log("deletedImageI -->> ",deletedImageIds); 
+    //  console.log("deletedImageI -->> ",deletedImageIds); 
       // Validation des données
       if (!productName || !quantity || !price || !location || !phone) {
         return res.status(400).json({ message: 'Tous les champs obligatoires doivent être remplis' });
@@ -150,7 +162,7 @@ const getAllPublications = async (req, res) => {
         user_id,
       };
   
-      console.log('Données de la publication :', publicationData);
+      // console.log('Données de la publication :', publicationData);
 
       const updatedPublication = await Publication.updatePublication(publicationId, publicationData);
   

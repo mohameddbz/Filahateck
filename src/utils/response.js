@@ -5,6 +5,6 @@ const successResponse = (res, statusCode, message, data = null) => {
         message: message,
         data: data,
     });
-};
-
+};  
+    
 module.exports = { successResponse };

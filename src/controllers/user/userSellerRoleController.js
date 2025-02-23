@@ -6,10 +6,8 @@ const {getSellerRoleOfUser} = require('../../services/user/userSellerRoleService
 
 
 const getSellerRoleOfUserByID = async (req, res) => {
-    console.log("Getting seller role of user with ID:",req.params.id);
     try {
       const userSellerRole = await getSellerRoleOfUser(req.params.id);
-      console.log("User Seller Role:",userSellerRole);
       if (!userSellerRole) {
         return errorResponse(res, 404, 'User not found');
       }

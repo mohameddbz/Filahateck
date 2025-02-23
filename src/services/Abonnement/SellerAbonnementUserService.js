@@ -1,6 +1,7 @@
 const User = require('../../models/User/User');
 const SellerAbonnement = require('./../../models/Abonement/SellerAbonnement');  
 const SellerAbonnementUser = require('./../../models/Abonement/SellerAbonnementUser');  
+const { Op } = require('sequelize');
 
 // Créer un nouvel enregistrement SellerAbonnementUser
 const createSellerAbonnementUser = async (data) => {
@@ -18,6 +19,7 @@ const getAllSellerAbonnementUsers = async () => {
     const sellerAbonnementUsers = await SellerAbonnementUser.findAll({
       include: [SellerAbonnement, User], // Inclure les modèles associés
     });
+    console.log(sellerAbonnementUsers);
     return sellerAbonnementUsers;
   } catch (error) {
     throw new Error('Erreur lors de la récupération des SellerAbonnementUsers : ' + error.message);
@@ -63,10 +65,30 @@ const deleteSellerAbonnementUser = async (id) => {
   }
 };
 
+const getCurrentSellerAbonnementUser = async (userId) => {
+  try {
+    const currentDate = new Date(); // Date actuelle
+
+    const abonnement = await SellerAbonnementUser.findOne({
+      where: {
+        userId: userId,
+        etat: 'actif',
+        dateDebut: { [Op.lte]: currentDate }, // dateDebut ≤ currentDate
+        dateFin: { [Op.gte]: currentDate }    // dateFin ≥ currentDate
+      },
+      include: [SellerAbonnement] // Inclure les infos de l'abonnement si besoin
+    });
+
+    return abonnement;
+  } catch (error) {
+    throw new Error('Erreur lors de la récupération de l\'abonnement actuel : ' + error.message);
+  }
+};
 module.exports = {
   createSellerAbonnementUser,
   getAllSellerAbonnementUsers,
   getSellerAbonnementUserById,
   updateSellerAbonnementUser,
   deleteSellerAbonnementUser,
+  getCurrentSellerAbonnementUser
 };

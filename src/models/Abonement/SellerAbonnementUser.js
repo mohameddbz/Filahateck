@@ -3,6 +3,7 @@ const { sequelize } = require('../../config/config');
 const SellerAbonnement = require('./SellerAbonnement'); // Importez le modèle SellerAbonnement
 const User = require('./../User/User'); // Importez le modèle User
 
+
 const SellerAbonnementUser = sequelize.define('SellerAbonnementUser', {
   dateDebut: {
     type: DataTypes.DATE,
@@ -14,7 +15,8 @@ const SellerAbonnementUser = sequelize.define('SellerAbonnementUser', {
   },
   nbPost: {
     type: DataTypes.INTEGER,
-    allowNull: true, // Peut être null si illimité
+    defaultValue: 0,
+    allowNull: true,
   },
   etat: {
     type: DataTypes.ENUM('actif', 'désactivé'),
@@ -22,25 +24,24 @@ const SellerAbonnementUser = sequelize.define('SellerAbonnementUser', {
   },
   sellerAbonnementId: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
-      model: SellerAbonnement, // Référence à la table SellerAbonnement
+      model: SellerAbonnement,
       key: 'id',
     },
-    onDelete: 'SET NULL',
-    onUpdate: 'CASCADE',
   },
   userId: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
-      model: User, // Référence à la table User
+      model: User,
       key: 'id',
     },
-    onDelete: 'SET NULL',
-    onUpdate: 'CASCADE',
   }
 });
 
-// Relations
+
+
 SellerAbonnementUser.belongsTo(SellerAbonnement, { foreignKey: 'sellerAbonnementId' });
 SellerAbonnementUser.belongsTo(User, { foreignKey: 'userId' });
 SellerAbonnement.hasMany(SellerAbonnementUser, { foreignKey: 'sellerAbonnementId' });
