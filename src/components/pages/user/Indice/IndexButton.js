@@ -25,7 +25,7 @@ const IndexButtons = ({ parcellId, userId, indices }) => {
           );
       
           if (response.data?.imageUrl) {
-            console.log('Image successfully fetched.',response);
+            console.log('Image successfully fetched. ,,,',response);
             setImage(response.data);
             return response.data;
           } else {
@@ -46,16 +46,6 @@ const IndexButtons = ({ parcellId, userId, indices }) => {
 
     if (index) {
       const { indiceName, description, legende, recomndation } = index;
-
-      fetchImageData(userId, parcellId, indiceId)
-        .then(() => {
-          setMapVisible(true);
-          setErrorMessage('');
-        })
-        .catch(() => {
-          setMapVisible(false);
-          setErrorMessage('Erreur lors du chargement de la carte.');
-        });
 
         fetchImagesData(userId, parcellId, indiceId)
         .then(() => {

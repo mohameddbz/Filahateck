@@ -56,7 +56,7 @@ export const useImagesData = () => {
         {  headers: { Authorization: `Bearer ${token}` }, }
       );
       if (response.data && response.data.images.length > 0) {
-        console.log('Images fetched successfully:', response.data.images);
+        console.log('Images fetched successfully:::', response.data.images);
         setImagesData(response.data.images);
       } else {
         throw new Error('Aucune image trouvée.');
