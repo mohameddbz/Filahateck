@@ -27,7 +27,7 @@ const getAllAbonnementUsers = async (req, res) => {
   }
 };
 
-// Get an AbonnementUser by ID
+// Get an AbonnementUser by its ID
 const getAbonnementUserById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -41,19 +41,33 @@ const getAbonnementUserById = async (req, res) => {
   }
 };
 
+// Get the abonnement for a specific user by user_id
+const getAbonnementStatusByUserId = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const abonnementUser = await AbonnementUserService.getAbonnementByUserId(userId);
+    if (!abonnementUser) {
+      return res.status(404).json({ message: 'Aucun abonnement trouvé pour cet utilisateur' });
+    }
+    res.status(200).json(abonnementUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Update an AbonnementUser
 const updateAbonnementUser = async (req, res) => {
   const { id } = req.params;
   const { abn_id, user_id, date_abonnement, durée, etat } = req.body;
   try {
-    const updatedAbonnementUser = await AbonnementUserService.updateAbonnementUser(id, {
+    const updated = await AbonnementUserService.updateAbonnementUser(id, {
       abn_id,
       user_id,
       date_abonnement,
       durée,
       etat,
     });
-    if (updatedAbonnementUser[0] === 0) {
+    if (updated[0] === 0) {
       return res.status(404).json({ message: 'AbonnementUser not found' });
     }
     res.status(200).json({ message: 'AbonnementUser updated successfully' });
@@ -80,6 +94,7 @@ module.exports = {
   createAbonnementUser,
   getAllAbonnementUsers,
   getAbonnementUserById,
+  getAbonnementStatusByUserId,
   updateAbonnementUser,
   deleteAbonnementUser,
 };

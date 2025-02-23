@@ -1,6 +1,6 @@
-const  User  = require('../../models/User/User');
-const  Abonnement  = require('../../models/Abonement/Abonnement');  
-const  AbonnementUser  = require('../../models/Abonement/AbonnementUser');  
+const AbonnementUser = require('../../models/Abonement/AbonnementUser');
+const Abonnement = require('../../models/Abonement/Abonnement');
+const User = require('../../models/User/User');
 
 // Create a new AbonnementUser
 const createAbonnementUser = async (data) => {
@@ -16,7 +16,7 @@ const createAbonnementUser = async (data) => {
 const getAllAbonnementUsers = async () => {
   try {
     const abonnementUsers = await AbonnementUser.findAll({
-      include: [Abonnement, User], // Include associated models
+      include: [Abonnement, User],
     });
     return abonnementUsers;
   } catch (error) {
@@ -29,7 +29,7 @@ const getAbonnementUserById = async (id) => {
   try {
     const abonnementUser = await AbonnementUser.findOne({
       where: { id },
-      include: [Abonnement, User], // Include associated models
+      include: [Abonnement, User],
     });
     return abonnementUser;
   } catch (error) {
@@ -37,13 +37,27 @@ const getAbonnementUserById = async (id) => {
   }
 };
 
+// Get the abonnement for a specific user by user_id
+const getAbonnementByUserId = async (userId) => {
+  try {
+    const abonnementUsers = await AbonnementUser.findAll({
+      where: { user_id: userId },
+      include: [Abonnement, User],
+    });
+    return abonnementUsers;
+  } catch (error) {
+    throw new Error('Error fetching abonnement for user: ' + error.message);
+  }
+};
+
+
 // Update an AbonnementUser
 const updateAbonnementUser = async (id, data) => {
   try {
-    const abonnementUser = await AbonnementUser.update(data, {
+    const updated = await AbonnementUser.update(data, {
       where: { id },
     });
-    return abonnementUser;
+    return updated;
   } catch (error) {
     throw new Error('Error updating abonnement user: ' + error.message);
   }
@@ -65,6 +79,7 @@ module.exports = {
   createAbonnementUser,
   getAllAbonnementUsers,
   getAbonnementUserById,
+  getAbonnementByUserId,
   updateAbonnementUser,
   deleteAbonnementUser,
 };
