@@ -2,8 +2,9 @@ const SellerAbonnementUserService = require('./../../services/Abonnement/SellerA
 
 // Créer un nouvel enregistrement SellerAbonnementUser
 const createSellerAbonnementUser = async (req, res) => {
+  const userId = req.user.user_id; 
   try {
-    const { sellerAbonnementId, userId, dateDebut, dateFin, nbPost, etat } = req.body;
+    const { sellerAbonnementId, dateDebut, dateFin, nbPost, etat } = req.body;
     const newSellerAbonnementUser = await SellerAbonnementUserService.createSellerAbonnementUser({
       sellerAbonnementId,
       userId,
@@ -83,7 +84,7 @@ const getCurrentSellerAbonnementUser = async (req, res) => {
   try {
     const sellerAbonnementUser = await SellerAbonnementUserService.getCurrentSellerAbonnementUser(user_id);
     if (!sellerAbonnementUser) {
-      return res.status(200).json({
+      return res.status(404).json({
         hasActiveSubscription: false,
         message: "Aucun abonnement actif trouvé."
       });

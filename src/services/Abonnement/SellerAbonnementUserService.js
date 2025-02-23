@@ -1,6 +1,7 @@
 const User = require('../../models/User/User');
 const SellerAbonnement = require('./../../models/Abonement/SellerAbonnement');  
 const SellerAbonnementUser = require('./../../models/Abonement/SellerAbonnementUser');  
+const Fonctionnalities = require ('./../../models/Abonement/Fonctionnalities')
 const { Op } = require('sequelize');
 
 // Créer un nouvel enregistrement SellerAbonnementUser
@@ -84,6 +85,35 @@ const getCurrentSellerAbonnementUser = async (userId) => {
     throw new Error('Erreur lors de la récupération de l\'abonnement actuel : ' + error.message);
   }
 };
+// const getCurrentSellerAbonnementUser = async (userId) => {
+//   try {
+//     const currentDate = new Date(); // Date actuelle
+
+//     const abonnement = await SellerAbonnementUser.findOne({
+//       where: {
+//         userId: userId,
+//         etat: 'actif',
+//         dateDebut: { [Op.lte]: currentDate }, // dateDebut ≤ currentDate
+//         dateFin: { [Op.gte]: currentDate }    // dateFin ≥ currentDate
+//       },
+//       include: [
+//         {
+//           model: SellerAbonnement, // Inclure les infos de l'abonnement
+//           include: [
+//             {
+//               model: Fonctionnalities, // Inclure les fonctionnalités via la table de liaison
+//               through: { attributes: [] } // Ne pas inclure les attributs de la table de liaison
+//             }
+//           ]
+//         }
+//       ]
+//     });
+//     console.log("abonnement is ----> ",abonnement);
+//     return abonnement;
+//   } catch (error) {
+//     throw new Error('Erreur lors de la récupération de l\'abonnement actuel : ' + error.message);
+//   }
+// };
 module.exports = {
   createSellerAbonnementUser,
   getAllSellerAbonnementUsers,

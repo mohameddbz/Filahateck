@@ -4,7 +4,7 @@ const authMiddleware = require('./../../middlewares/authMiddleware');
 const sellerAbonnementUserController = require('./../../controllers/Abonnement/SellerAbonnementUserController');
 
 // Routes pour SellerAbonnementUser
-router.post('/', sellerAbonnementUserController.createSellerAbonnementUser);
+router.post('/',authMiddleware, sellerAbonnementUserController.createSellerAbonnementUser);
 router.get('/', sellerAbonnementUserController.getAllSellerAbonnementUsers);
 router.get('/unique/:id', sellerAbonnementUserController.getSellerAbonnementUserById);
 router.put('/:id', sellerAbonnementUserController.updateSellerAbonnementUser);

@@ -1,5 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('./../../config/config');
+const { Op } = require('sequelize'); 
+
+
 const User = require('./../User/User');
 const SellerAbonnementUser = require('./../Abonement/SellerAbonnementUser');
 const SellerAbonnement = require('./../Abonement/SellerAbonnement');
@@ -78,7 +81,16 @@ Publication.insertPublication = async function (publicationData, userId) {
     try {
       // 🔹 Récupérer l'abonnement actif du vendeur
       const sellerAbonnementUser = await SellerAbonnementUser.findOne({
-        where: { id : publicationData.sellerAbonnementUserId ,userId  , etat :"actif"},
+        where: { 
+            id : publicationData.sellerAbonnementUserId ,
+            userId  ,
+             etat :"actif",
+             dateDebut: {
+                [Op.lte]: new Date(), // dateDebut <= NOW()
+              },
+              dateFin: {
+                [Op.gte]: new Date(), // dateFin >= NOW()
+              },},
         include: [{ model: SellerAbonnement }], // Inclure les infos de l’abonnement
         transaction
       });
@@ -88,10 +100,13 @@ Publication.insertPublication = async function (publicationData, userId) {
       }
   
       // 🔹 Vérifier la limite de publications
-      if (sellerAbonnementUser.nbPost >= sellerAbonnementUser.SellerAbonnement.nbPost) {
-       return {message:"Vous avez attient la limite de nombre de publication",status:401}
-
-      }else {
+      if(sellerAbonnementUser.SellerAbonnement.isLimited ===1 ) {
+        if (sellerAbonnementUser.nbPost >= sellerAbonnementUser.SellerAbonnement.nbPost) {
+            return {message:"Vous avez attient la limite de nombre de publication",status:401}
+     
+           }
+      }
+      else {
             // 🔹 Créer la publication
             const publication = await Publication.create(publicationData, { transaction });
             // 🔹 Incrémenter le nombre de publications dans SellerAbonnementUser
