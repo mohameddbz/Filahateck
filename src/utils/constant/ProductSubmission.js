@@ -8,6 +8,7 @@ export const translations = {
     subscribeNow: "Souscrire maintenant",
     publishError: "Publication impossible : Vous n'avez pas d'abonnement en cours. Veuillez souscrire à un abonnement pour publier.",
     comingSoon: "Cette fonctionnalité sera disponible bientôt",
+    noPublication: "Vous n'avez aucune publication",
   },
   arabic: {
     addProductTitle: "يمكنك الآن إضافة منتجاتك التي تريد عرضها للجمهور",
@@ -18,5 +19,6 @@ export const translations = {
     subscribeNow: "اشترك الآن",
     publishError: "النشر غير ممكن: ليس لديك اشتراك نشط. يرجى الاشتراك لنشر المحتوى.",
     comingSoon: "هذه الميزة ستكون متاحة قريبًا",
+    noPublication: "ليس لديك أي منشور",
   },
 };

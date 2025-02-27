@@ -25,6 +25,7 @@ const ProductSubmissionSeller = () => {
   const [hasActiveSubscription,setHasActiveSubscription] = useState(false);
   const [isAbonnementLoading,setIsAbonnementLoading] = useState(true);
   const [abonement,setAbonement] = useState([]);
+  const [noPublication,setNoPublication] = useState(false);
  useEffect(() => {
     const fetchAbonnement = async () => {
      try {
@@ -60,6 +61,9 @@ const ProductSubmissionSeller = () => {
             setPublication(response.data);
             console.log('response',response.data);
           }
+          if(response.status === 205){// ici j'ai utilise ce code pour dire que le user n'a aucune publication 
+            setNoPublication(true);
+          }
          
          setIsLoading(false);
 
@@ -87,10 +91,12 @@ const ProductSubmissionSeller = () => {
      {!hasActiveSubscription && <SubscriptionMessage noSubscriptionTitle={texts.noSubscriptionTitle} noSubscriptionMessage={texts.noSubscriptionMessage} subscribeNow={texts.subscribeNow} linkToSubscription={"hahaha"} />}
         <div className="mb-6 pl-6 space-y-1" style={{ direction: isArabic ? 'rtl' : 'ltr' }}>
           <p className="text-xl font-semibold mt-8">{texts.viewPublishedTitle}</p>
+          {noPublication &&  <p className="text-xl font-semibold mt-8">{texts.noPublication}</p>}
         </div>
         { isLoading && <Loading /> }
         { !isLoading && publication &&  <ProductUserGallery products={publication} /> }
         { error && <Error message="Erreur lors de recupuration des publications" onClose={() => setError(false)} /> }
+       
       </div>
   );
 };

@@ -11,7 +11,6 @@ import SelectorRole from './../SignUp/selectedRole';
 import translations from './../../../../utils/constant/SignUp'; 
 import {makeRequest} from './../../../../utils/api/httpService'
 import Error from './../../../common/Error'
-import Succes from './../../../common/Success'
 import Success from './../../../common/Success';
 
 const SignUpForm = () => {
@@ -72,7 +71,6 @@ const SignUpForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
      
-    console.log("rew ydir el submit")
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage(text.passwordMismatch);
       return;
