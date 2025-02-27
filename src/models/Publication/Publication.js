@@ -39,16 +39,7 @@ const Publication = sequelize.define(
             allowNull: false,
             defaultValue: 'DISPO',
         },
-        sellerAbonnementUserId: {
-            type: DataTypes.INTEGER,
-            allowNull: false, // Pour s'assurer qu'une publication est toujours liée à un abonnement
-            references: {
-                model: SellerAbonnementUser, // Référence à la table SellerAbonnementUser
-                key: 'id',
-            },
-            onDelete: 'CASCADE',  // Si l'abonnement est supprimé, les publications liées seront aussi supprimées
-            onUpdate: 'CASCADE', 
-        },
+        
     },
     {
         timestamps: true,

@@ -41,7 +41,7 @@ const validateUser = [
       .withMessage(({ path }) => `${path} must be a valid Wilaya code`),
       
     body('role_id')
-      .isInt({ min: 1 })
+       .notEmpty()
       .withMessage(({ path }) => `${path} is required and must be a valid role ID`),
     
     

@@ -76,8 +76,8 @@ const getAllPublications = async (req, res) => {
           include: [
             {
               model: ImagePublication,
-              as: 'images', // Doit correspondre à l'alias défini dans `hasMany`
-              attributes: ['id', 'imagePath'], // Retourner seulement les champs nécessaires
+              as: 'images', 
+              attributes: ['id', 'imagePath'], 
             },
           ],
         });
@@ -118,8 +118,13 @@ const getAllPublications = async (req, res) => {
 
    const getPublicationsOfUser = async (req,res) =>{
        const user_id = req.user.user_id;
-       console.log('user_id',user_id);
       try {
+        const count = await Publication.count({ where: { user_id } });
+
+        if (count === 0) {
+            return res.status(205).json({ message: "Aucune publication trouvée.", publications: [] });
+        }
+
         const publications = await Publication.findAll({
           where: { user_id: user_id }, 
           include: [
@@ -130,6 +135,7 @@ const getAllPublications = async (req, res) => {
             },
           ],
         });
+        console.log('publications of user li m3ndoch is ? ',publications);
         return res.status(200).json(publications);
       } catch (error) {
         console.error('Erreur lors de la récupération des publications:', error);
