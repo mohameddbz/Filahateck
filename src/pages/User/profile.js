@@ -44,17 +44,22 @@ const UserProfile = () => {
 
   const handleUpdate = async () => {
     setUpdating(true);
+    console.log(user)
+    console.log(user.email,
+      formData.userName,
+      user.password,
+      formData.phoneNumber,
+      user.profilePicture,
+      formData.wilaya,
+      user.role_id)
     try {
       // Assuming your update endpoint is something like /users/:id
       const response = await makeRequest(
         `/users/${user.id}`,
         "PUT",
         {
-          email: user.email,
           userName: formData.userName,
-          password: user.password,
           phone_number: formData.phoneNumber,
-          profile_picture: user.profile_picture,
           wilaya: formData.wilaya,
           role_id: user.role_id
         },
