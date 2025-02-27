@@ -10,5 +10,5 @@ export  const sidebarItems = [
     { label: "Abonnement", path: "/admin/Abonnement" },
     { label: "Seller Abonnement",path: "/admin/SellerAbonnement"},
     { label: "Seller Abonnement Manager", path: "/admin/SellerAbonnementManager" },
-    { label: "Se déconnecter", path: "/user/marketplace", color: "text-red-600" }
+    // { label: "Se déconnecter", path: "/user/marketplace", color: "text-red-600" }
   ];

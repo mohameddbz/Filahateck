@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import profileImage from "./../../assets/user/profile.webp";
 import { sidebarSellerItems } from "./../../data/Sidebar/SideBarDataSeller";
 import { NavLink } from 'react-router-dom';
+import {useAuth} from './../../context/AuthProvider'
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const {logout} = useAuth();
+
 
   return (
     <div className={`${isOpen ? 'w-60' : 'w-16'} bg-SidebarColor p-4 flex flex-col md:w-[21%] fixed h-full overflow-y-auto`}>
@@ -37,6 +40,14 @@ const Sidebar = () => {
               </NavLink>
             </li>
           ))}
+            <NavLink
+               onClick={() =>  {
+              logout();
+               }}
+               className="block mt-3 w-full py-1 px-2  font-semibold hover:text-white shadow-lg drop-shadow-md rounded-lg hover:bg-myOrange"
+               >
+               Se déconnecter
+          </NavLink>
         </ul>
       </nav>
     </div>

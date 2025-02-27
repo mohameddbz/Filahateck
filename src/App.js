@@ -34,9 +34,13 @@ import ProductDetails from "./pages/User/ProductDetails";
 import MyProductDetail from "./pages/User/MyProductDetail";
 import OffresSeller from "./pages/Seller/Offre";
 import ProductSubmissionSeller from "./pages/Seller/ProductSubmission";
+import { AuthProvider } from "./context/AuthProvider";
+import ProtectedRoute from "./context/ProtectedRoute";
 
 function App() {
   return (
+
+    <AuthProvider>
       <Routes>
 
           <Route path="/" element={
@@ -56,7 +60,7 @@ function App() {
             <Route path="ForgotPassword" element={<ForgotPassword/>} />
           </Route>
 
-
+          <Route element={<ProtectedRoute roles={['user']}/>}>
           <Route path="/user" element={
             <SidebarLayout/> 
           }>
@@ -73,6 +77,8 @@ function App() {
             <Route path="/user/ferme-map/:parcelId" element={<Indice/>} /> 
             <Route path="/user/historique/:indexId/:parcelId" element={<Historique/>} /> 
           </Route>
+          </Route>
+          <Route element={<ProtectedRoute roles={['seller']}/>}>  
           <Route path="/seller" element={
             <SidebarSellerLayout/> 
           }>
@@ -83,6 +89,11 @@ function App() {
             <Route path="/seller/product-submission" element={<ProductSubmissionSeller/>}/> 
           </Route>
 
+          </Route>
+
+
+
+        <Route element={<ProtectedRoute roles={['admin']}/>}>
           <Route path="/admin" element={
             <SidebarLayoutAdmin/> 
           }>
@@ -96,7 +107,9 @@ function App() {
             <Route path="/admin/SellerAbonnement" element={<SellerAbonnement/>} />
             <Route path="/admin/SellerAbonnementManager" element={<SellerAbonnementManagement/>} />
           </Route>
+        </Route>
       </Routes>
+      </AuthProvider>
   );
 }
 

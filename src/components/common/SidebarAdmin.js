@@ -3,10 +3,11 @@ import profileImage from "./../../assets/user/profile.webp";
 import { sidebarItems } from "./../../data/admin/Sidebar";
 import { NavLink } from 'react-router-dom';
 import { makeRequest } from './../../utils/api/httpService'; // Assuming this is your custom API service
-
+import {useAuth} from './../../context/AuthProvider'
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [userInfo, setUserInfo] = useState({ userName: '', role: '' });
+  const {logout} = useAuth();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -58,8 +59,19 @@ const Sidebar = () => {
               </NavLink>
             </li>
           ))}
+           
         </ul>
-      </nav>
+        
+              <NavLink
+                onClick={() =>  {
+                  logout();
+                }}
+                className="block mt-3 w-full py-1 px-2  font-semibold hover:text-white shadow-lg drop-shadow-md rounded-lg hover:bg-myOrange"
+              >
+                Se déconnecter
+              </NavLink>
+       
+        </nav>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import ButtonConfirm from './../common/ButtonConfirm';
 import { Link, useNavigate } from 'react-router-dom';
 import translations from './../../../../utils/constant/SignIn'; 
 import { makeRequest } from './../../../../utils/api/httpService';
+import {useAuth} from './../../../../context/AuthProvider';
 
 const SignInForm = () => {
   const { isArabic } = useContext(LanguageContext);
@@ -14,6 +15,8 @@ const SignInForm = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -29,17 +32,26 @@ const SignInForm = () => {
         const { roleName } = response.data.data.user;
         const { userId } = response.data.data.user;
         localStorage.setItem('Token', token);
+        const userData = { role:'', token : token  };
         switch (roleName) {
           case 'Admin':
+            userData.role = 'admin';
+            login(userData);
             navigate('/admin/UserManagement');
             break;
           case 'Manager':
+            userData.role = 'manager';
+            login(userData);
             navigate('/manager/Dashboard');
             break;
           case 'User':
+            userData.role = 'user';
+            login(userData);
             navigate('/user/marketplace');
             break;
           case 'Seller':
+            userData.role = 'seller';
+            login(userData);
             console.log("seller rew yedkhol " , userId)
             try {
               const response = await makeRequest(`/userSellerRole/${userId}`, 'GET');

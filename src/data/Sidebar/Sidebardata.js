@@ -7,5 +7,5 @@ export  const sidebarItems = [
     // { label: "Messages", path: "/user/Messaging-page" },
     { label: "Abonement", path: "/user/Abonnement" },
     { label: "Profile", path: "/user/profile" },
-    { label: "Se déconnecter", path: "/user/marketplace", color: "text-red-600" }
+    // { label: "Se déconnecter", path: "/user/marketplace", color: "text-red-600" }
   ];

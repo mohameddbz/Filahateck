@@ -10,7 +10,9 @@ import ButtonConfirm from './../common/ButtonConfirm';
 import SelectorRole from './../SignUp/selectedRole';
 import translations from './../../../../utils/constant/SignUp'; 
 import {makeRequest} from './../../../../utils/api/httpService'
-import { use } from 'react';
+import Error from './../../../common/Error'
+import Succes from './../../../common/Success'
+import Success from './../../../common/Success';
 
 const SignUpForm = () => {
   const { isArabic } = useContext(LanguageContext);
@@ -22,7 +24,7 @@ const SignUpForm = () => {
     Name:'',
     password: '',
     confirmPassword: '',
-    role: '',
+    role: '2',
     phone_number:'',
     wilaya:'',
     sellerRole : ''
@@ -30,6 +32,8 @@ const SignUpForm = () => {
 
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [showSuccess,setShowSuccess] = useState(false);
+  const [showError,setShowError] = useState(false);  
   const [sellerRoles, setSellerRoles] = useState([]);
   useEffect(() => {
    const fetchRoles = async () => {
@@ -51,6 +55,13 @@ const SignUpForm = () => {
 
   }, []);
 
+   const handleErrorShow=()=>{
+    setShowError(false) 
+  }
+  const handleSuccessShow=()=>{
+    setShowSuccess(false)
+  }
+
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -66,23 +77,31 @@ const SignUpForm = () => {
       setErrorMessage(text.passwordMismatch);
       return;
     }
- 
+    const data = {
+      email: formData.email,
+      userName: formData.Name,
+      password: formData.password,
+      phone_number: formData.phone_number,
+      profile_picture: 'profile.jpg',
+      wilaya: formData.wilaya,
+      role_id: formData.role,
+      sellerRole_id : formData.role === '6' ? formData.sellerRole : ''
+    };
+
     try {
-      const data = {
-        email: formData.email,
-        userName: formData.Name,
-        password: formData.password,
-        phone_number: formData.phone_number,
-        profile_picture: 'profile.jpg',
-        wilaya: formData.wilaya,
-        role_id: formData.role,
-        sellerRole_id : formData.role === '6' ? formData.sellerRole : ''
-      };
+     
 
       const response = await makeRequest('/auth/register', 'POST', data);
       console.log(response)
-      setSuccessMessage(response.message);
-      setErrorMessage('');
+      if (response.status === 201){
+        setSuccessMessage(text.accountCreated);
+        setShowSuccess(true);
+      }
+      if (response.status === 400){
+        setErrorMessage(text.emailAlreadyUsed);
+        setShowError(true);
+      }
+     
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -133,12 +152,10 @@ const SignUpForm = () => {
         <ButtonConfirm text={text.createAccount} />
       </form>
         {/* Error Message */}
-        {errorMessage && <p className="text-red-500 text-center mt-2">{errorMessage}</p>}
+        {showError && <Error message={errorMessage} onClose={handleErrorShow} />}
 
         {/* Success Message */}
-        {successMessage && (
-          <p className="text-green-500 text-center mt-2">{successMessage}</p>
-        )}
+        {showSuccess &&   <Success message={successMessage} onClose={handleSuccessShow} />}
       <div className="mt-4 text-center">
         <p className="text-sm">
           {text.alreadyHaveAccount}{' '}
