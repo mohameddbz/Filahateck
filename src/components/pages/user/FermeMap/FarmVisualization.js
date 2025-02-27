@@ -63,6 +63,10 @@ const FarmVisualization = ({ parcels }) => {
             .style("visibility", "hidden");
         })
         .on("click", () => {
+          tooltip.transition()
+          .duration(200)
+          .style("opacity", 0)
+          .style("visibility", "hidden");
           navigate(`/user/ferme-map/${parcel.id}`);
         });
 
