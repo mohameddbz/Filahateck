@@ -22,8 +22,8 @@ function Footer() {
           <p className='font-semibold text-white' >Vous pouvez nous trouver sur </p> 
           <div className="flex justify-center space-x-6 mt-4">
           {/* Liens vers les réseaux sociaux */}
-          <a href="#" className="hover:opacity-80"><SiFacebook size={24} color='white'/></a>
-          <a href="#" className="hover:opacity-80"><FaInstagram size={24} color='white'/> </a>
+          <a href="https://web.facebook.com/profile.php?id=61566851033301" className="hover:opacity-80"><SiFacebook size={24} color='white'/></a>
+          <a href="https://www.instagram.com/filahatech.dz/" className="hover:opacity-80"><FaInstagram size={24} color='white'/> </a>
           <a href="#" className="hover:opacity-80"><FaLinkedin size={24} color='white'/></a>
         </div>
         </div>

@@ -36,6 +36,7 @@ import OffresSeller from "./pages/Seller/Offre";
 import ProductSubmissionSeller from "./pages/Seller/ProductSubmission";
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./context/ProtectedRoute";
+import ServicesOffert from "./pages/User/ServicesOffert";
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
           <Route path="/user" element={
             <SidebarLayout/> 
           }>
+            <Route path="/user/service-offert" element={<ServicesOffert/>} />
             <Route path="/user/ferme-map" element={<FermeMap/>} />
             <Route path="/user/ami" element={<Ami/>}/>
             <Route path="/user/profile" element={<UserProfile/>}/>
