@@ -1,4 +1,5 @@
 const  Role  = require('../../models/Role/Role');
+const User = require('../../models/User/User');
 
 // Create a new role
 const createRole = async (roleName) => {
@@ -49,9 +50,30 @@ const getRoles = async () => {
     }
   };
 
+const getMyRole = async (userId) => {
+
+  try {
+    const userRoles = await User.findByPk(userId, {
+      include: [{
+        model: Role,
+        attributes: ['roleName']
+      }]
+    });
+    
+    // Pour obtenir uniquement les noms de rôles
+    return userRoles.Role.roleName;
+    
+  } catch (error) {
+    console.error('Erreur lors de la récupération des rôles:', error);
+    throw error;
+  }
+}
+
+
   module.exports = {
     createRole,
     updateRole,
     deleteRole,
     getRoles,
+    getMyRole
   };

@@ -1,5 +1,5 @@
 const express = require('express');
-const { createRole, updateRole, deleteRole, getRoles } = require('../../controllers/role/roleController');
+const { createRole, updateRole, deleteRole, getRoles , getMyRole } = require('../../controllers/role/roleController');
 const authMiddleware = require('../../middlewares/authMiddleware');
 const isAdmin = require('../../middlewares/isAdmin');
 
@@ -12,5 +12,6 @@ router.delete('/:id', authMiddleware, isAdmin, deleteRole);  // Delete role
 
 // Public route to get all roles (no admin check required)
 router.get('/', getRoles);  // View all roles
+router.get('/my-role', authMiddleware,getMyRole);  // View role by ID
 
 module.exports = router;

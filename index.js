@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { sequelize } = require("./src/config/config.js");
 const dotenv = require("dotenv");
+const path = require("path"); // Ajout du module path
 const userAuth = require('./src/auth/authRoutes.js');
 const userRoutes = require('./src/routes/user/userRoutes.js');
 const roleRoutes = require('./src/routes/role/roleRoutes.js');
@@ -28,6 +29,7 @@ const app = express();
 const PORT = process.env.PORT || 5000; // Default port if not specified in .env
 
 // Middleware
+
 app.use(cors({ origin: true, credentials: true })); // Allows cross-origin requests with credentials
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Supports form data
@@ -48,9 +50,10 @@ app.use(express.urlencoded({ extended: true })); // Supports form data
 
 // Middleware to serve static files (for images)
 // app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
+
 
 // Routes
-app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', userAuth); // user-related routes
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
@@ -70,6 +73,17 @@ app.use('/api/legende', legendeRoutes);
 app.use('/api/request', requestRoutes);
 app.use('/api/abonnementIndice', abonnementIndiceRoutes);
 app.use('/api/images', IndiceNdvi);
+
+
+
+// Servir l'application React
+// Placez ceci APRÈS toutes vos routes d'API, mais AVANT la gestion des erreurs
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// Cette route doit être la dernière pour capturer toutes les autres requêtes et les diriger vers React
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
 
 
 sequelize

@@ -46,7 +46,18 @@ const getRoles = async (req, res) => {
   }
 };
 
+
+const getMyRole = async (req, res) => {
+  try {
+     const role = await roleService.getMyRole(req.user.user_id);
+     res.status(200).json({role:role});
+  } catch (error) {
+    
+  }
+}
+
 module.exports = {
+  getMyRole,
   createRole,
   updateRole,
   deleteRole,
