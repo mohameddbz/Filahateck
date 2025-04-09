@@ -19,9 +19,9 @@ export const useImageData = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
+        console.log(data.data)
       if (data.data && data.data.imageUrl) {
-        setImageData(data.data.imageUrl);
+        setImageData(data.data);
       } else {
         setError('No valid image URL found.');
       }

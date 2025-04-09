@@ -1,9 +1,28 @@
-// translations.js
 export const translations = {
-    arabic: {
-      farmMapTitle: "الرسم التخطيطي العام لمزرعتك",
-    },
-    french: {
-      farmMapTitle: "Schéma général de votre terrain",
-    },
-  };
+  arabic: {
+    buttonDescription: "للحصول على صورة قمر صناعي تتعلق بمؤشر معين، يمكنك استخدام هذا الزر. بناءً على اشتراكك، يمكنك إنشاء عدد معين من الصور. يعتمد عدد الصور التي يمكنك إنشاؤها على نوع الاشتراك الذي اخترته. حسب الاشتراك، يمكنك الوصول إلى عدد محدود أو غير محدود من الصور. تتيح لك هذه الميزة الحصول على صور قمر صناعي لتطبيقات مختلفة، سواء كان ذلك لتحليل الغطاء النباتي، رطوبة التربة، أو معايير بيئية أخرى. يمكنك بذلك عرض بيانات دقيقة لمنطقة معينة بناءً على المؤشرات المختارة.",
+    step1: "اختر المؤشر الذي ترغب في تحليله.",
+    step2: "حدد الفترة الزمنية مع تحديد تاريخ البداية والنهاية للصورة.",
+    step3: "اختر القطعة الأرضية التي ترغب في تحليلها.",
+    farmMapTitle: "الرسم التخطيطي العام لمزرعتك",
+    instructions: "في هذه الصفحة، يمكنك إرسال طلب للحصول على صورة الأقمار الصناعية لمؤشرك وتحليل مخطط مزرعتك.",
+    checkingAbonnement: "جارٍ التحقق من اشتراكك...",
+    noAbonnement: "يجب أن يكون لديك اشتراك للوصول إلى هذه الصفحة.",
+    showForm: "عرض النموذج",
+    hideForm: "إخفاء النموذج",
+    farmMapDescription: "مخطط مزرعتك مع البيانات الجغرافية للأراضي:",
+  },
+  french: {
+    buttonDescription: "Pour obtenir une image satellite correspondant à un indice spécifique, vous pouvez utiliser ce bouton. En fonction de votre abonnement, vous avez la possibilité de créer un certain nombre d'images. Le nombre d'images que vous pouvez générer dépend du type d'abonnement que vous avez choisi. Selon l'abonnement, vous pourrez avoir accès à un nombre limité ou illimité d'images. Cette fonctionnalité vous permet d'obtenir des images satellitaires pour différentes applications, qu'il s'agisse d'analyser la végétation, l'humidité du sol, ou d'autres critères environnementaux.",
+    step1: "Choisissez l'indice que vous souhaitez analyser.",
+    step2: "Définissez la période en spécifiant la date de début et de fin de l'image.",
+    step3: "Sélectionnez la parcelle de terrain que vous souhaitez analyser.",
+    farmMapTitle: "Schéma général de votre terrain",
+    instructions: "In this page, you can submit a request to get a satellite image for your index and visualize the farm map with its parcels.",
+    checkingAbonnement: "Vérification de votre abonnement...",
+    noAbonnement: "Vous devez avoir un abonnement pour accéder à cette page.",
+    showForm: "Afficher le formulaire",
+    hideForm: "Cacher le formulaire",
+    farmMapDescription: "Votre carte de ferme avec les données des parcelles :",
+  },
+};

@@ -62,13 +62,16 @@ const FarmVisualization = ({ parcels }) => {
             .style("opacity", 0)
             .style("visibility", "hidden");
         })
-        .on("click", () => {
+        .on("click", (event) => {
+          event.preventDefault();  // Prevent the default anchor scroll behavior
           tooltip.transition()
-          .duration(200)
-          .style("opacity", 0)
-          .style("visibility", "hidden");
-          navigate(`/user/ferme-map/${parcel.id}`);
+            .duration(200)
+            .style("opacity", 0)
+            .style("visibility", "hidden");
+            navigate(`/user/ferme-map/${parcel.id}`);
+            window.scrollTo(0, 0);
         });
+        
 
       const centroid = d3.polygonCentroid(coords);
       svg.append("text")

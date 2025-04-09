@@ -3,7 +3,6 @@ import { TextContext } from './../../../../context/TextContext';
 
 const Header = ({ title , text }) => { 
   const { textData } = useContext(TextContext);
-
   return (
     <header>
       <h1 className="text-2xl font-bold text-myOrange">{title ? title : textData.title}</h1>
