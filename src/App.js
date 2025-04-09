@@ -50,18 +50,18 @@ function App() {
           }>
             <Route path="/" element={<HomePage/>}/>
             <Route path="/offre" element={<PublicOffers/>} />
-            <Route path="/auth/SignIn" element={<ComingSoonBanner/>} />
+            {/* <Route path="/auth/SignIn" element={<ComingSoonBanner/>} /> */}
           </Route>
 
 
-          {/* <Route path="/auth" element={
+          <Route path="/auth" element={
             <AuthLayout/> 
           }>
             <Route path="SignUp" element={<SignUp/>} />
             <Route path="SignIn" element={<SignIn/>} />
             <Route path="RessetPassword" element={<RessetPassword/>} />
             <Route path="ForgotPassword" element={<ForgotPassword/>} />
-          </Route> */}
+          </Route>
 
           <Route element={<ProtectedRoute roles={['user']}/>}>
           <Route path="/user" element={
