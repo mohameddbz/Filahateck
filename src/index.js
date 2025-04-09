@@ -7,7 +7,7 @@ import './index.css';
 
 createRoot(document.getElementById('root')).render(
   // ❌ Remove <React.StrictMode>
-  <BrowserRouter>
+  <BrowserRouter basename="/">
     <LanguageProvider>
       <App />
     </LanguageProvider>

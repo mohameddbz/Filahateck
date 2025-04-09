@@ -9,7 +9,7 @@ export const navLinksdata = [
       _id: 1002,
       titleFr: "Offres",
       titleAr: "العروض",
-      link: "Offres"
+      link: "/offre"
     },
     {
       _id: 1003,

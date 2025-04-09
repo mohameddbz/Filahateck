@@ -3,6 +3,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { SiFacebook } from "react-icons/si";
 import { FaPhoneAlt } from "react-icons/fa";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import  './footer.css'
 
@@ -33,14 +34,14 @@ function Footer() {
             <div className='flex flex-row justify-center items-center gap-3'>
             <FaPhoneAlt />
             <p >
-                <span className='font-bold' >Tel : </span> +213 567 84 59 21
+                <span className='font-bold' >Tel : </span> +213 794 64 38 97
             </p>
             </div>
 
             <div className='flex flex-row justify-center items-center gap-3'>
             <MdEmail />
             <p >
-                <span className='font-bold' >E-mail : </span> filahatech@gmail.com
+                <span className='font-bold' >E-mail : </span> filahatech.pro@gmail.com
             </p>
             </div>
         </div>
@@ -48,18 +49,18 @@ function Footer() {
         <div className='text-white flex flex-col justify-center items-center'>
             <p className='font-bold text-myGreen' > j</p>
             <div className='flex flex-row justify-center items-center gap-3'>
-            <FaPhoneAlt />
+            <FaMapMarkerAlt />
             <p >
-                <span className='font-bold' >Tel : </span> +213 567 84 59 21
+            Bab Ezzouar 16111
             </p>
             </div>
 
-            <div className='flex flex-row justify-center items-center gap-3'>
+            {/* <div className='flex flex-row justify-center items-center gap-3'>
             <MdEmail />
             <p >
                 <span className='font-bold' >E-mail : </span> filahatech@gmail.com
             </p>
-            </div>
+            </div> */}
         </div>
         
         

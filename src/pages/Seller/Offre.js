@@ -1,166 +1,3 @@
-// import React, { useState, useContext, useEffect } from 'react';
-// import Offre from '../../components/pages/home/offer/offer';
-// import ButtonConfirm from './../../components/pages/auth/common/ButtonConfirm';
-// import { LanguageContext } from './../../context/LanguageContext';
-// import { makeRequest } from './../../utils/api/httpService';
-// import { useNavigate } from 'react-router-dom';
-
-// const translations = {
-//   french: {
-//     title: "Vous pouvez consulter nos offres ci-dessous",
-//     subtitle: "Choisissez ce qui vous convient",
-//     submitButton: "Soumettre",
-//     noOfferSelected: "Veuillez sélectionner une offre avant de continuer",
-//   },
-//   arabic: {
-//     title: "\u064A\u0645\u0643\u0646\u0643 \u0627\u0644\u0627\u0637\u0644\u0627\u0639 \u0639\u0644\u0649 \u0639\u0631\u0648\u0636\u0646\u0627 \u0623\u062F\u0646\u0627\u0647",
-//     subtitle: "\u0627\u062e\u062a\u0631 \u0645\u0627 \u064a\u0646\u0627\u0633\u0628\u0643",
-//     submitButton: "\u0625\u0631\u0633\u0627\u0644",
-//     noOfferSelected: "الرجاء اختيار عرض قبل المتابعة",
-//   },
-// };
-
-// const OffresSeller = () => {
-//   const { isArabic } = useContext(LanguageContext);
-//   const language = isArabic ? 'arabic' : 'french';
-//   const texts = translations[language];
-
-//   const [selectedOffer, setSelectedOffer] = useState(null);
-//   const [offersData, setOffersData] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [userId, setUserId] = useState(null);
-//   const [validationError, setValidationError] = useState('');
-//   const navigate = useNavigate();
-
-//   // Récupérer l'ID de l'utilisateur
-//   const fetchUserId = async () => {
-//     try {
-//       const token = localStorage.getItem('Token');
-//       if (!token) throw new Error('Token non trouvé, veuillez vous connecter.');
-
-//       const data = await makeRequest('/users/get', 'GET', {}, { headers: { Authorization: `Bearer ${token}` } });
-//       setUserId(data.data.data.user_id);
-//       return data.data.data.user_id; // Retourner l'ID utilisateur pour le chaînage
-//     } catch (error) {
-//       setError(error.message);
-//       console.error('Erreur lors de la récupération de l\'ID utilisateur:', error);
-//       return null;
-//     }
-//   };
-
-//   // Récupérer les offres (SellerAbonnement)
-//   const fetchOffers = async () => {
-//     try {
-//       const data = await makeRequest('/sellerAbonnement'); // Utiliser la route correcte
-//       setOffersData(data.data);
-//       console.log('Offres récupérées:', data.data);
-//     } catch (error) {
-//       setError(error.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // Initialiser les données avec un chargement séquentiel
-//   useEffect(() => {
-//     const initializeData = async () => {
-//       setLoading(true);
-//       const userId = await fetchUserId();
-//       if (userId) {
-//         await fetchOffers();
-//       }
-//       setLoading(false);
-//     };
-
-//     initializeData();
-//   }, []); // Tableau de dépendances vide pour le chargement initial uniquement
-
-//   // Effacer l'erreur de validation si une offre est sélectionnée
-//   useEffect(() => {
-//     if (selectedOffer) {
-//       setValidationError('');
-//     }
-//   }, [selectedOffer]);
-
-//   // Gérer le changement de sélection d'offre
-//   const handleCheckboxChange = (index) => {
-//     setSelectedOffer(selectedOffer === offersData[index] ? null : offersData[index]);
-//   };
-
-//   // Soumettre l'offre sélectionnée
-//   const handleSubmit = async () => {
-//     if (!selectedOffer) {
-//       setValidationError(texts.noOfferSelected);
-//       return;
-//     }
-
-//     if (!userId) {
-//       console.error('ID utilisateur non trouvé.');
-//       return;
-//     }
-
-//     try {
-//       const payload = {
-//         sellerAbonnementId: selectedOffer.id, // Utiliser sellerabonnementid au lieu de abn_id
-//         userId: userId, // Utiliser userid au lieu de user_id
-//         dateDebut: new Date().toISOString().split('T')[0], // Utiliser dateDebut au lieu de date_abonnement
-//         dateFin: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0], // Ajouter une date de fin
-//         etat: "désactivé", // Utiliser "actif" au lieu de "désactivé"
-//       };
-
-//       const result = await makeRequest('/sellerAbonnementUser', 'POST', payload); // Utiliser la route correcte
-//       console.log('Offre soumise avec succès:', result);
-//       navigate('/seller/marketplace');
-//     } catch (error) {
-//       console.error('Erreur lors de la soumission de l\'offre:', error);
-//       setError(error.message);
-//     }
-//   };
-
-//   if (loading) return <div className="text-center mt-10">Chargement en cours...</div>;
-
-//   if (error) return <div className="text-center mt-10 text-red-500">Erreur: {error}</div>;
-
-//   return (
-//     <div className="min-h-screen flex flex-col gap-10">
-//       <div className="ml-32 mr-32 mt-14 mb-6" style={isArabic ? { direction: 'rtl' } : { direction: 'ltr' }}>
-//         <p className="text-2xl font-bold">{texts.title}</p>
-//         <p className="text-lg">{texts.subtitle}</p>
-//       </div>
-
-//       <div className="flex flex-col gap-10 justify-center items-center">
-//         {offersData &&  offersData.map((offer, index) => (
-//           <Offre
-//             key={offer.id || index}
-//             text={offer.nameAbonnement} // Utiliser nameAbonnement au lieu de name
-//             titre={offer.description} // Utiliser description si disponible
-//             functionalities={offer.fonctionnalities} // Utiliser fonctionnalities si disponible
-//             price={offer.price} // Utiliser price au lieu de prices[0]
-//             isChecked={selectedOffer === offer}
-//             onCheckboxChange={() => handleCheckboxChange(index)}
-//           />
-//         ))}
-//       </div>
-
-//       <div className="flex flex-col items-end mr-[30%] mb-[10%] gap-2">
-//         {validationError && (
-//           <div className="text-red-500 text-sm">
-//             {validationError}
-//           </div>
-//         )}
-//         <div className="w-28 h-8">
-//           <ButtonConfirm 
-//             text={texts.submitButton}
-//             onClick={() => handleSubmit()}  
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default OffresSeller;
 import React, { useState, useContext, useEffect } from 'react';
 import Offre from '../../components/pages/home/offer/offer';
 import ButtonConfirm from './../../components/pages/auth/common/ButtonConfirm';
@@ -177,6 +14,13 @@ const translations = {
     activeSubscriptionTitle: "Votre abonnement actif",
     activeSubscriptionDetails: "Détails de votre abonnement",
     noActiveSubscription: "Vous n'avez pas d'abonnement actif. Veuillez choisir une offre ci-dessous.",
+    subscriptionName: "Nom de l'abonnement",
+    postCount: "Nombre de publications",
+    price: "Prix",
+    startDate: "Date de début",
+    endDate: "Date de fin",
+    renewButton: "Renouveler",
+    upgradeButton: "Améliorer"
   },
   arabic: {
     title: "\u064A\u0645\u0643\u0646\u0643 \u0627\u0644\u0627\u0637\u0644\u0627\u0639 \u0639\u0644\u0649 \u0639\u0631\u0648\u0636\u0646\u0627 \u0623\u062F\u0646\u0627\u0647",
@@ -186,6 +30,13 @@ const translations = {
     activeSubscriptionTitle: "اشتراكك النشط",
     activeSubscriptionDetails: "تفاصيل اشتراكك",
     noActiveSubscription: "ليس لديك اشتراك نشط. الرجاء اختيار عرض من الأسفل.",
+    subscriptionName: "اسم الاشتراك",
+    postCount: "عدد المنشورات",
+    price: "السعر",
+    startDate: "تاريخ البدء",
+    endDate: "تاريخ الانتهاء",
+    renewButton: "تجديد",
+    upgradeButton: "ترقية"
   },
 };
 
@@ -199,10 +50,8 @@ const OffresSeller = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [validationError, setValidationError] = useState('');
-  const [activeSubscription, setActiveSubscription] = useState(null); // État pour stocker l'abonnement actif
+  const [activeSubscription, setActiveSubscription] = useState(null);
   const navigate = useNavigate();
-
-  
 
   // Récupérer les offres (SellerAbonnement)
   const fetchOffers = async () => {
@@ -264,7 +113,6 @@ const OffresSeller = () => {
       return;
     }
 
-  
     try {
       const payload = {
         sellerAbonnementId: selectedOffer.id,
@@ -282,33 +130,108 @@ const OffresSeller = () => {
     }
   };
 
-  if (loading) return <div className="text-center mt-10">Chargement en cours...</div>;
+  // Calculer les jours restants pour l'abonnement
+  const calculateRemainingDays = (endDate) => {
+    const end = new Date(endDate);
+    const today = new Date();
+    const diffTime = Math.abs(end - today);
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
 
-  if (error) return <div className="text-center mt-10 text-red-500">Erreur: {error}</div>;
+  // Formater la date pour l'affichage
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR');
+  };
+
+  if (loading) return (
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="text-center mt-10 p-4 bg-red-100 text-red-700 rounded-lg shadow">
+      <p className="font-bold">Erreur:</p>
+      <p>{error}</p>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen flex flex-col gap-10">
-      <div className="ml-32 mr-32 mt-14 mb-6" style={isArabic ? { direction: 'rtl' } : { direction: 'ltr' }}>
-        <p className="text-2xl font-bold">{texts.title}</p>
-        <p className="text-lg">{texts.subtitle}</p>
-      </div>
+    <div className="min-h-screen flex flex-col gap-10 bg-gray-50">
+     
 
       {/* Afficher les détails de l'abonnement actif s'il existe */}
       {activeSubscription ? (
-        <div className="ml-32 mr-32 mt-14 mb-6">
-          <h2 className="text-xl font-bold">{texts.activeSubscriptionTitle}</h2>
-          <p className="text-lg">{texts.activeSubscriptionDetails}</p>
-          <div className="mt-4">
-            <p><strong>Nom de l'abonnement:</strong> {activeSubscription.SellerAbonnement.nameAbonnement}</p>
-            <p><strong>Nombre de publication:</strong> {activeSubscription.nbPost}</p>
-            <p><strong>Prix:</strong> {activeSubscription.SellerAbonnement.price}</p>
-            <p><strong>Date de début:</strong> {activeSubscription.dateDebut}</p>
-            <p><strong>Date de fin:</strong> {activeSubscription.dateFin}</p>
+        <div className={`mx-8 md:mx-16 lg:mx-32 ${isArabic ? 'rtl' : 'ltr'}`}>
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl">
+            <div className="bg-gradient-to-r from-blue-500 to-indigo-600 py-6 px-8">
+              <h2 className="text-2xl font-bold text-white">{texts.activeSubscriptionTitle}</h2>
+              <p className="text-blue-100 mt-1">{texts.activeSubscriptionDetails}</p>
+            </div>
+            
+            <div className="p-8">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-sm text-gray-500">{texts.subscriptionName}</p>
+                    <p className="text-lg font-semibold text-gray-800">{activeSubscription.SellerAbonnement.nameAbonnement}</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-gray-500">{texts.postCount}</p>
+                    <div className="flex items-center">
+                      <span className="text-lg font-semibold text-gray-800">{activeSubscription.nbPost}</span>
+                      <span className="ml-2 px-3 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">Publications disponibles</span>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-gray-500">{texts.price}</p>
+                    <p className="text-lg font-semibold text-gray-800">{activeSubscription.SellerAbonnement.price} DA</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex flex-col md:items-end">
+                    <p className="text-sm text-gray-500">{texts.startDate}</p>
+                    <p className="text-lg font-semibold text-gray-800">{formatDate(activeSubscription.dateDebut)}</p>
+                  </div>
+                  
+                  <div className="flex flex-col md:items-end">
+                    <p className="text-sm text-gray-500">{texts.endDate}</p>
+                    <p className="text-lg font-semibold text-gray-800">{formatDate(activeSubscription.dateFin)}</p>
+                  </div>
+                  
+                  <div className="flex flex-col md:items-end">
+                    <p className="text-sm text-gray-500">Jours restants</p>
+                    <div className="mt-1">
+                      <span className="px-4 py-2 bg-green-100 text-green-800 rounded-lg font-medium">
+                        {calculateRemainingDays(activeSubscription.dateFin)} jours
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end space-x-4">
+                <button className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg transition-all duration-200">
+                  {texts.renewButton}
+                </button>
+                <button className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-200">
+                  {texts.upgradeButton}
+                </button>
+              </div> */}
+            </div>
           </div>
         </div>
       ) : (
         // Afficher les offres disponibles si aucun abonnement actif
         <>
+          <div className={`mx-8 md:mx-16 lg:mx-32 mt-14 mb-6 ${isArabic ? 'rtl text-right' : 'ltr text-left'}`}>
+            <h1 className="text-3xl font-bold text-gray-800">{texts.title}</h1>
+            <p className="text-lg text-gray-600 mt-2">{texts.subtitle}</p>
+          </div>
           <div className="flex flex-col gap-10 justify-center items-center">
             {offersData.map((offer, index) => (
               <Offre
@@ -323,13 +246,13 @@ const OffresSeller = () => {
             ))}
           </div>
 
-          <div className="flex flex-col items-end mr-[30%] mb-[10%] gap-2">
+          <div className="flex flex-col items-end mr-8 md:mr-16 lg:mr-32 mb-16 gap-2">
             {validationError && (
-              <div className="text-red-500 text-sm">
+              <div className="text-red-500 text-sm bg-red-50 px-4 py-2 rounded-lg">
                 {validationError}
               </div>
             )}
-            <div className="w-28 h-8">
+            <div className="w-32">
               <ButtonConfirm 
                 text={texts.submitButton}
                 onClick={() => handleSubmit()}  

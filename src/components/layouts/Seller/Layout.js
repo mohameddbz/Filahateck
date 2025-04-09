@@ -7,7 +7,6 @@ import Sidebar from './../../common/SidebarSeller';
 const SidebarSellerLayout = () => {
   return (
     <div className="flex flex-col">
-      <Navbar />
       <ButtonLang />
       <div className="flex flex-grow">
         {/* Sidebar will remain on the left */}

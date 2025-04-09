@@ -29,7 +29,7 @@ import UserProfile from "./pages/User/profile";
 import Messaging from "./pages/User/Messaagerie";
 import Historique from "./pages/User/historique";
 import Indice from "./pages/User/indice";
-import OffresPage from "./pages/Home/Offer";
+import PublicOffers from "./pages/Home/Offer/PublicOffert";
 import ProductDetails from "./pages/User/ProductDetails";
 import MyProductDetail from "./pages/User/MyProductDetail";
 import OffresSeller from "./pages/Seller/Offre";
@@ -37,6 +37,7 @@ import ProductSubmissionSeller from "./pages/Seller/ProductSubmission";
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./context/ProtectedRoute";
 import ServicesOffert from "./pages/User/ServicesOffert";
+import ComingSoonBanner from "./pages/Comming/CommingSoon";
 
 function App() {
   return (
@@ -48,18 +49,19 @@ function App() {
             <HomeLayout/> 
           }>
             <Route path="/" element={<HomePage/>}/>
-            <Route path="/OffresPage" element={<OffresPage/>} />
+            <Route path="/offre" element={<PublicOffers/>} />
+            <Route path="/auth/SignIn" element={<ComingSoonBanner/>} />
           </Route>
 
 
-          <Route path="/auth" element={
+          {/* <Route path="/auth" element={
             <AuthLayout/> 
           }>
             <Route path="SignUp" element={<SignUp/>} />
             <Route path="SignIn" element={<SignIn/>} />
             <Route path="RessetPassword" element={<RessetPassword/>} />
             <Route path="ForgotPassword" element={<ForgotPassword/>} />
-          </Route>
+          </Route> */}
 
           <Route element={<ProtectedRoute roles={['user']}/>}>
           <Route path="/user" element={

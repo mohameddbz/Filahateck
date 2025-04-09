@@ -52,11 +52,9 @@ const SignInForm = () => {
           case 'Seller':
             userData.role = 'seller';
             login(userData);
-            console.log("seller rew yedkhol " , userId)
             try {
               const response = await makeRequest(`/userSellerRole/${userId}`, 'GET');
              console.log(response.status);
-             
              if(response.status === 200){
                localStorage.setItem('sellerRole', response.data.data.sellerRole.roleName);
                navigate('/seller/marketplace');
@@ -64,7 +62,6 @@ const SignInForm = () => {
             } catch (error) {
               console.log(error)
             }
-
             break ; 
              
           default:

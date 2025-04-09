@@ -1,6 +1,6 @@
 const SolutionCard = ({title,image}) => {
     return(
-        <div   className="flex border-solid rounded-2xl  overflow-hidden  shadow-bottom-right flex-col w-80">
+        <div   className="flex border-solid rounded-2xl  hover:scale-105 ease-in-out duration-300 transition-transform overflow-hidden  shadow-bottom-right flex-col w-80">
             <img src={image}/>
            
            <div className="flex justify-center h-full items-center">

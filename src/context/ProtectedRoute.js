@@ -4,7 +4,12 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from './AuthProvider';
 
 const ProtectedRoute = ({ roles }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  // Afficher un chargement pendant la vérification d'authentification
+  if (loading) {
+    return <div>Chargement...</div>; // Ou un composant de spinner/loader
+  }
 
   // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
   if (!user) {
