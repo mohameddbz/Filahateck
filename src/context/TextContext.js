@@ -74,20 +74,29 @@ export const TextProvider = ({ children }) => {
 
   // Update the context with new text data when an index is clicked
   const updateText = (newTexts) => {
+    
     if (typeof newTexts !== 'object' || newTexts === null) {
       console.error('Invalid data passed to updateText. Expected an object.');
       return;
     }
-
-    setTextData((prevData) => ({
-      ...prevData,
-      ...newTexts,
-      legende: {
-        ...prevData.legende,
-        ...newTexts.legende,
-      },
-    }));
+  
+    setTextData((prevData) => {
+      const updatedData = {
+        ...prevData,
+        ...newTexts,
+      };
+  
+      // Only merge `legende` if it exists in newTexts
+      if (newTexts.legende) {
+        updatedData.legende = {
+          ...prevData.legende,
+          ...newTexts.legende,
+        };
+      }
+      return updatedData;
+    });
   };
+  
 
   if (loading) return <div className="text-center mt-10">Chargement en cours...</div>;
   if (error) return <div className="text-center mt-10 text-red-500">Erreur: {error}</div>;

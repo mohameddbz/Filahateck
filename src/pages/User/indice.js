@@ -14,6 +14,7 @@ const Indice = () => {
 
   const handleNavigation = (indexId) => {
     navigate(`/user/historique/${indexId}/${parcelId}`);
+    window.scrollTo(0, 0);
   };
   const { parcelId } = useParams();
   const [indicesData, setIndicesData] = useState([]);
@@ -66,7 +67,7 @@ const Indice = () => {
         setUserId(fetchedUserId);
 
         // Fetch indices only if userId is valid
-        const fetchedIndices = await fetchIndices(2);
+        const fetchedIndices = await fetchIndices(fetchedUserId);
         setIndicesData(fetchedIndices);
       } catch (error) {
         setError(error.message);
@@ -75,7 +76,6 @@ const Indice = () => {
         setLoading(false);
       }
     };
-
     initializeData();
   }, []); // Initial fetch on component load
 
@@ -96,7 +96,7 @@ const Indice = () => {
             <IndexButtons parcellId={parcelId} userId={userId} indices={indicesData} />
           </div>
           <div className="flex gap-10 w-full pr-4">
-            <Legend />
+            <Legend indicesData={indicesData} />
             <Recommendations />
           </div>
         </div>
