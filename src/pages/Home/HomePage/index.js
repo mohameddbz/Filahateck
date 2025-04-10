@@ -8,24 +8,37 @@ import Footer from '../../../components/pages/home/footer/footer';
 import { services } from './../../../data/home/services';
 import { solutions } from './../../../data/home/solutions';
 import { comments } from './../../../data/home/comments';
-// Importez AOS
+// Import AOS
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-
-
 const HomePage = () => {
-     // Initialiser AOS lors du montage du composant
-     useEffect(() => {
+    // Initialize AOS with modified settings
+    useEffect(() => {
         AOS.init({
-            duration: 800,           // durée des animations
-            once: false,              // l'animation se joue une seule fois
-            easing: 'ease-in-out',      // type d'easing
-            offset: 120,             // décalage (en px) par rapport au point de déclenchement
-            delay: 100,              // délai avant le début de l'animation
-            mirror: true            // les animations ne se répètent pas en scroll vers le haut
+            duration: 800,           // animation duration
+            once: false,             // animation plays only once
+            easing: 'ease-in-out',   // easing type
+            offset: 120,             // offset (in px) from the trigger point
+            delay: 100,              // delay before animation starts
+            mirror: true,            // animations don't repeat on scroll up
+            // Add this to ensure animations don't affect other elements
+            anchorPlacement: 'top-bottom', // trigger when top of element hits bottom of viewport
+            disable: 'mobile' // disable on small screens if animations cause problems
         });
+
+        // Cleanup function to prevent AOS from affecting other components
+        return () => {
+            // This ensures any animations don't persist when component unmounts
+            document.querySelectorAll('[data-aos]').forEach(el => {
+                el.removeAttribute('data-aos');
+                el.removeAttribute('data-aos-delay');
+                el.removeAttribute('data-aos-duration');
+                el.removeAttribute('data-aos-easing');
+            });
+        };
     }, []);
+    
     const { isArabic } = useContext(LanguageContext);
     const lang = isArabic ? 'arabic' : 'french';
     const texts = translations[lang];
@@ -33,7 +46,7 @@ const HomePage = () => {
     const scrollRef = useRef(null);
     const scrollRefComments = useRef(null);
     
-    // États pour suivre le glissement
+    // States to track scrolling
     const [isDragging, setIsDragging] = useState(false);
     const [isDraggingComment, setIsDraggingComment] = useState(false);
     const [startX, setStartX] = useState(0);
@@ -41,12 +54,12 @@ const HomePage = () => {
     const [startXComment, setStartXComment] = useState(0);
     const [scrollLeftComment, setScrollLeftComment] = useState(0);
     
-    // État pour suivre la largeur de l'écran
+    // State to track screen width
     const [windowWidth, setWindowWidth] = useState(
         typeof window !== 'undefined' ? window.innerWidth : 0
     );
 
-    // Mettre à jour la largeur de l'écran lors du redimensionnement
+    // Update screen width on resize
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
@@ -58,9 +71,9 @@ const HomePage = () => {
         };
     }, []);
 
-    // Gestion du glissement pour les appareils mobiles et de bureau
+    // Handle dragging for mobile and desktop devices
     const startDragging = (e, type) => {
-        // Déterminer si l'événement est tactile ou de souris
+        // Determine if event is touch or mouse
         const pageX = e.touches ? e.touches[0].pageX : e.pageX;
         
         if (type === 'comment') {
@@ -78,7 +91,7 @@ const HomePage = () => {
         if (!isDragging && !isDraggingComment) return;
         e.preventDefault();
         
-        // Déterminer si l'événement est tactile ou de souris
+        // Determine if event is touch or mouse
         const pageX = e.touches ? e.touches[0].pageX : e.pageX;
         
         if (type === 'comment' && isDraggingComment && scrollRefComments.current) {
@@ -102,17 +115,28 @@ const HomePage = () => {
 
     return (
         <div className={isArabic ? 'rtl' : 'ltr'}>
-            <main>
+            <main className="relative z-10"> {/* Add z-index to ensure main content doesn't overlap with fixed elements */}
                 {/* Section Hero - Responsive */}
-                <section className="bg-my-image flex  justify-center items-center h-[400px] md:h-[400px] bg-center bg-cover"
-                  data-aos="fade-in"
+                <section 
+                    className="bg-my-image flex justify-center items-center h-[400px] md:h-[400px] bg-center bg-cover"
+                    data-aos="fade-in"
                     data-aos-duration="1200"
-                 >
+                >
                     <div className="w-full text-white px-4 md:px-10 text-shadow text-center md:text-left">
-                        <p className="text-3xl md:text-5xl font-bold"  data-aos="fade-up" 
-                            data-aos-delay="300" >{texts.heroTitle}</p>
-                        <p className="text-xl md:text-2xl mt-2"  data-aos="fade-up" 
-                            data-aos-delay="500">{texts.heroSubtitle}</p>
+                        <p 
+                            className="text-3xl md:text-5xl font-bold"  
+                            data-aos="fade-up" 
+                            data-aos-delay="300"
+                        >
+                            {texts.heroTitle}
+                        </p>
+                        <p 
+                            className="text-xl md:text-2xl mt-2"  
+                            data-aos="fade-up" 
+                            data-aos-delay="500"
+                        >
+                            {texts.heroSubtitle}
+                        </p>
                     </div>
                 </section>
 

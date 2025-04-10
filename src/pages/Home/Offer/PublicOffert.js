@@ -6,7 +6,7 @@ import { offersDataFrench, offersDataArabic } from '../../../data/home/offerData
 const PublicOffers = () => {
   const { isArabic } = useContext(LanguageContext);
   const [selectedOffer, setSelectedOffer] = useState(null);
-
+  console.log(isArabic)
   const handleCheckboxChange = (index) => {
     setSelectedOffer(selectedOffer === index ? null : index);
   };

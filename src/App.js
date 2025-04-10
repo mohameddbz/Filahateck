@@ -37,6 +37,7 @@ import ProductSubmissionSeller from "./pages/Seller/ProductSubmission";
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./context/ProtectedRoute";
 import ServicesOffert from "./pages/User/ServicesOffert";
+import AboutPage from "./pages/Home/About/index";
 import ComingSoonBanner from "./pages/Comming/CommingSoon";
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
           }>
             <Route path="/" element={<HomePage/>}/>
             <Route path="/offre" element={<PublicOffers/>} />
+            <Route path="/About" element={<AboutPage/>} />
             {/* <Route path="/auth/SignIn" element={<ComingSoonBanner/>} /> */}
           </Route>
 

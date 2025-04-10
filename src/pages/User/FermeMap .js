@@ -18,7 +18,6 @@ const FermeMap = () => {
 
   const lang = isArabic ? 'arabic' : 'french';
   const texts = translations[lang];
-
   const fetchUserId = async () => {
     try {
       const token = localStorage.getItem('Token');

@@ -13,7 +13,7 @@ export const navLinksdata = [
     },
     {
       _id: 1003,
-      titleFr: "À propos",
+      titleFr: "A propos",
       titleAr: "من نحن",
       link: "/about"
     },
