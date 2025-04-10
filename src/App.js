@@ -38,12 +38,14 @@ import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./context/ProtectedRoute";
 import ServicesOffert from "./pages/User/ServicesOffert";
 import AboutPage from "./pages/Home/About/index";
+import ScrolleToTop from "./components/common/ScrolleToTop";
 import ComingSoonBanner from "./pages/Comming/CommingSoon";
 
 function App() {
   return (
 
     <AuthProvider>
+      <ScrolleToTop />
       <Routes>
 
           <Route path="/" element={
