@@ -4,6 +4,7 @@ import { LanguageContext } from './../../context/LanguageContext';
 import { translations } from './../../utils/constant/FermeMap';
 import RequestForm from './../../components/pages/user/Indice/RequestForm';
 import { makeRequest } from './../../utils/api/httpService';
+import SubscriptionPage from '../../components/pages/user/FermeMap/SubscribePage';
 
 const FermeMap = () => {
   const { isArabic } = useContext(LanguageContext);
@@ -129,7 +130,7 @@ const FermeMap = () => {
   }
 
   if (!hasAbonnement) {
-    return <p className="text-center text-red-500 text-lg">{texts.noAbonnement}</p>;
+    return <SubscriptionPage/>;
   }
 
   return (

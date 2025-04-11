@@ -14,7 +14,6 @@ const ServicesOffert = () => {
   
   // Exemple de données de services
   const services = [
- 
     {
       id: 1,
       name: "Analyse de sol",

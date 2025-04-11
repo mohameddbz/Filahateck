@@ -40,6 +40,7 @@ import ServicesOffert from "./pages/User/ServicesOffert";
 import AboutPage from "./pages/Home/About/index";
 import ScrolleToTop from "./components/common/ScrolleToTop";
 import ComingSoonBanner from "./pages/Comming/CommingSoon";
+import SubscriptionPage from "./components/pages/user/FermeMap/SubscribePage";
 
 function App() {
   return (

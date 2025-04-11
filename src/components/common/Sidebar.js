@@ -1,16 +1,51 @@
-import React, { useState } from 'react';
 import profileImage from "./../../assets/user/profile.webp";
 import { sidebarItems } from "./../../data/Sidebar/Sidebardata";
 import { NavLink } from 'react-router-dom';
-
-import {useAuth} from './../../context/AuthProvider'
+import {useAuth} from './../../context/AuthProvider';
+import React, { useState, useEffect } from "react";
+import { makeRequest } from "./../../utils/api/httpService";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const {logout} = useAuth();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    userName: "",
+    wilaya: "",
+    phoneNumber: "",
+    roleName:""
+  });
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await makeRequest("/users/profile", "GET", null, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          },
+        });
+        console.log(response.data.data)
+        const fetchedUser = response.data.data;
+        setUser(fetchedUser);
+        setFormData({
+          userName: fetchedUser.userName,
+          wilaya: fetchedUser.wilaya || "",
+          phoneNumber: fetchedUser.phoneNumber || "",
+          roleName:fetchedUser.roleName || ""
+        });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
-    <div className={`${isOpen ? 'w-60' : 'w-16'} bg-SidebarColor p-4 flex flex-col md:w-[21%] fixed h-full overflow-y-auto`}>
+    <div className={`${isOpen ? 'w-60' : 'w-16'} bg-SidebarColor p-2 flex flex-col md:w-[21%] fixed h-full overflow-y-auto`}>
       <button 
         onClick={() => setIsOpen(!isOpen)} 
         className="md:hidden mb-4 text-lg font-semibold"
@@ -18,10 +53,10 @@ const Sidebar = () => {
         ☰
       </button>
       {isOpen && (
-        <div className="text-center mb-8 mt-4">
+        <div className="text-center mb-4 mt-2">
           <img src={profileImage} alt="Profile" className="w-20 h-20 rounded-full mx-auto" />
-          <h3 className="mt-3 text-xl font-semibold">Omar MAJDI</h3>
-          <p className="text-lg text-SidebarColor">Agriculteur</p>
+          <h3 className="mt-2 text-xl font-semibold">{formData.userName}</h3>
+          <p className="mt-2 text-lg font-semibold">{formData.roleName}</p>
         </div>
       )}
       <nav className="ml-6 mr-6 text-center">
