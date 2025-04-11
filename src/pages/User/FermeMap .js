@@ -6,6 +6,7 @@ import RequestForm from './../../components/pages/user/Indice/RequestForm';
 import { makeRequest } from './../../utils/api/httpService';
 import SubscriptionPage from '../../components/pages/user/FermeMap/SubscribePage';
 import SubscriptionDisabled from '../../components/pages/user/FermeMap/SubscriptionDisabled';
+import NoParcelles from '../../components/pages/user/FermeMap/NoparcellsPage';
 
 const FermeMap = () => {
   const { isArabic } = useContext(LanguageContext);
@@ -17,7 +18,8 @@ const FermeMap = () => {
   const [parcels, setParcels] = useState([]);
   const [hasAbonnement, setHasAbonnement] = useState(false);
   const [checkingAbonnement, setCheckingAbonnement] = useState(true);
-  const [abonnementEtat, setAbonnementEtat] = useState(null); // "actif" or "désactivé"
+  const [abonnementEtat, setAbonnementEtat] = useState(null);
+  const [parcelError, setParcelError] = useState(false); // ✅ new error flag
 
   const lang = isArabic ? 'arabic' : 'french';
   const texts = translations[lang];
@@ -46,7 +48,7 @@ const FermeMap = () => {
 
       if (response.data.length > 0) {
         const abonnement = response.data[0];
-        setAbonnementEtat(abonnement.etat); // Store "actif" or "désactivé"
+        setAbonnementEtat(abonnement.etat);
         return true;
       }
 
@@ -72,25 +74,20 @@ const FermeMap = () => {
   };
 
   const fetchParcels = async (userId) => {
-    try {
-      if (!userId) return [];
-      const token = localStorage.getItem('Token');
-      if (!token) throw new Error('Token non trouvé.');
-      const response = await makeRequest(`/parcelle/user/${userId}`, 'GET', {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return response.data.map((parcel) => ({
-        id: parcel.id.toString(),
-        nomPercel: parcel.identifiantU,
-        coordinates: parcel.geom ? parcel.geom.coordinates : [],
-      }));
-    } catch (error) {
-      console.error('Erreur Parcelles:', error);
-      return [];
-    }
+    if (!userId) return [];
+    const token = localStorage.getItem('Token');
+    if (!token) throw new Error('Token non trouvé.');
+    const response = await makeRequest(`/parcelle/user/${userId}`, 'GET', {}, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return response.data.map((parcel) => ({
+      id: parcel.id.toString(),
+      nomPercel: parcel.identifiantU,
+      coordinates: parcel.geom ? parcel.geom.coordinates : [],
+    }));
   };
 
-  // Fetch user ID
   useEffect(() => {
     const initializeData = async () => {
       setLoading(true);
@@ -107,7 +104,6 @@ const FermeMap = () => {
     initializeData();
   }, []);
 
-  // Check abonnement
   useEffect(() => {
     if (userId) {
       const checkAbonnement = async () => {
@@ -119,16 +115,20 @@ const FermeMap = () => {
     }
   }, [userId]);
 
-  // Fetch parcels and indices only if abonnement is actif
   useEffect(() => {
     if (userId && hasAbonnement && abonnementEtat === "actif") {
       const loadData = async () => {
-        const [fetchedIndices, fetchedParcels] = await Promise.all([
-          fetchIndices(userId),
-          fetchParcels(userId)
-        ]);
-        setIndicesData(fetchedIndices);
-        setParcels(fetchedParcels);
+        try {
+          const [fetchedIndices, fetchedParcels] = await Promise.all([
+            fetchIndices(userId),
+            fetchParcels(userId)
+          ]);
+          setIndicesData(fetchedIndices);
+          setParcels(fetchedParcels);
+        } catch (err) {
+          console.error("Erreur pendant le chargement des données :", err);
+          setParcelError(true); // ✅ Set error flag
+        }
       };
       loadData();
     }
@@ -147,9 +147,11 @@ const FermeMap = () => {
   }
 
   if (abonnementEtat === "désactivé") {
-    return (
-     <SubscriptionDisabled/>
-    );
+    return <SubscriptionDisabled />;
+  }
+
+  if (parcelError) {
+    return <NoParcelles />; // ✅ Show custom error component
   }
 
   return (
