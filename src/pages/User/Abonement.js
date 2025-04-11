@@ -207,7 +207,7 @@ const AbonnementComparison = () => {
           <p className="text-lg">{texts.subtitle}</p>
         </div>
 
-        <div className="flex flex-col gap-10 justify-center items-center">
+        <div className="flex flex-col gap-4 justify-center items-center">
           {offersData.map((offer, index) => (
             <Offre
               key={offer.id || index}

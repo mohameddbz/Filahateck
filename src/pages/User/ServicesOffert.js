@@ -249,7 +249,7 @@ const ServicesOffert = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen mt-6 mx-4">
       {/* Titre de la page */}
       <div className="bg-darkBlue text-white py-4 shadow-md">
         <div className="container mx-auto px-4">
@@ -258,7 +258,7 @@ const ServicesOffert = () => {
       </div>
       
       {/* Contenu principal - adapté pour coexister avec la sidebar */}
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-2">
         {selectedService === null ? (
           <ServiceCards />
         ) : (

@@ -57,7 +57,7 @@ const Marketplace = () => {
   };
 
   return (
-    <div className="flex-grow px-2 md:px-4 mt-2 md:mt-4">
+    <div className="flex-grow px-2 md:px-4 mt-4 md:mt-12">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4">
         <div className="w-full sm:w-2/3 md:w-1/2">
           <SearchBar placeholder={texts.searchPlaceholder} onSearch={handleSearch} />

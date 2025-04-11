@@ -21,7 +21,7 @@ const Offre = ({ text, titre, functionalities, price, isChecked, onCheckboxChang
   }, []);
 
   return (
-    <div className="bg-gray-200 rounded-3xl w-[90%] mb-6" ref={containerRef}>
+    <div className="bg-gray-200 rounded-3xl w-[90%] mb-4" ref={containerRef}>
       <div className="flex flex-col md:flex-row items-start relative">
         {/* Mobile version of the left badge */}
         <div className="md:hidden bg-myGreen w-full h-24 rounded-t-3xl flex items-center justify-center text-white font-bold text-center p-2">
