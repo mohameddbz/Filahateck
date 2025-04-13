@@ -1,10 +1,13 @@
-import React from 'react';
+import React , {useContext} from 'react';
 import profileImage from "./../../assets/user/profile.webp";
 import { sidebarSellerItems } from "./../../data/Sidebar/SideBarDataSeller";
+import { LanguageContext } from './../../context/LanguageContext';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from './../../context/AuthProvider';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
+    const { toggleToArabic, toggleToFrench } = useContext(LanguageContext);
+  
   const { logout } = useAuth();
 
   return (
@@ -26,6 +29,21 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           <img src={profileImage} alt="Profile" className="w-16 h-16 md:w-20 md:h-20 rounded-full mx-auto" />
           <h3 className="mt-3 text-lg md:text-xl font-semibold">Omar MAJDI</h3>
           <p className="text-md md:text-lg text-SidebarColor">Agriculteur</p>
+           {/* Language buttons */}
+           <div className="flex justify-center space-x-2 mt-2">
+            <button
+              onClick={toggleToArabic}
+              className="bg-myGreen text-white px-3 py-1 rounded-lg hover:bg-opacity-90 transition"
+            >
+              Ar
+            </button>
+            <button
+              onClick={toggleToFrench}
+              className="bg-myGreen text-white px-3 py-1 rounded-lg hover:bg-opacity-90 transition"
+            >
+              Fr
+            </button>
+          </div>
         </div>
       )}
       

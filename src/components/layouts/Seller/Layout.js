@@ -13,8 +13,8 @@ const SidebarSellerLayout = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <ButtonLang />
+    <div className="flex flex-col h-screen">
+      {/* <ButtonLang /> */}
       
       {/* Mobile menu button - only visible on small screens */}
       <button 

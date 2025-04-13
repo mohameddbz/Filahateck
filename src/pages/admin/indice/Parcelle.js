@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Polygon, FeatureGroup } from 'react-leaflet';
+import React, { useState, useEffect, useCallback } from 'react';
+import { MapContainer, TileLayer, Polygon, FeatureGroup, useMap } from 'react-leaflet';
 import { EditControl } from 'react-leaflet-draw';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
@@ -7,9 +7,24 @@ import { useDropzone } from 'react-dropzone';
 import { TableParcelle } from './../../../components/ui/TableParcelle';
 import { makeRequest } from './../../../utils/api/httpService';
 
+// Composant pour initialiser les panneaux à l'intérieur du MapContainer
+const MapPanes = () => {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (map) {
+      map.createPane('labels');
+      map.getPane('labels').style.zIndex = 650;
+      map.getPane('labels').style.pointerEvents = 'none';
+    }
+  }, [map]);
+  
+  return null;
+};
+
 const Parcelle = () => {
   const [parcelles, setParcelles] = useState([]);
-  const [users, setUsers] = useState([]); // Stocker la liste des utilisateurs
+  const [users, setUsers] = useState([]);
   const [selectedParcelle, setSelectedParcelle] = useState(null);
   const [newParcelle, setNewParcelle] = useState({
     identifiantU: '',
@@ -40,7 +55,7 @@ const Parcelle = () => {
       try {
         const response = await makeRequest('/users', 'GET');
         console.log("---",response.data.data)
-        setUsers(response.data.data); // Stocke les utilisateurs
+        setUsers(response.data.data);
       } catch (error) {
         console.error('Erreur de récupération des utilisateurs:', error);
       }
@@ -112,7 +127,7 @@ const Parcelle = () => {
       setShowForm(false);
       window.location.reload();
     } catch (error) {
-      console.error('Erreur lors de l’ajout de la parcelle:', error);
+      console.error("Erreur lors de l'ajout de la parcelle:", error);
     }
   };
 
@@ -144,7 +159,6 @@ const Parcelle = () => {
             onChange={(e) => setNewParcelle({ ...newParcelle, identifiantU: e.target.value })}
           />
 
-          {/* Sélection de l'utilisateur */}
           <select 
             className="border p-2 w-full mb-2" 
             value={newParcelle.userId} 
@@ -161,8 +175,27 @@ const Parcelle = () => {
             <p>Glissez et déposez un fichier GeoJSON ici, ou cliquez pour sélectionner un fichier</p>
           </div>
 
-          <MapContainer center={[36.5, 3.3]} zoom={10} className="h-[300px] w-full">
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <MapContainer 
+            center={[36.5, 3.3]} 
+            zoom={10} 
+            className="h-[700px] w-full"
+          >
+            {/* Composant pour initialiser les panneaux */}
+            <MapPanes />
+            
+            {/* Couche d'imagerie satellite */}
+            <TileLayer 
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+            />
+            
+            {/* Couche avec labels/toponymes */}
+            <TileLayer
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
+              attribution="Esri, HERE, Garmin, © OpenStreetMap contributors"
+              pane="labels"
+            />
+            
             <FeatureGroup>
               <EditControl
                 position="topright"
