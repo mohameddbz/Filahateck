@@ -1,21 +1,58 @@
-import React, { useContext } from 'react';
 import profileImage from "./../../assets/user/profile.webp";
 import { sidebarItems } from "./../../data/Sidebar/Sidebardata";
 import { NavLink } from 'react-router-dom';
-import { useAuth } from './../../context/AuthProvider';
+import {useAuth} from './../../context/AuthProvider';
+import React, { useState, useEffect } from "react";
+import { makeRequest } from "./../../utils/api/httpService";
 import { LanguageContext } from './../../context/LanguageContext';
+import { useContext } from "react";
 
-const Sidebar = ({ isOpen, setIsOpen }) => {
-  const { logout } = useAuth();
+const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  const {logout} = useAuth();
   const { toggleToArabic, toggleToFrench } = useContext(LanguageContext);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    userName: "",
+    wilaya: "",
+    phoneNumber: "",
+    roleName:""
+  });
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await makeRequest("/users/profile", "GET", null, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          },
+        });
+        console.log(response.data.data)
+        const fetchedUser = response.data.data;
+        setUser(fetchedUser);
+        setFormData({
+          userName: fetchedUser.userName,
+          wilaya: fetchedUser.wilaya || "",
+          phoneNumber: fetchedUser.phoneNumber || "",
+          roleName:fetchedUser.roleName || ""
+        });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
-    <div 
+<div 
       className={`${
         isOpen ? 'w-64 translate-x-0' : 'w-16 -translate-x-full md:translate-x-0'
       } bg-SidebarColor p-4 flex flex-col fixed h-full overflow-y-auto transition-all duration-300 z-10`}
-    >
-      <button 
+    >      <button 
         onClick={() => setIsOpen(!isOpen)} 
         className="text-lg font-semibold mb-4 flex justify-end"
       >
@@ -26,8 +63,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       {isOpen && (
         <div className="text-center mb-8">
           <img src={profileImage} alt="Profile" className="w-16 h-16 md:w-20 md:h-20 rounded-full mx-auto" />
-          <h3 className="mt-3 text-lg md:text-xl font-semibold">Omar MAJDI</h3>
-          <p className="text-md md:text-lg text-SidebarColor">Agriculteur</p>
+          <h3 className="mt-3 text-lg md:text-xl font-semibold">{formData.userName}</h3>
+          <p className="text-md md:text-lg text-SidebarColor">{formData.roleName}</p>
           
           {/* Language buttons */}
           <div className="flex justify-center space-x-2 mt-2">

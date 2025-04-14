@@ -1,6 +1,7 @@
-import React, {useState, useContext , useEffect} from 'react';
+import React, {useState, useContext , useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LanguageContext } from './../../../../context/LanguageContext';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import InputEmail from '../common/InputEmail';
 import InputText from '../SignUp/InputText';
 import InputPhone from '../SignUp/InputPhon';
@@ -15,6 +16,7 @@ import Success from './../../../common/Success';
 
 const SignUpForm = () => {
   const { isArabic } = useContext(LanguageContext);
+  const navigate = useNavigate();
   const text = isArabic ? translations.arabic : translations.french;
 
    // Form State
@@ -59,6 +61,7 @@ const SignUpForm = () => {
   }
   const handleSuccessShow=()=>{
     setShowSuccess(false)
+    navigate("/auth/SignIn")
   }
 
   // Handle input changes
@@ -153,7 +156,8 @@ const SignUpForm = () => {
         {showError && <Error message={errorMessage} onClose={handleErrorShow} />}
 
         {/* Success Message */}
-        {showSuccess &&   <Success message={successMessage} onClose={handleSuccessShow} />}
+        {showSuccess &&   <Success message={successMessage} onClose={handleSuccessShow} />
+        }
       <div className="mt-4 text-center">
         <p className="text-sm">
           {text.alreadyHaveAccount}{' '}

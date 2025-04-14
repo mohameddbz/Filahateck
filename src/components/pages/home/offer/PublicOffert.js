@@ -43,8 +43,6 @@ const PublicOffre = ({ text, titre, description, price, isChecked, onCheckboxCha
           </div>
         </div>
         
-        {/* Espace pour compenser le div absolu */}
-        <div className="hidden md:block w-32 flex-shrink-0"></div>
         
         <div className="flex-1 p-4 md:ml-4 w-full">
           <h2 className="text-orange-500 font-bold text-lg md:text-xl text-center md:text-left">{titre}</h2>

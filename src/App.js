@@ -37,12 +37,16 @@ import ProductSubmissionSeller from "./pages/Seller/ProductSubmission";
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./context/ProtectedRoute";
 import ServicesOffert from "./pages/User/ServicesOffert";
+import AboutPage from "./pages/Home/About/index";
+import ScrolleToTop from "./components/common/ScrolleToTop";
 import ComingSoonBanner from "./pages/Comming/CommingSoon";
+import SubscriptionPage from "./components/pages/user/FermeMap/SubscribePage";
 
 function App() {
   return (
 
     <AuthProvider>
+      <ScrolleToTop />
       <Routes>
 
           <Route path="/" element={
@@ -50,6 +54,7 @@ function App() {
           }>
             <Route path="/" element={<HomePage/>}/>
             <Route path="/offre" element={<PublicOffers/>} />
+            <Route path="/About" element={<AboutPage/>} />
             {/* <Route path="/auth/SignIn" element={<ComingSoonBanner/>} /> */}
           </Route>
 

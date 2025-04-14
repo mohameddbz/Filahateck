@@ -4,6 +4,9 @@ import { LanguageContext } from './../../context/LanguageContext';
 import { translations } from './../../utils/constant/FermeMap';
 import RequestForm from './../../components/pages/user/Indice/RequestForm';
 import { makeRequest } from './../../utils/api/httpService';
+import SubscriptionPage from '../../components/pages/user/FermeMap/SubscribePage';
+import SubscriptionDisabled from '../../components/pages/user/FermeMap/SubscriptionDisabled';
+import NoParcelles from '../../components/pages/user/FermeMap/NoparcellsPage';
 
 const FermeMap = () => {
   const { isArabic } = useContext(LanguageContext);
@@ -15,6 +18,8 @@ const FermeMap = () => {
   const [parcels, setParcels] = useState([]);
   const [hasAbonnement, setHasAbonnement] = useState(false);
   const [checkingAbonnement, setCheckingAbonnement] = useState(true);
+  const [abonnementEtat, setAbonnementEtat] = useState(null);
+  const [parcelError, setParcelError] = useState(false); // ✅ new error flag
 
   const lang = isArabic ? 'arabic' : 'french';
   const texts = translations[lang];
@@ -40,7 +45,14 @@ const FermeMap = () => {
       const response = await makeRequest(`/abonnementUser/user/${userId}/status`, 'GET', {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      return response.data.length > 0 ? response.data : false;
+
+      if (response.data.length > 0) {
+        const abonnement = response.data[0];
+        setAbonnementEtat(abonnement.etat);
+        return true;
+      }
+
+      return false;
     } catch (error) {
       console.error('Erreur Abonnement:', error);
       return false;
@@ -62,22 +74,18 @@ const FermeMap = () => {
   };
 
   const fetchParcels = async (userId) => {
-    try {
-      if (!userId) return [];
-      const token = localStorage.getItem('Token');
-      if (!token) throw new Error('Token non trouvé.');
-      const response = await makeRequest(`/parcelle/user/${userId}`, 'GET', {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return response.data.map((parcel) => ({
-        id: parcel.id.toString(),
-        nomPercel: parcel.identifiantU,
-        coordinates: parcel.geom ? parcel.geom.coordinates : [],
-      }));
-    } catch (error) {
-      console.error('Erreur Parcelles:', error);
-      return [];
-    }
+    if (!userId) return [];
+    const token = localStorage.getItem('Token');
+    if (!token) throw new Error('Token non trouvé.');
+    const response = await makeRequest(`/parcelle/user/${userId}`, 'GET', {}, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return response.data.map((parcel) => ({
+      id: parcel.id.toString(),
+      nomPercel: parcel.identifiantU,
+      coordinates: parcel.geom ? parcel.geom.coordinates : [],
+    }));
   };
 
   useEffect(() => {
@@ -108,18 +116,23 @@ const FermeMap = () => {
   }, [userId]);
 
   useEffect(() => {
-    if (userId && hasAbonnement) {
+    if (userId && hasAbonnement && abonnementEtat === "actif") {
       const loadData = async () => {
-        const [fetchedIndices, fetchedParcels] = await Promise.all([
-          fetchIndices(userId),
-          fetchParcels(userId)
-        ]);
-        setIndicesData(fetchedIndices);
-        setParcels(fetchedParcels);
+        try {
+          const [fetchedIndices, fetchedParcels] = await Promise.all([
+            fetchIndices(userId),
+            fetchParcels(userId)
+          ]);
+          setIndicesData(fetchedIndices);
+          setParcels(fetchedParcels);
+        } catch (err) {
+          console.error("Erreur pendant le chargement des données :", err);
+          setParcelError(true); // ✅ Set error flag
+        }
       };
       loadData();
     }
-  }, [userId, hasAbonnement]);
+  }, [userId, hasAbonnement, abonnementEtat]);
 
   if (loading || checkingAbonnement) {
     return <p className="text-center text-lg">{texts.checkingAbonnement}</p>;
@@ -130,26 +143,30 @@ const FermeMap = () => {
   }
 
   if (!hasAbonnement) {
-    return <p className="text-center text-red-500 text-lg">{texts.noAbonnement}</p>;
+    return <SubscriptionPage />;
+  }
+
+  if (abonnementEtat === "désactivé") {
+    return <SubscriptionDisabled />;
+  }
+
+  if (parcelError) {
+    return <NoParcelles />; // ✅ Show custom error component
   }
 
   return (
     <div className="flex flex-col py-3 px-16 w-full items-center justify-center">
-      {/* Title */}
       <p className={`w-full flex ${isArabic ? "justify-end" : "justify-start"} mb-6 font-semibold text-myOrange text-3xl`}>
         <h1>{texts.farmMapTitle}</h1>
       </p>
 
-      {/* Instructions */}
       <div className="w-full mb-6">
         <p className="text-lg text-gray-700">
           {texts.instructions}
         </p>
       </div>
 
-      {/* Main Section */}
       <div className="w-5/6 bg-white p-8 rounded-xl shadow-lg">
-        {/* Toggle Form Button */}
         <div className="mb-6 text-center">
           <p className="text-lg text-gray-700 mb-4">{texts.buttonDescription}</p>
           <button
@@ -160,7 +177,6 @@ const FermeMap = () => {
           </button>
         </div>
 
-        {/* Step-by-Step Instructions */}
         <div className="steps-container bg-gray-50 p-4 rounded-lg shadow-md mb-6">
           <h2 className="text-xl font-semibold text-gray-700 mb-2">
             {texts.stepsTitle || "Étapes à suivre"}
@@ -172,14 +188,12 @@ const FermeMap = () => {
           </ol>
         </div>
 
-        {/* Request Form */}
         {showForm && (
           <div className="mb-6">
             <RequestForm indicesData={indicesData} userId={userId} />
           </div>
         )}
 
-        {/* Farm Map */}
         <div className="border-2 rounded-2xl border-myOrange w-full max-w-screen-xl h-fit overflow-scroll scrollbar-hide">
           <p className="text-center text-lg text-gray-700 mb-4">
             {texts.farmMapDescription}

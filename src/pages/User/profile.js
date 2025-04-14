@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeRequest } from "./../../utils/api/httpService";
+import { format } from "d3";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -9,6 +10,7 @@ const UserProfile = () => {
     userName: "",
     wilaya: "",
     phoneNumber: "",
+    roleName:"",
   });
   const [updating, setUpdating] = useState(false);
 
@@ -27,6 +29,7 @@ const UserProfile = () => {
           userName: fetchedUser.userName,
           wilaya: fetchedUser.wilaya || "",
           phoneNumber: fetchedUser.phoneNumber || "",
+          roleName: fetchedUser.roleName || ""
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -44,14 +47,6 @@ const UserProfile = () => {
 
   const handleUpdate = async () => {
     setUpdating(true);
-    console.log(user)
-    console.log(user.email,
-      formData.userName,
-      user.password,
-      formData.phoneNumber,
-      user.profilePicture,
-      formData.wilaya,
-      user.role_id)
     try {
       // Assuming your update endpoint is something like /users/:id
       const response = await makeRequest(
@@ -69,7 +64,8 @@ const UserProfile = () => {
           },
         }
       );
-      setUser(response.data.data);
+      console.log(response)
+      setUser(formData);
       setEditMode(false);
     } catch (error) {
       console.error("Error updating user data:", error);
@@ -80,12 +76,7 @@ const UserProfile = () => {
 
   if (loading)
     return <p className="text-center py-6 text-2xl">Loading...</p>;
-  if (!user)
-    return (
-      <p className="text-center text-red-500 py-6 text-2xl">
-        Erreur lors du chargement des informations utilisateur.
-      </p>
-    );
+
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-10 bg-white rounded-xl shadow-2xl">
@@ -93,7 +84,7 @@ const UserProfile = () => {
         <img
           src={user.profilePicture || "https://via.placeholder.com/150"}
           alt="Profile"
-          className="w-32 h-32 rounded-full object-cover mb-6 border-4 border-gray-300"
+          className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-gray-300"
         />
         {editMode ? (
           <div className="w-full space-y-4">
@@ -155,7 +146,7 @@ const UserProfile = () => {
         ) : (
           <>
             <h2 className="text-3xl font-bold mb-2">{user.userName}</h2>
-            <p className="text-gray-600 text-xl mb-4">{user.email}</p>
+            <p className="text-gray-600 text-xl mb-3">{user.email}</p>
             <div className="w-full text-left space-y-3 text-lg">
               <p>
                 <span className="font-semibold">Téléphone:</span>{" "}
@@ -166,7 +157,7 @@ const UserProfile = () => {
                 {user.wilaya || "Non renseigné"}
               </p>
               <p>
-                <span className="font-semibold">Rôle:</span> {user.roleName}
+                <span className="font-semibold">Rôle:</span> {formData.roleName}
               </p>
               <p className="text-gray-500">
                 Membre depuis{" "}
@@ -174,7 +165,7 @@ const UserProfile = () => {
               </p>
             </div>
             <button
-              className="mt-8 px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white text-xl font-medium rounded-md transition duration-200"
+              className="mt-6 px-8 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xl font-medium rounded-md transition duration-200"
               onClick={() => setEditMode(true)}
             >
               Modifier le profil
