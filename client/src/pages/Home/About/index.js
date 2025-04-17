@@ -2,6 +2,10 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Users, Sprout, TrendingUp, Globe, Lightbulb } from 'lucide-react';
 import { LanguageContext } from './../../../context/LanguageContext';
+import oussamaImage from './../../../assets/Home/team/Oussama.jpeg';
+import marwaImage from './../../../assets/Home/team/Marwa.jpeg';
+import mohamedImage from './../../../assets/Home/team/Mohamed.jpeg';
+
 
 export default function AboutPage() {
   const navigate = useNavigate();
@@ -63,50 +67,49 @@ export default function AboutPage() {
   // Sélection des onglets selon la langue
   const tabs = isArabic ? tabsArabic : tabsFrench;
 
-  // Membres de l'équipe en français
   const teamMembersFrench = [
     {
       name: "DABOUZ Mohamed Amine",
-      title: "Fondateur & Directeur Technique",
-      bio: "Mohamed Amine est l'architecte technique derrière FilahaTech. Avec une solide formation en informatique et une passion pour l'agriculture durable, il dirige le développement de nos solutions innovantes. Son expertise en intelligence artificielle et en analyse de données permet à notre plateforme d'offrir des recommandations précises et personnalisées à chaque agriculteur.",
-      image: "/api/placeholder/200/200"
+      title: "Co-Fondateur & Responsable Technique",
+      bio: "Étudiant à l’ESI, Mohamed Amine développe les solutions techniques de FilahaTech. Passionné par l'innovation, il mobilise ses compétences en web, mobile et data science pour créer des outils performants et accessibles pour les agriculteurs.",
+      image: mohamedImage
     },
     {
       name: "BOUCENNA Oussama",
-      title: "Co-fondateur & Responsable Agronomique",
-      bio: "Oussama apporte son expertise agronomique approfondie à notre équipe. Ingénieur agronome de formation, il comprend parfaitement les défis quotidiens des agriculteurs. Il veille à ce que nos solutions technologiques répondent aux besoins réels du terrain et travaille en étroite collaboration avec notre communauté d'agriculteurs pour améliorer constamment nos services.",
-      image: "/api/placeholder/200/200"
+      title: "Co-fondateur & Responsable Technique",
+      bio: "Oussama est un développeur full-stack formé à l’ESI. Il conçoit des applications simples et efficaces adaptées aux besoins du terrain, en s’appuyant sur Flutter, Node.js et d’autres technologies modernes.",
+      image: oussamaImage
     },
     {
       name: "ELHAKAOUI Marwa",
-      title: "Responsable Marketing & Relations Client",
-      bio: "Marwa est chargée de faire connaître FilahaTech et d'assurer une communication efficace avec notre communauté d'utilisateurs. Son expertise en marketing digital et sa compréhension du secteur agricole lui permettent de créer des ponts entre notre technologie et ceux qui en bénéficient. Elle travaille chaque jour pour que FilahaTech soit accessible au plus grand nombre d'agriculteurs.",
-      image: "/api/placeholder/200/200"
+      title: "Fondatrice",
+      bio: "Marwa dirige FilahaTech avec une vision durable. Spécialiste en télédétection et en analyse territoriale, elle conçoit des projets agritech innovants tout en assurant la communication et la vulgarisation auprès des utilisateurs.",
+      image: marwaImage
     }
   ];
+  
 
-  // Membres de l'équipe en arabe
   const teamMembersArabic = [
     {
       name: "دبوز محمد أمين",
-      title: "المؤسس ومدير التكنولوجيا",
-      bio: "محمد أمين هو المهندس التقني وراء فلاحة تك. بفضل تكوينه القوي في مجال المعلوماتية وشغفه بالزراعة المستدامة، يقود تطوير حلولنا المبتكرة. تتيح خبرته في الذكاء الاصطناعي وتحليل البيانات لمنصتنا تقديم توصيات دقيقة ومخصصة لكل مزارع.",
-      image: "/api/placeholder/200/200"
+      title: "المؤسس الشريك والمسؤول التقني",
+      bio: "طالب في المدرسة العليا للإعلام الآلي، يقود محمد أمين تطوير الحلول التقنية في فلاحة تك. يستخدم مهاراته في تطوير الويب والموبايل وتحليل البيانات لخدمة الفلاحين بأدوات دقيقة وسهلة الاستخدام.",
+      image: mohamedImage
     },
     {
       name: "بوسنة أسامة",
-      title: "شريك مؤسس ومسؤول زراعي",
-      bio: "يجلب أسامة خبرته الزراعية العميقة لفريقنا. كمهندس زراعي بالتكوين، يفهم تمامًا التحديات اليومية للمزارعين. يضمن أن تلبي حلولنا التكنولوجية الاحتياجات الحقيقية في الميدان ويعمل بشكل وثيق مع مجتمع المزارعين لدينا لتحسين خدماتنا باستمرار.",
-      image: "/api/placeholder/200/200"
+      title: "المؤسس الشريك والمسؤول التقني",
+      bio: "أسامة، مطور متخصص من المدرسة العليا للإعلام الآلي، يساهم في بناء تطبيقات فعالة وسهلة للمزارعين، باستخدام أحدث التقنيات مثل Flutter وNode.js.",
+      image: oussamaImage
     },
     {
       name: "الحكاوي مروة",
-      title: "مسؤولة التسويق وعلاقات العملاء",
-      bio: "مروة مسؤولة عن التعريف بـفلاحة تك وضمان التواصل الفعال مع مجتمع المستخدمين لدينا. تتيح لها خبرتها في التسويق الرقمي وفهمها للقطاع الزراعي بناء جسور بين تكنولوجيتنا والمستفيدين منها. تعمل كل يوم لجعل فلاحة تك في متناول أكبر عدد ممكن من المزارعين.",
-      image: "/api/placeholder/200/200"
+      title: "المؤسسة والمديرة التنفيذية",
+      bio: "مروة تقود فلاحة تك برؤية مستدامة. خبيرة في الاستشعار عن بعد وتحليل المجال، تبتكر حلولًا ذكية للفلاحين وتُشرف على التواصل والتسويق العلمي للمشروع.",
+      image: marwaImage
     }
   ];
-
+  
   // Sélection des membres de l'équipe selon la langue
   const teamMembers = isArabic ? teamMembersArabic : teamMembersFrench;
 
